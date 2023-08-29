@@ -1,6 +1,7 @@
 import { Log, User, UserManager } from 'oidc-client';
 import * as qs from 'qs';
 import { setLocalStorage } from './localstorageService';
+import oidcConfig from '@/config/oidcConfig';
 
 interface TokenData {
   access_token: string;
@@ -16,27 +17,14 @@ interface TokenData {
 }
 
 export default class AuthService {
-  private userManager: UserManager;
+  private userManager: any;
 
   constructor() {
-    const settings = {
-      authority: process.env.NEXT_PUBLIC_STS_AUTHORITY,
-      client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-      redirect_uri: 'http://localhost:3000/signin-callback.html',
-      post_logout_redirect_uri: 'http://localhost:3000' + '/silent-renew.html',
-      response_type: process.env.NEXT_PUBLIC_RESPONSE_TYPE,
-      scope: process.env.NEXT_PUBLIC_CLIENT_SCOPE,
-    };
-    debugger
-    // try {
       if (typeof window !== 'undefined') {
-        this.userManager = new UserManager(settings);
+        this.userManager = new UserManager(oidcConfig);
         Log.logger = console;
         Log.level = Log.INFO;
       }
-    // } catch (error) {
-    //   console.log('@@error', error);
-    // }
   }
 
   public getUser(): Promise<User | null> {
@@ -65,10 +53,15 @@ export default class AuthService {
     return futureTime.getTime();
   }
 
-  public signinRedirectCallback() {
-    this.userManager.signinRedirectCallback().then(() => {
-      return true;
-  });
+  public signinRedirectCallback(currentUrl: string) {
+    return new Promise((resolve, reject) => {
+      this.userManager.signinRedirectCallback(currentUrl).then((users) => {
+        console.log('@@authservice user', users)
+        resolve(true);
+    }).catch(error => {
+      console.log('@@@error', error);
+    });
+    })
   }
 
   public loginAuthorization(email: string = 'suraj.wadekar@pitechniques.com') {
