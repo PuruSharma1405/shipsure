@@ -10,10 +10,14 @@ const oidcConfig = {
     scope: process.env.NEXT_PUBLIC_CLIENT_SCOPE
 };
 
+let userManager: any = {};
 if (typeof window !== 'undefined') {
-    const userManager = new UserManager(oidcConfig);
+    userManager = new UserManager(oidcConfig);
     Log.logger = console;
     Log.level = Log.INFO;
-  }
+}
 
-export default oidcConfig;
+export {
+    oidcConfig,
+    userManager
+};

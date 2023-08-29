@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineCaretDown,AiOutlineInfoCircle } from "react-icons/ai"
 import { VscDashboard, VscSignOut } from "react-icons/vsc"
 import { BiUser,BiHelpCircle } from 'react-icons/bi'
@@ -7,13 +7,28 @@ import { BsMoon } from 'react-icons/bs';
 import {IoMdSettings} from 'react-icons/io'
 import {FiLogOut} from 'react-icons/fi'
 import Link from 'next/link'
+import AuthService from '@/services/authService';
+
 const ProfileDropDown = () => {
+  const authService = new AuthService();
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  const getUserData = async () => {
+    const userData = await authService.getUser();
+    if(userData && userData.access_token && userData.profile && userData.profile.email){
+      setName(userData.profile.name || '')
+    }
+  }
     const [open, setOpen] = useState(false)
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
     <div className="flex items-center gap-x-1 shadow p-3 rounded-full ml-3">
     <BiUser style={{fontSize:'13px'}}/>
-    <p>Dale Kirkwood</p>
+    <p>{name || 'Dale Kirkwood'}</p>
       <AiOutlineCaretDown className="text-sm text-richblack-100" />
     </div>
     {open && (

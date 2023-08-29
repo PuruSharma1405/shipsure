@@ -1,7 +1,7 @@
-import { Log, User, UserManager } from 'oidc-client';
+import { User } from 'oidc-client';
 import * as qs from 'qs';
 import { setLocalStorage } from './localstorageService';
-import oidcConfig from '@/config/oidcConfig';
+import { userManager } from '@/config/oidcConfig';
 
 interface TokenData {
   access_token: string;
@@ -17,14 +17,9 @@ interface TokenData {
 }
 
 export default class AuthService {
-  private userManager: any;
+  private userManager = userManager;
 
   constructor() {
-      if (typeof window !== 'undefined') {
-        this.userManager = new UserManager(oidcConfig);
-        Log.logger = console;
-        Log.level = Log.INFO;
-      }
   }
 
   public getUser(): Promise<User | null> {
@@ -64,14 +59,14 @@ export default class AuthService {
     })
   }
 
-  public loginAuthorization(email: string = 'suraj.wadekar@pitechniques.com') {
+  public loginAuthorization(email: string) {
     return new Promise<TokenData>((resolve, reject) => {
       const body = {
-        client_id: btoa('277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
-        client_secret: btoa('E66B022B-954B-4BCA-B108-E517D00BC4D4'),
-        grant_type: 'password',
+        client_id: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_ID || '277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
+        client_secret: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_SECRET || 'E66B022B-954B-4BCA-B108-E517D00BC4D4'),
+        grant_type: process.env.NEXT_PUBLIC_MSTS_GRANT_TYPE || 'password',
         userName: btoa(email),
-        password: btoa('omniauth'),
+        password: btoa(process.env.NEXT_PUBLIC_MSTS_GRANT_PASSWORD || 'omniauth'),
       };
       const data = qs.stringify(body);
 
@@ -107,8 +102,8 @@ export default class AuthService {
   public refreshAuthorizationToken(refreshToken: string) {
     return new Promise<TokenData>((resolve, reject) => {
       const body = {
-        client_id: btoa('277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
-        client_secret: btoa('E66B022B-954B-4BCA-B108-E517D00BC4D4'),
+        client_id: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_ID || '277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
+        client_secret: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_SECRET || 'E66B022B-954B-4BCA-B108-E517D00BC4D4'),
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
       };
