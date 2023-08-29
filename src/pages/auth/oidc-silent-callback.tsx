@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { userManager } from '@/config/oidcConfig';
-import { useRouter } from 'next/router';
 import AuthService from '@/services/authService';
 import { CookieService } from '@/services/cookieService';
-import { setAuthState } from "@/redux/reducers/user";
-import { useDispatch } from "react-redux";
 
 const CallbackPage = () => {
-  const router = useRouter();
   const authService = new AuthService();
   const cookieService = new CookieService();
   const [email, setEmail] = useState('');
-  const dispatch = useDispatch();
+  
 
   useEffect(() => {
-    userManager.signinRedirectCallback().then(() => {
+    userManager.signinSilentCallback().then(() => {
       getUserData();
+    }).catch((error: Error) => {
+      console.log(error);
     });
   }, []);
 
@@ -24,15 +22,6 @@ const CallbackPage = () => {
     if(userData && userData.access_token && userData.profile && userData.profile.email){
       setEmail(userData.profile.email)
       setUserDataToCookies(userData);
-      dispatch(setAuthState({
-        isAuthenticated: true,
-        email: userData.profile.email,
-        name: userData.profile.name,
-        UserType: userData.profile.UserType,
-        sid: userData.profile.sid,
-        access_token: userData.access_token,
-        expires_at: userData.expires_at,
-      }))
     }
   }
 
@@ -63,7 +52,6 @@ const CallbackPage = () => {
 
   const getMSTSToken = async (email: string) => {
     await authService.loginAuthorization(email);
-    router.push('/createRequisition');
   }
     
 
