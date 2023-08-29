@@ -55,10 +55,10 @@ export default class AuthService {
 
   public signinRedirectCallback(currentUrl: string) {
     return new Promise((resolve, reject) => {
-      this.userManager.signinRedirectCallback(currentUrl).then((users) => {
+      this.userManager.signinRedirectCallback(currentUrl).then((users: any) => {
         console.log('@@authservice user', users)
         resolve(true);
-    }).catch(error => {
+    }).catch((error: Error)  => {
       console.log('@@@error', error);
     });
     })
