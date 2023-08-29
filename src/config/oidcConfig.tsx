@@ -1,4 +1,5 @@
-import { UserManager } from 'oidc-client';
+import { Log, UserManager } from 'oidc-client';
+
 
 const oidcConfig = {
     authority: process.env.NEXT_PUBLIC_STS_AUTHORITY,
@@ -9,6 +10,10 @@ const oidcConfig = {
     scope: process.env.NEXT_PUBLIC_CLIENT_SCOPE
 };
 
-const userManager = new UserManager(oidcConfig);
+if (typeof window !== 'undefined') {
+    const userManager = new UserManager(oidcConfig);
+    Log.logger = console;
+    Log.level = Log.INFO;
+  }
 
-export default userManager;
+export default oidcConfig;
