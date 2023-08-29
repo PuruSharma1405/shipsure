@@ -34,7 +34,7 @@ export default function Page() {
         authService.login();
       }
     } catch (error) {
-      console.log('@@@error', error);
+      console.log('error is', error);
     }
 
   }, [])

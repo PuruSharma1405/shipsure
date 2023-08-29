@@ -23,6 +23,10 @@ const ProfileDropDown = () => {
       setName(userData.profile.name || '')
     }
   }
+
+  const logOut = () => {
+    authService.logout();
+  }
     const [open, setOpen] = useState(false)
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
@@ -71,7 +75,7 @@ const ProfileDropDown = () => {
           Settings
         </div>
         <div
-          
+          onClick={() => {logOut()}}
           className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25 profile-dropdown"
         >
           <FiLogOut className="text-lg" />

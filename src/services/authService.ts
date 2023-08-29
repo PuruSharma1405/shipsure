@@ -1,7 +1,9 @@
 import { User } from 'oidc-client';
 import * as qs from 'qs';
-import { setLocalStorage } from './localstorageService';
+import { setLocalStorage } from '@/services/localstorageService';
+import { CookieService } from '@/services/cookieService';
 import { userManager } from '@/config/oidcConfig';
+import { COMMON_CONFIG } from '@/config/common';
 
 interface TokenData {
   access_token: string;
@@ -17,6 +19,7 @@ interface TokenData {
 }
 
 export default class AuthService {
+  private cookieService = new CookieService();
   private userManager = userManager;
 
   constructor() {
@@ -38,7 +41,8 @@ export default class AuthService {
     return this.userManager.storeUser(user);
   }
 
-  public logout(): Promise<void> {
+  public async logout(): Promise<void> {
+    await this.cookieService.deleteAllCookies();
     return this.userManager.signoutRedirect();
   }
 
@@ -46,17 +50,6 @@ export default class AuthService {
     const currentTime = new Date();
     const futureTime = new Date(currentTime.getTime() + minutes * 60 * 1000);
     return futureTime.getTime();
-  }
-
-  public signinRedirectCallback(currentUrl: string) {
-    return new Promise((resolve, reject) => {
-      this.userManager.signinRedirectCallback(currentUrl).then((users: any) => {
-        console.log('@@authservice user', users)
-        resolve(true);
-    }).catch((error: Error)  => {
-      console.log('@@@error', error);
-    });
-    })
   }
 
   public loginAuthorization(email: string) {
@@ -70,7 +63,7 @@ export default class AuthService {
       };
       const data = qs.stringify(body);
 
-      fetch('https://dev-msts.v.group/omnijwttoken', {
+      fetch(process.env.NEXT_PUBLIC_OMNI_URL || 'https://dev-msts.v.group/omnijwttoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -79,13 +72,12 @@ export default class AuthService {
       })
         .then(response => response.json())
         .then(data => {
-          console.log('response', data);
           if (data) {
             const tokenData: TokenData = {
               ...data,
               expireAt: this.getCurrentTimePlus30Minutes(data.expires_in),
             };
-            setLocalStorage('token', JSON.stringify(tokenData));
+            setLocalStorage(COMMON_CONFIG.TOKEN_STORE_KEY, JSON.stringify(tokenData));
             resolve(tokenData);
           } else {
             console.error('Something went wrong');
@@ -109,7 +101,7 @@ export default class AuthService {
       };
       const data = qs.stringify(body);
 
-      fetch('https://dev-msts.v.group/omnijwttoken', {
+      fetch(process.env.NEXT_PUBLIC_OMNI_URL || 'https://dev-msts.v.group/omnijwttoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -124,7 +116,7 @@ export default class AuthService {
               ...data,
               expireAt: this.getCurrentTimePlus30Minutes(data.expires_in),
             };
-            setLocalStorage('token', JSON.stringify(tokenData));
+            setLocalStorage(COMMON_CONFIG.TOKEN_STORE_KEY, JSON.stringify(tokenData));
             resolve(tokenData);
           } else {
             console.error('Something went wrong');

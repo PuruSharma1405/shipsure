@@ -8,7 +8,6 @@ export default function Home() {
   const router = useRouter();
   const cookieService = new CookieService();
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
   
 
   useEffect(() => {
@@ -19,7 +18,6 @@ export default function Home() {
     const userData = await authService.getUser();
     if(userData && userData.access_token && userData.profile && userData.profile.email){
       setEmail(userData.profile.email)
-      setName(userData.profile.name || '')
       setUserDataToCookies(userData);
     }
   }
@@ -40,7 +38,6 @@ export default function Home() {
       if(value) {
         cookieService.setCookie(key, JSON.stringify(value));
       }
-      console.log(`${key}: ${value}`);
     }
   }
 
