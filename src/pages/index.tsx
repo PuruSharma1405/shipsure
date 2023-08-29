@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import AuthService from '@/services/authService';
 import { CookieService } from '@/services/cookieService';
+import { setAuthState } from "@/redux/reducers/user";
+import { useDispatch } from "react-redux";
 
 export default function Page() {
   const router = useRouter();
   const authService = new AuthService();
   const cookieService = new CookieService();
   const [redirectTo, setRedirectTo] = useState('');
-
+  const dispatch = useDispatch();
+  
   useEffect(() => {
     try {
       const parseData = {
@@ -29,6 +32,15 @@ export default function Page() {
       }
       if(parseData && parseData.access_token && parseData.id_token && parseData.id_token) {
         authService.storeUser(parseData);
+        dispatch(setAuthState({
+          isAuthenticated: true,
+          email: parseData.profile.email,
+          name: parseData.profile.name,
+          UserType: parseData.profile.UserType,
+          sid: parseData.profile.sid,
+          access_token: parseData.access_token,
+          expires_at: parseData.expires_at,
+        }))
         setRedirectTo('home');
       } else {
         authService.login();

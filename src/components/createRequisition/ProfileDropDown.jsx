@@ -8,19 +8,21 @@ import {IoMdSettings} from 'react-icons/io'
 import {FiLogOut} from 'react-icons/fi'
 import Link from 'next/link'
 import AuthService from '@/services/authService';
+import { selectAuthState } from "@/redux/reducers/user";
+import { useSelector } from "react-redux";
 
 const ProfileDropDown = () => {
   const authService = new AuthService();
   const [name, setName] = useState('');
-
+  const authState = useSelector(selectAuthState);
+  
   useEffect(() => {
     getUserData();
   }, []);
 
   const getUserData = async () => {
-    const userData = await authService.getUser();
-    if(userData && userData.access_token && userData.profile && userData.profile.email){
-      setName(userData.profile.name || '')
+    if(authState.isAuthenticated && authState.name) {
+      setName(authState.name || '')
     }
   }
 
