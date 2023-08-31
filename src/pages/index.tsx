@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from "react-redux";
 import AuthService from '@/services/authService';
+import { ALERT_CONFIG } from '@/config/AlertConfig';
 import { CookieService } from '@/services/cookieService';
 import { setAuthState } from "@/redux/reducers/user";
-import { useDispatch } from "react-redux";
+import { useAlertService } from '@/hooks/useAlertService';
 
 export default function Page() {
   const router = useRouter();
@@ -11,7 +13,8 @@ export default function Page() {
   const cookieService = new CookieService();
   const [redirectTo, setRedirectTo] = useState('');
   const dispatch = useDispatch();
-  
+  const { showAlertMessage } = useAlertService();
+
   useEffect(() => {
     try {
       const parseData = {
@@ -45,7 +48,8 @@ export default function Page() {
       } else {
         authService.login();
       }
-    } catch (error) {
+    } catch (error: any) {
+      showAlertMessage(error.message, ALERT_CONFIG.ERROR);
       console.log('error is', error);
     }
 
