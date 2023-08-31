@@ -1,19 +1,26 @@
 import type { AppProps } from "next/app";
-import { wrapper } from "@/redux/store";
+import { store, persistor } from "@/redux/store";
 import '../app/globals.css'
 import Sidebar from "../components/common/Sidebar"
 import { ThemeProvider } from '@mui/material/styles';
 import { lightTheme, darkTheme } from '@/app/theme';
 import AlertProvider from '@/components/common/AlertService';
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+
 function MyApp({ Component, pageProps}: AppProps) {
     return (
-        <ThemeProvider theme={lightTheme}> 
-            <AlertProvider />
-                <Sidebar>
-                    <Component {...pageProps} />
-                </Sidebar>
-        </ThemeProvider>
+        <Provider store={store}> 
+            <PersistGate loading={null} persistor={persistor}>
+                <ThemeProvider theme={lightTheme}> 
+                    <AlertProvider />
+                        <Sidebar>
+                            <Component {...pageProps} />
+                        </Sidebar>
+                </ThemeProvider>
+            </PersistGate>
+        </Provider>
     )
 }
 
-export default wrapper.withRedux(MyApp); 
+export default MyApp; 
