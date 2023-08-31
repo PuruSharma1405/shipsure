@@ -41,7 +41,7 @@ export default function Page() {
           access_token: parseData.access_token,
           expires_at: parseData.expires_at,
         }))
-        setRedirectTo('home');
+        setRedirectTo('createRequisition');
       } else {
         authService.login();
       }

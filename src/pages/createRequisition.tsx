@@ -15,6 +15,11 @@ import SuggestedRequisitions from "../components/createRequisition/SuggestedRequ
 import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
 import { useRouter } from 'next/router';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 const CreateRequisition = () => {
   const [item, setItem] = useState("consumables");
@@ -50,7 +55,7 @@ const CreateRequisition = () => {
 
   console.log("item", item);
   return (
-      <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto">
+      <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
         <div className="mx-auto">
           <div className="flex justify-between w-10/12 items-center mx-auto">
             <div className="text-2xl font-bold mt-3">
@@ -90,7 +95,16 @@ const CreateRequisition = () => {
                     </div>
                   </div>
                   {vesselName.length>0 && <MegaDropDown showDropdown={showDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}
-                  <div className="flex flex-row justify-around items-center mt-5">
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel value="consumables" control={<Radio checked={item === 'consumables'} onChange={itemChange}/>} label="consumables" />
+                      <FormControlLabel value="materials" control={<Radio checked={item === 'materials'} onChange={itemChange}/>} label="materials" />
+                      <FormControlLabel value="Spares" control={<Radio checked={item === 'Spares'} onChange={itemChange}/>} label="Spares" />
+                    </RadioGroup>
+                  {/* <div className="flex flex-row justify-around items-center mt-5">
                     <label className="ml-[10px]">
                       <input
                         type="radio"
@@ -118,7 +132,7 @@ const CreateRequisition = () => {
                       />
                       <span className="ml-[5px]">Spares</span>
                     </label>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">
                   <CTAButton linkTo={"/createRequisition"} className="w-[500px]">

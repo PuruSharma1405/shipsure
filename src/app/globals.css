@@ -124,3 +124,10 @@ main{
   background:lightskyblue;
   transition: all 0.5s;
 }
+
+.create-requisition{
+ .MuiFormGroup-row{
+  justify-content: center;
+  margin-top: 2rem;
+ } 
+}
