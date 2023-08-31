@@ -1,0 +1,50 @@
+.mega-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:999;
+    position: 'relative';
+    right: 50%;
+    margin-top:10px;
+  }
+  
+  .mega-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: flex;
+    background-color: #EBE8DF;
+    border: 1px solid #ddd;
+    width: 1100px;
+  }
+  
+  .row {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .column {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin: 10px 0;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .column>h2{
+    color: #7D7161;
+    width:130px;
+  }
+
+  .megamenu-vesselname{
+    width:220px;
+  }
+  
+  

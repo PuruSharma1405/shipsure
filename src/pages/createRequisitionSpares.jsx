@@ -12,10 +12,19 @@ import { BiUser } from "react-icons/bi";
 import { CgMenuGridO } from "react-icons/cg";
 import CTAButton from "../components/createRequisition/Button";
 import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
-import SideBar from "../components/common/SideBar";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
+import {Accordion} from "../components/createRequisitionSpares/Accordion"
+import DropDown from "../components/createRequisitionSpares/DropDown"
 const CreateRequisitionSpares = () => {
+  const[showDropDown,setShowDropDown]=useState(false);
+  const[componentName,setComponentName]=useState("");
+
+  const changeHandler=(e)=>{
+    setComponentName(e.target.value)
+    setShowDropDown(true)
+  }
+
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
       <div className="mx-auto">
@@ -31,7 +40,7 @@ const CreateRequisitionSpares = () => {
           </div>
         </div>
         <div className="h-full w-full flex flex-row">
-          <div className="h-[90vh] w-8/12 mt-7 ml-36 relative">
+          <div className=" w-8/12 mt-7 ml-36 relative">
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl font-semibold">
                 Create Requisition-Spares
@@ -51,10 +60,13 @@ const CreateRequisitionSpares = () => {
                     type="text"
                     placeholder="Search Component"
                     className="outline-none bg-transparent ml-2 mt-2"
+                    value={componentName}
+                    onChange={changeHandler}
                   />
                   <BsSearch />
                 </div>
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+                  {componentName.length>0 && showDropDown && <DropDown/>}
               </div>
               <div className="flex flex-col mt-5">
                 <p className="ml-2">Part Name</p>
@@ -84,6 +96,7 @@ const CreateRequisitionSpares = () => {
                 Please Select a Component to view the spares
               </p>
             </div>
+            <Accordion/>
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute bottom-2 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
