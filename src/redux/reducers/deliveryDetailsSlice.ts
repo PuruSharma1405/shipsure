@@ -36,7 +36,7 @@ export const deliveryDetailsSlice = createSlice({
   },
 });
 
-export const deliveryDetailsState = (state: AppState) => state.deliveryDetails;
+export const selectDeliveryDetailsState = (state: AppState) => state.deliveryDetails;
 
 export const { setDeliveryDetailsState } = deliveryDetailsSlice.actions;
 
