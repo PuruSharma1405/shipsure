@@ -1,14 +1,23 @@
-import { UserManager } from 'oidc-client';
+import { Log, UserManager } from 'oidc-client';
+
 
 const oidcConfig = {
     authority: process.env.NEXT_PUBLIC_STS_AUTHORITY,
     client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-    redirect_uri: 'http://localhost:3000/signin-callback.html',
-    post_logout_redirect_uri: 'http://localhost:3000'+ '/silent-renew.html',
+    redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
+    post_logout_redirect_uri: process.env.NEXT_PUBLIC_SILENT_REDIRECT_URL,
     response_type: process.env.NEXT_PUBLIC_RESPONSE_TYPE,
     scope: process.env.NEXT_PUBLIC_CLIENT_SCOPE
 };
 
-const userManager = new UserManager(oidcConfig);
+let userManager: any = {};
+if (typeof window !== 'undefined') {
+    userManager = new UserManager(oidcConfig);
+    Log.logger = console;
+    Log.level = Log.INFO;
+}
 
-export default userManager;
+export {
+    oidcConfig,
+    userManager
+};

@@ -1,6 +1,9 @@
-import { Log, User, UserManager } from 'oidc-client';
+import { User } from 'oidc-client';
 import * as qs from 'qs';
-import { setLocalStorage } from './localstorageService';
+import { setLocalStorage } from '@/services/localstorageService';
+import { CookieService } from '@/services/cookieService';
+import { userManager } from '@/config/oidcConfig';
+import { COMMON_CONFIG } from '@/config/common';
 
 interface TokenData {
   access_token: string;
@@ -16,27 +19,10 @@ interface TokenData {
 }
 
 export default class AuthService {
-  private userManager: UserManager;
+  private cookieService = new CookieService();
+  private userManager = userManager;
 
   constructor() {
-    const settings = {
-      authority: process.env.NEXT_PUBLIC_STS_AUTHORITY,
-      client_id: process.env.NEXT_PUBLIC_CLIENT_ID,
-      redirect_uri: 'http://localhost:3000/signin-callback.html',
-      post_logout_redirect_uri: 'http://localhost:3000' + '/silent-renew.html',
-      response_type: process.env.NEXT_PUBLIC_RESPONSE_TYPE,
-      scope: process.env.NEXT_PUBLIC_CLIENT_SCOPE,
-    };
-    debugger
-    // try {
-      if (typeof window !== 'undefined') {
-        this.userManager = new UserManager(settings);
-        Log.logger = console;
-        Log.level = Log.INFO;
-      }
-    // } catch (error) {
-    //   console.log('@@error', error);
-    // }
   }
 
   public getUser(): Promise<User | null> {
@@ -55,7 +41,8 @@ export default class AuthService {
     return this.userManager.storeUser(user);
   }
 
-  public logout(): Promise<void> {
+  public async logout(): Promise<void> {
+    await this.cookieService.deleteAllCookies();
     return this.userManager.signoutRedirect();
   }
 
@@ -65,24 +52,18 @@ export default class AuthService {
     return futureTime.getTime();
   }
 
-  public signinRedirectCallback() {
-    this.userManager.signinRedirectCallback().then(() => {
-      return true;
-  });
-  }
-
-  public loginAuthorization(email: string = 'suraj.wadekar@pitechniques.com') {
+  public loginAuthorization(email: string) {
     return new Promise<TokenData>((resolve, reject) => {
       const body = {
-        client_id: btoa('277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
-        client_secret: btoa('E66B022B-954B-4BCA-B108-E517D00BC4D4'),
-        grant_type: 'password',
+        client_id: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_ID || '277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
+        client_secret: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_SECRET || 'E66B022B-954B-4BCA-B108-E517D00BC4D4'),
+        grant_type: process.env.NEXT_PUBLIC_MSTS_GRANT_TYPE || 'password',
         userName: btoa(email),
-        password: btoa('omniauth'),
+        password: btoa(process.env.NEXT_PUBLIC_MSTS_GRANT_PASSWORD || 'omniauth'),
       };
       const data = qs.stringify(body);
 
-      fetch('https://dev-msts.v.group/omnijwttoken', {
+      fetch(process.env.NEXT_PUBLIC_OMNI_URL || 'https://dev-msts.v.group/omnijwttoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -91,13 +72,12 @@ export default class AuthService {
       })
         .then(response => response.json())
         .then(data => {
-          console.log('response', data);
           if (data) {
             const tokenData: TokenData = {
               ...data,
               expireAt: this.getCurrentTimePlus30Minutes(data.expires_in),
             };
-            setLocalStorage('token', JSON.stringify(tokenData));
+            setLocalStorage(COMMON_CONFIG.TOKEN_STORE_KEY, JSON.stringify(tokenData));
             resolve(tokenData);
           } else {
             console.error('Something went wrong');
@@ -114,14 +94,14 @@ export default class AuthService {
   public refreshAuthorizationToken(refreshToken: string) {
     return new Promise<TokenData>((resolve, reject) => {
       const body = {
-        client_id: btoa('277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
-        client_secret: btoa('E66B022B-954B-4BCA-B108-E517D00BC4D4'),
+        client_id: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_ID || '277AFC1D-AF71-4D58-BF11-A9F4FEFAD187'),
+        client_secret: btoa(process.env.NEXT_PUBLIC_MSTS_CLIENT_SECRET || 'E66B022B-954B-4BCA-B108-E517D00BC4D4'),
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
       };
       const data = qs.stringify(body);
 
-      fetch('https://dev-msts.v.group/omnijwttoken', {
+      fetch(process.env.NEXT_PUBLIC_OMNI_URL || 'https://dev-msts.v.group/omnijwttoken', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -136,7 +116,7 @@ export default class AuthService {
               ...data,
               expireAt: this.getCurrentTimePlus30Minutes(data.expires_in),
             };
-            setLocalStorage('token', JSON.stringify(tokenData));
+            setLocalStorage(COMMON_CONFIG.TOKEN_STORE_KEY, JSON.stringify(tokenData));
             resolve(tokenData);
           } else {
             console.error('Something went wrong');

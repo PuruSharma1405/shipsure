@@ -1,28 +1,55 @@
 {
+
   "compilerOptions": {
+
     "target": "es5",
+
     "lib": ["dom", "dom.iterable", "esnext"],
+
     "allowJs": true,
+
     "skipLibCheck": true,
+
     "strict": true,
+
     "noEmit": true,
+
     "esModuleInterop": true,
+
     "module": "esnext",
+
     "moduleResolution": "bundler",
+
     "resolveJsonModule": true,
+
     "isolatedModules": true,
+
     "jsx": "preserve",
+
     "incremental": true,
+
     "plugins": [
+
       {
+
         "name": "next"
+
       }
+
     ],
+
     "paths": {
+
       "@/*": ["./src/*"],
+
       "@/common": ["./src/common/*"]
+
     }
+
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/createRequisition.ts", "tailwind.config.js", "src/pages/CreateRequisitionSpares.jsx"],
+
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/pages/createRequisition.ts", "tailwind.config.js"],
+
   "exclude": ["node_modules"]
+
 }

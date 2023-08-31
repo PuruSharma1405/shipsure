@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { userManager } from '@/config/oidcConfig';
 import AuthService from '@/services/authService';
 import { CookieService } from '@/services/cookieService';
-import { useRouter } from 'next/router';
 
-export default function Home() {
+const CallbackPage = () => {
   const authService = new AuthService();
-  const router = useRouter();
   const cookieService = new CookieService();
   const [email, setEmail] = useState('');
   
 
   useEffect(() => {
-    getUserData();
+    userManager.signinSilentCallback().then(() => {
+      getUserData();
+    }).catch((error: Error) => {
+      console.log(error);
+    });
   }, []);
 
   const getUserData = async () => {
@@ -49,11 +52,10 @@ export default function Home() {
 
   const getMSTSToken = async (email: string) => {
     await authService.loginAuthorization(email);
-    router.push('/createRequisition');
   }
+    
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    </main>
-  )
-}
+  return <div>Processing OIDC callback...</div>;
+};
+
+export default CallbackPage;

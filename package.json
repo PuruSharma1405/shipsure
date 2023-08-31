@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.7",
+    "@reduxjs/toolkit": "^1.9.5",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -16,17 +20,23 @@
     "axios": "^1.5.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "js-cookie": "^3.0.5",
     "next": "13.4.19",
+    "next-redux-wrapper": "^8.1.0",
     "oidc-client": "^1.11.5",
     "postcss": "8.4.28",
     "qs": "^6.11.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-redux": "^8.1.2",
+    "redux": "^4.2.1",
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/qs": "^6.9.7",
+    "@types/react-redux": "^7.1.26",
     "tailwindcss": "^3.3.3"
   }
 }
