@@ -80,7 +80,7 @@ const CreateRequisitionSpares = () => {
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
               </div>
               <div className="flex flex-col mt-5">
-                <p className="ml-2">Maker's Ref No.</p>
+                <p className="ml-2">Makers  Ref No.</p>
                 <div className="flex flex-row ">
                   <input
                     type="text"

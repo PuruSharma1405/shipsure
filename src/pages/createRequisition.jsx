@@ -28,7 +28,7 @@ const CreateRequisition = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const authState = useSelector(selectAuthState);
  
-  const itemChange = (e:any) => {
+  const itemChange = (e) => {
     setItem(e.target.value);
   };
 
@@ -43,12 +43,12 @@ const CreateRequisition = () => {
     // for hide UI part if user is not authorized
       return null;
   }
-  const changeHandler=(e:any)=>{
+  const changeHandler=(e)=>{
     setVesselName(e.target.value.toLowerCase())
     setShowDropdown(true)
   }
 
-  const fetchingDropDownData=(vesselName:any)=>{
+  const fetchingDropDownData=(vesselName)=>{
     setVesselName(vesselName)
     setShowDropdown(false)
   }

@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './DropDown.css';
+import './MegaDropDown.css';
 import { dropDownData } from '@/app/data/DropDownData';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 
-interface MegaDropDownProps {
-  showDropdown: boolean;
-  setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>;
-  vesselName: string;
-  fetchingDropDownData: (vesselName: string) => void;
-}
+// interface MegaDropDownProps {
+//   showDropdown: boolean;
+//   setShowDropdown: React.Dispatch<React.SetStateAction<boolean>>;
+//   vesselName: string;
+//   fetchingDropDownData: (vesselName) => void;
+// }
 
-const DropDown: React.FC<MegaDropDownProps> = ({
+const MegaDropDown = ({
   showDropdown,
   setShowDropdown,
   vesselName,
@@ -21,17 +21,32 @@ const DropDown: React.FC<MegaDropDownProps> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   
-  const clickHandler = (currData: Record<string, string>) => {
+  const clickHandler = (currData) => {
     fetchingDropDownData(currData['Vessel Name']);
   };
   
+  useOnClickOutside(ref, () => setShowDropdown(false));
 
-  
+  const filteredDropDown=()=>{
+    const filteredData =megaMenu.filter((currData)=>{
+      return currData["Vessel Name"].toLowerCase().includes(vesselName.toLowerCase());
+    })
+    if(filteredData?.length===0){
+      setShowDropdown(false);
+      return;
+    }
+    setMegaMenu(filteredData)
+  }
+
+  useEffect(()=>{
+    filteredDropDown()
+  },[vesselName,filteredDropDown])
 
   return (
     <div className="mega-dropdown" ref={ref}>
-      
+      {showDropdown && (
         <div className="mega-dropdown-content">
+          <div className="row">
             {Object.keys(dropDownData[0]).map((key) => (
               <div className="column" key={key}>
                 <h2>{key}</h2>
@@ -52,10 +67,11 @@ const DropDown: React.FC<MegaDropDownProps> = ({
                 </ul>
               </div>
             ))}
+          </div>
         </div>
-      
+      )}
     </div>
   );
 };
 
-export default DropDown;
+export default MegaDropDown;
