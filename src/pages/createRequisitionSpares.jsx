@@ -14,8 +14,9 @@ import CTAButton from "../components/createRequisition/Button";
 import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
-import {Accordion} from "../components/createRequisitionSpares/Accordion"
+import {Accordion, AccordionComponent} from "../components/createRequisitionSpares/Accordion"
 import DropDown from "../components/createRequisitionSpares/DropDown"
+import useOnClickOutside from "../hooks/useOnClickOutside";
 const CreateRequisitionSpares = () => {
   const[showDropDown,setShowDropDown]=useState(false);
   const[componentName,setComponentName]=useState("");
@@ -24,6 +25,7 @@ const CreateRequisitionSpares = () => {
     setComponentName(e.target.value)
     setShowDropDown(true)
   }
+
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -92,12 +94,12 @@ const CreateRequisitionSpares = () => {
               </div>
             </div>
             <div className="mt-20">
-              <p className="text-center text-[#7B8BA3]">
+              <p className="text-center text-[#7B8BA3] mb-7">
                 Please Select a Component to view the spares
               </p>
             </div>
-            <Accordion/>
-            <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute bottom-2 right-0 hover:scale-95 transition-all duration-200">
+            <AccordionComponent/>
+            <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
             </div>
@@ -108,7 +110,7 @@ const CreateRequisitionSpares = () => {
               desc2="Accrual" desc2Value="-39.46%" desc3="Variance" desc3Value="386.1K"
               /> 
               <div
-                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[370px] h-[100px]"
+                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[100px]"
                 style={{ borderRadius: "15px" }}
               >
                 <div className="flex flex-row  justify-between items-center m-5">

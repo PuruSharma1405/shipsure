@@ -20,11 +20,11 @@ const SuggestedRequisitions: React.FC = () => {
   return (
     <div className='bg-[#E8ECED] w-[100vw] py-2 mt-20 h-[45vh] flex justify-center items-center'>
       <div className='w-11/12 mx-auto'>
-        <h3 className='text-2xl font-semibold ml-5'>Suggested Requisitions</h3>
-        <div className='flex flex-row justify-around flex-wrap'>
-          {suggestedRequisitions?.map((currData) => (
+        <h3 className='text-2xl font-semibold ml-5 suggested-requisition'>Suggested Requisitions</h3>
+        <div className='flex flex-row justify-around flex-wrap suggested-requisition'>
+          {suggestedRequisitions?.map((currData,index) => (
             <div
-              key={currData.requisitionName} 
+              key={index} 
               className='flex flex-col mt-5 bg-white shadow-lg rounded-lg p-4 w-[300px] h-[250px]'
             >
               <h3 className='text-xl font-bold text-[#208262] flex flex-row justify-between items-center'>

@@ -4,18 +4,18 @@ import "./DropDown.css";
 const mockMainBearings = [
   "55.05 FLOOR MAINTENANCE",
   "Available Main Lines",
-  "GE-1 Main Bearing No.",
-  "GE-1 Main Bearing No. 2",
-  "GE-1 Main Bearing No. 3",
-  "GE-1 Main Bearing No. 4",
-  "GE-1 Main Bearing No. 5",
-  "GE-1 Main Bearing No. 6",
-  "GE-1 Main Bearing No. 7"
+  "GE-1 Main Bearing No",
+  "GE-1 Main Bearing No 2",
+  "GE-1 Main Bearing No 3",
+  "GE-1 Main Bearing No 4",
+  "GE-1 Main Bearing No 5",
+  "GE-1 Main Bearing No 6",
+  "GE-1 Main Bearing No 7"
 ];
 
 const DropDown = () => {
   return (
-    <div className="profile-dropdown">
+    <div className="component-dropdown">
       {mockMainBearings.map((bearing, index) => (
         <div className="frame-wrapper" key={index}>
           <div className="div">

@@ -20,16 +20,24 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import {getVesselPart} from "../services/operations/createVesselApi"
+import { useDispatch } from "react-redux"
+import AuthService from '@/services/authService';
 
 const CreateRequisition = () => {
   const [item, setItem] = useState("consumables");
   const router = useRouter();
-  const[vesselName,setVesselName]=useState("")
+  const[vesselName,setVesselName]=useState()
   const [showDropdown, setShowDropdown] = useState(false);
   const authState = useSelector(selectAuthState);
+  const dispatch = useDispatch()
+  const authService = new AuthService();
  
-  const itemChange = (e) => {
+  const itemChange = async(e) => {
+    const userData = await authService.getUser();
+    console.log('userData',userData);
     setItem(e.target.value);
+    getVesselPart(e.target.value,userData?.access_token)
   };
 
   useEffect(() => {
@@ -40,7 +48,6 @@ const CreateRequisition = () => {
   }, []);
 
   if(!authState.isAuthenticated) {
-    // for hide UI part if user is not authorized
       return null;
   }
   const changeHandler=(e)=>{
@@ -80,12 +87,12 @@ const CreateRequisition = () => {
                     className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300"
                     style={{ margin: "0 8%" }}
                   >
-                    <div className="flex flex-row p-2 items-center">
+                    <div className="flex flex-row p-2 items-center relative">
                       <MdOutlineDirectionsBoat className="relative right-[15px]" />
                       <input
                         type="text"
                         placeholder="Search vessel"
-                        className="border-none outline-none bg-transparent ml-2"
+                        className="border-none outline-none bg-transparent ml-2 relative"
                         value={vesselName}
                         onChange={changeHandler}
                       />
@@ -94,7 +101,7 @@ const CreateRequisition = () => {
                       <AiOutlineSearch />
                     </div>
                   </div>
-                  {vesselName.length>0 && <MegaDropDown showDropdown={showDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}
+                  {vesselName?.length>0 && <MegaDropDown showDropdown={showDropdown} setShowDropdown={setShowDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}
                     <RadioGroup
                       row
                       aria-labelledby="demo-row-radio-buttons-group-label"
@@ -104,35 +111,6 @@ const CreateRequisition = () => {
                       <FormControlLabel value="materials" control={<Radio checked={item === 'materials'} onChange={itemChange}/>} label="materials" />
                       <FormControlLabel value="Spares" control={<Radio checked={item === 'Spares'} onChange={itemChange}/>} label="Spares" />
                     </RadioGroup>
-                  {/* <div className="flex flex-row justify-around items-center mt-5">
-                    <label className="ml-[10px]">
-                      <input
-                        type="radio"
-                        value="consumables"
-                        checked={item === "consumables"}
-                        onChange={itemChange}
-                      />
-                      <span className="ml-[5px]">Consumables</span>
-                    </label>
-                    <label className="relative right-2">
-                      <input
-                        type="radio"
-                        value="materials"
-                        checked={item === "materials"}
-                        onChange={itemChange}
-                      />
-                      <span className="ml-[5px]">Materials</span>
-                    </label>
-                    <label className="relative right-2">
-                      <input
-                        type="radio"
-                        value="spares"
-                        checked={item === "spares"}
-                        onChange={itemChange}
-                      />
-                      <span className="ml-[5px]">Spares</span>
-                    </label>
-                  </div> */}
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">
                   <CTAButton linkTo={"/createRequisition"} className="w-[500px]">
