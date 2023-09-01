@@ -131,6 +131,20 @@ main{
   margin-top: 2rem;
  } 
 }
+
+@media only screen and (min-width: 800px) and (max-width: 1600px)  {
+  .suggested-requisition{
+    margin-top:6rem;
+  }
+}
+
+/* 
+@media only screen and (min-width: 1500px) and (max-width: 1700px)  {
+  .suggested-requisition{
+    border:5px solid red;
+    margin-top:80px;
+  } */
+/* } */
 .delivery-details {
     padding: 2rem;
     display: flex;
