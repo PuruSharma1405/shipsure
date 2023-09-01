@@ -17,6 +17,7 @@ import RequisitionDataContainer from "../components/createRequisition/Requisitio
 import {Accordion, AccordionComponent} from "../components/createRequisitionSpares/Accordion"
 import DropDown from "../components/createRequisitionSpares/DropDown"
 import useOnClickOutside from "../hooks/useOnClickOutside";
+import backgroundShip from '../../src/images/backgroundShip.png'
 const CreateRequisitionSpares = () => {
   const[showDropDown,setShowDropDown]=useState(false);
   const[componentName,setComponentName]=useState("");
@@ -68,7 +69,7 @@ const CreateRequisitionSpares = () => {
                   <BsSearch />
                 </div>
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                  {componentName.length>0 && showDropDown && <DropDown/>}
+                  {componentName.length>0 && showDropDown && <DropDown showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>}
               </div>
               <div className="flex flex-col mt-5">
                 <p className="ml-2">Part Name</p>
@@ -104,7 +105,7 @@ const CreateRequisitionSpares = () => {
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
-          <div className="w-4/12 bg-[#E8ECED] ml-[50px]">
+          <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
               <RequisitionDataContainer height="320px" width="370px" title="Seaways Athens-9597109" heading="Financials" desc1="Budget:Actual YTD" desc1Value="1.95M-2.34M"
               desc2="Accrual" desc2Value="-39.46%" desc3="Variance" desc3Value="386.1K"

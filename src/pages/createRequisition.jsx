@@ -87,6 +87,7 @@ const CreateRequisition = () => {
                     className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300"
                     style={{ margin: "0 8%" }}
                   >
+                    
                     <div className="flex flex-row p-2 items-center relative">
                       <MdOutlineDirectionsBoat className="relative right-[15px]" />
                       <input

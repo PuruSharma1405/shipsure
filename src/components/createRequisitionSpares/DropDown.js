@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState,useEffect,useRef } from "react";
 import "./DropDown.css";
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 
-const mockMainBearings = [
+
+const menuDropDownData = [
   "55.05 FLOOR MAINTENANCE",
   "Available Main Lines",
   "GE-1 Main Bearing No",
@@ -13,10 +15,28 @@ const mockMainBearings = [
   "GE-1 Main Bearing No 7"
 ];
 
-const DropDown = () => {
+const DropDown = ({showDropDown,setShowDropdown,componentName}) => {
+  const [menu, setMenu] = useState(menuDropDownData);
+  const ref = useRef(null);
+
+  const filteredDropDown=()=>{
+    const filteredData =menu.filter((currData)=>{
+      return currData.toLowerCase().includes(componentName.toLowerCase());
+    })
+    if(filteredData?.length===0){
+      return;
+    }
+    setMenu(filteredData)
+  }
+
+  useEffect(()=>{
+    filteredDropDown()
+  },[filteredDropDown])
+
+
   return (
-    <div className="component-dropdown">
-      {mockMainBearings.map((bearing, index) => (
+    <div className="component-dropdown" ref={ref}>
+      {menu.map((bearing, index) => (
         <div className="frame-wrapper" key={index}>
           <div className="div">
             <p className="text-wrapper">{bearing}</p>
