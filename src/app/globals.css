@@ -138,7 +138,17 @@ main{
     align-items: center;
     min-height: 100vh;
     .MuiCard-root{
-      background: grey;
+      background: #F2EEEB;
+      padding: 53px;
+
+    }
+    .position-list {
+      width: 200px;
+    }
+    .notes-text{
+
+    }
+    .position-list-label {
 
     }
 }
