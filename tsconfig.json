@@ -44,10 +44,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/pages/createRequisition.ts",
+    "src/pages/createRequisition.js",
     "tailwind.config.js",
     "src/components/createRequisition/DropDown.js"
-, "src/pages/createRequisition.jsx", "src/components/createRequisition/MegaDropDown.js"  ],
+, "src/pages/createRequisition.tsx", "src/components/createRequisition/MegaDropDown.js", "src/components/createRequisitionSpares/Stepper.js"  ],
 
   "exclude": ["node_modules"]
 }

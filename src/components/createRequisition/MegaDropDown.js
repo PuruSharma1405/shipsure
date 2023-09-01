@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import './MegaDropDown.css';
 import { dropDownData } from '@/app/data/DropDownData';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
@@ -18,7 +18,7 @@ const MegaDropDown = ({
 }) => {
   const [megaMenu, setMegaMenu] = useState(dropDownData);
   const [typedValue, setTypedValue] = useState('');
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
 
   
   const clickHandler = (currData) => {

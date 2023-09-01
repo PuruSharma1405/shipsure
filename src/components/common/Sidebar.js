@@ -78,7 +78,7 @@ const Sidebar = ({children}) => {
                <div className='left-sidebar'>
                {
                    menuItem.map((item, index)=>(
-                       <Link href={item.path} key={index} className="link" activeclassName="active">
+                       <Link href={item.path} key={index} className="link">
                            <div className="icon">{item.icon}</div>
                            <div style={{display: isOpen ? "block" : "none"}} className="link_text">{item.name}</div>
                        </Link>
