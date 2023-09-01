@@ -147,14 +147,23 @@ main{
 /* } */
 .delivery-details {
     padding: 2rem;
+    margin-top: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    .notes {
+      margin-top: 2rem;
+    }
+    /* min-height: 100vh; */
     .MuiCard-root{
       background: #F2EEEB;
       padding: 53px;
+      border-radius: 20px;
 
+    }
+    .MuiContainer-root {
+      display: flex;
+      justify-content: center;
     }
     .position-list {
       width: 200px;
