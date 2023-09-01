@@ -24,7 +24,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({ label, value, options, onC
         >
         {options.map((option, index) => {
             return (
-                <option key={index} value={option}>{option}</option>
+                <option key={index} value={option.value}>{option.label}</option>
             )
         })}
         </NativeSelect>

@@ -11,24 +11,21 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
 import { useSelector, useDispatch } from "react-redux";
 import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepper'
-
-import { TextField, Button, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { setDeliveryDetailsState, selectDeliveryDetailsState } from "@/redux/reducers/deliveryDetailsSlice";
 import CustomDatePicker from "@/components/common/datePicker";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import NativeSelect from '@mui/material/NativeSelect';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { getToken } from '@/services/localstorageService';
-import { getPortList } from '@/services/operations/deliveryDetailsApi';
+import { getHomeList, getOtherPortList, getPositionList } from '@/services/operations/deliveryDetailsApi';
 import { SelectBox } from '@/components/common/SelectBox';
 import { SearchWithDropDown } from '@/components/common/SearchWithDropdown';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
+import { SelectWithSearch } from '@/components/common/selectWithSearch';
 
 const DeliveryDetails = () => {
   const itemValue = localStorage.getItem("itemName");
@@ -37,26 +34,65 @@ const DeliveryDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const token = await getToken();
-      const res = await getPortList(token, {});
-      console.log('@@@data', res);
+      const homePortRes = await getHomeList(token, {});
+      const { recordset } = homePortRes;
+      if(recordset) {
+        const homePortOptions = recordset.map((el: any) => {
+          return {
+            label: el.PrtIdDefHome,
+            value: el.PrtName
+          }
+        });
+        setHomePortOptions(homePortOptions);
+      }
+
+      const otherPortRes = await getOtherPortList(token, {});
+      if(otherPortRes?.result?.recordset) {
+        const otherPortOptions = otherPortRes.result.recordset.map((el: any) => {
+          return {
+            value: el.PrtId,
+            label: el.PrtName
+          }
+        });
+        setOtherPortOptions(otherPortOptions);
+      }
+
+      const positionList = await getPositionList(token, {});
+      if(positionList?.recordset) {
+        const otherPortOptions = positionList.recordset.map((el: any) => {
+          return {
+            label: el.PrtName,
+            value: el.PrtIdDefHome
+          }
+        });
+        setPositionListOptions(otherPortOptions);
+      }
     }
 
-    // fetchData();
+    fetchData();
   }, []);
   const dispatch = useDispatch();
   const [item, setItem] = useState("position_list");
+  const [homePortOptions, setHomePortOptions] = useState([]);
+  const [selectedHomePort, setSelectedHomePort] = useState(null);
+
+  const [otherPortOptions, setOtherPortOptions] = useState([]);
+  const [selectedOtherPort, setSelectedOtherPort] = useState(null);
+
+  const [positionListOptions, setPositionListOptions] = useState([]);
+  const [selectedPositionList, setSelectedPositionList] = useState(null);
+
   const deliveryDetailsState = useSelector(selectDeliveryDetailsState);
+  const [positionList, setPositionList] = useState(10);
+  const [componentName, setComponentName] = useState("");
+  const [showDropDown, setShowDropDown] = useState(false);
   const [formData, setFormData] = useState({
     deliveryDate: deliveryDetailsState?.deliveryDate || '',
     deliveryPort: deliveryDetailsState?.deliveryPort || '',
     notes: deliveryDetailsState?.notes || '',
   });
 
-  const [positionList, setPositionList] = useState(10);
-  const [componentName, setComponentName] = useState("");
-  const [showDropDown, setShowDropDown] = useState(false);
   const [notes, setNotes] = useState('');
-
   const updateNotes = () => {
     setNotes(e.target.value);
   }
@@ -74,11 +110,6 @@ const DeliveryDetails = () => {
   const updatePositionList = (e: any) => {
     setPositionList(e.target.value);
   }
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -145,15 +176,22 @@ const DeliveryDetails = () => {
                           {item === 'position_list' ? (
                             <SelectBox options={options} value={positionList} label="Position List" onChange={updatePositionList}/>
                           ) : item === 'home_port' ? 
-                          <SearchWithDropDown 
-                            label='Select Delivery Port'
-                            value={componentName}
-                            showDropDown={showDropDown}
-                            onChange={changeHandler}
-                            setShowDropDown={setShowDropDown}
-                            fechingItem={fechingItem}
-                           />
-                          : ''}
+                           <SelectWithSearch 
+                           label='select port'
+                           options= {homePortOptions}
+                           onChange= {setSelectedHomePort}
+                           value={selectedHomePort}
+                           placeholder="Select Delivery Port"
+                         />
+                          : 
+                          <SelectWithSearch 
+                            label='select port'
+                            options= {otherPortOptions}
+                            onChange= {setSelectedOtherPort}
+                            value={selectedOtherPort}
+                            placeholder="Select Delivery Port"
+                          />
+                          }
                         </FormControl>
 
 
