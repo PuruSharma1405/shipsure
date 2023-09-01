@@ -145,3 +145,14 @@ main{
     margin-top:80px;
   } */
 /* } */
+.delivery-details {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    .MuiCard-root{
+      background: grey;
+
+    }
+}

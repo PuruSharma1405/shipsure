@@ -15,7 +15,7 @@ const menuDropDownData = [
   "GE-1 Main Bearing No 7"
 ];
 
-const DropDown = ({showDropDown,setShowDropdown,componentName}) => {
+const DropDown = ({fechingItem,showDropDown,setShowDropdown,componentName}) => {
   const [menu, setMenu] = useState(menuDropDownData);
   const ref = useRef(null);
 
@@ -33,13 +33,16 @@ const DropDown = ({showDropDown,setShowDropdown,componentName}) => {
     filteredDropDown()
   },[filteredDropDown])
 
+  const fetchingItemValue=(currData)=>{
+    fechingItem(currData)
+  }
 
   return (
     <div className="component-dropdown" ref={ref}>
-      {menu.map((bearing, index) => (
+      {menu.map((currData, index) => (
         <div className="frame-wrapper" key={index}>
           <div className="div">
-            <p className="text-wrapper">{bearing}</p>
+            <p className="text-wrapper" onClick={()=>fetchingItemValue(currData)}>{currData}</p>
           </div>
         </div>
       ))}

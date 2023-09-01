@@ -23,6 +23,7 @@ import FormLabel from '@mui/material/FormLabel';
 import {getVesselPart} from "../services/operations/createVesselApi"
 import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
+import { setItemName } from "../redux/reducers/requisitionSlice";
 
 const CreateRequisition = () => {
   const [item, setItem] = useState("consumables");
@@ -38,6 +39,8 @@ const CreateRequisition = () => {
     console.log('userData',userData);
     setItem(e.target.value);
     getVesselPart(e.target.value,userData?.access_token)
+    dispatch(setItemName(e.target.value))
+    localStorage.setItem('itemName',e.target.value)
   };
 
   useEffect(() => {
@@ -108,13 +111,13 @@ const CreateRequisition = () => {
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
                     >
-                      <FormControlLabel value="consumables" control={<Radio checked={item === 'consumables'} onChange={itemChange}/>} label="consumables" />
-                      <FormControlLabel value="materials" control={<Radio checked={item === 'materials'} onChange={itemChange}/>} label="materials" />
+                      <FormControlLabel value="Consumables" control={<Radio checked={item === 'Consumables'} onChange={itemChange}/>} label="Consumables" />
+                      <FormControlLabel value="Materials" control={<Radio checked={item === 'Materials'} onChange={itemChange}/>} label="Materials" />
                       <FormControlLabel value="Spares" control={<Radio checked={item === 'Spares'} onChange={itemChange}/>} label="Spares" />
                     </RadioGroup>
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">
-                  <CTAButton linkTo={"/createRequisition"} className="w-[500px]">
+                  <CTAButton linkTo={"/createRequisitionItems"} className="w-[500px]">
                     <div className="flex gap-2 items-center w-full justify-center p-2">
                       <AiOutlinePlus />
                       <span className="uppercase">Create</span>
