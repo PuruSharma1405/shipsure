@@ -35,11 +35,10 @@ export const SearchWithDropDown: React.FC<SelectBoxProps> = ({ label, value, sho
                     <div className="border border-[#052E2B] w-[100%] mt-2"></div>
                     {value.length > 0 && showDropDown && (
                     <DropDown
-                        fechingItem={fechingItem}
-                        showDropDown={showDropDown}
-                        setShowDropdown={setShowDropDown}
-                        componentName={value}
-                    />
+              fetchingItem={fechingItem}
+              showDropDown={showDropDown}
+              setShowDropdown={setShowDropDown}
+              componentName={value} searchComponent={undefined} setSearchComponent={undefined}                    />
                     )}
                 </div>
         </FormControl>
