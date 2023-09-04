@@ -15,11 +15,13 @@
     background-color: #EBE8DF;
     border: 1px solid #ddd;
     width: 1100px;
+    max-height: 400px;
+    /* overflow-x: scroll; */
+    overflow-y: scroll;
   }
   
   .row {
     display: flex;
-    border-bottom: 1px solid #ddd;
   }
   
   .column {
@@ -44,7 +46,7 @@
   }
 
   .megamenu-vesselname{
-    width:220px;
+    width:225px;
   }
   
   

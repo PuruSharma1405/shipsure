@@ -24,27 +24,28 @@ import {getVesselPart} from "../services/operations/createVesselApi"
 import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
-
+import axios from 'axios';
 const CreateRequisition = () => {
   const [item, setItem] = useState("consumables");
   const router = useRouter();
-  const[vesselName,setVesselName]=useState()
+  const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
   const authState = useSelector(selectAuthState);
+  const[radioItems,setRadioItems]=useState()
   const dispatch = useDispatch()
   const authService = new AuthService();
+  const token=JSON.parse(localStorage.getItem('token'))?.access_token
  
+  const userData =  authService.getUser();
   const itemChange = async(e) => {
-    const userData = await authService.getUser();
     console.log('userData',userData);
     setItem(e.target.value);
-    getVesselPart(e.target.value,userData?.access_token)
+    getVesselPart(e.target.value,token)
     dispatch(setItemName(e.target.value))
     localStorage.setItem('itemName',e.target.value)
   };
 
   useEffect(() => {
-    // for redirect to login page
     if(!authState.isAuthenticated) {
       router.push('/');
     }
@@ -63,7 +64,26 @@ const CreateRequisition = () => {
     setShowDropdown(false)
   }
 
-  console.log("item", item);
+  const fetchingItems = async () => {
+    try {
+      const response = await axios.get(
+        'http://192.168.201.232:3012/purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRadioItems(response?.data?.result?.recordset)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchingItems();
+  }, []);
+
   return (
       <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
         <div className="mx-auto">
@@ -111,9 +131,14 @@ const CreateRequisition = () => {
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
                     >
-                      <FormControlLabel value="Consumables" control={<Radio checked={item === 'Consumables'} onChange={itemChange}/>} label="Consumables" />
-                      <FormControlLabel value="Materials" control={<Radio checked={item === 'Materials'} onChange={itemChange}/>} label="Materials" />
-                      <FormControlLabel value="Spares" control={<Radio checked={item === 'Spares'} onChange={itemChange}/>} label="Spares" />
+                      {
+                        radioItems?.map((currData,index)=>{
+                          return (
+                            <div key={index}>
+                             <FormControlLabel value={currData?.PatName} control={<Radio checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
+                          </div>
+                        )})
+                      }
                     </RadioGroup>
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">

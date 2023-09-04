@@ -5,6 +5,7 @@ import {
   AiOutlineClose,
   AiOutlineArrowRight,
   AiOutlineShoppingCart,
+  AiOutlineRight
 } from "react-icons/ai";
 import { BsSearch, BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -20,7 +21,7 @@ import {
 } from "../components/createRequisitionSpares/Accordion";
 import DropDown from "../components/createRequisitionSpares/DropDown";
 import useOnClickOutside from "../hooks/useOnClickOutside";
-import backgroundShip from "../../src/images/backgroundShip.png";
+// import VesselImage from "../../src/images/VesselImage.png";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
 import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepper'
@@ -31,7 +32,9 @@ const CreateRequisitionSpares = () => {
   const [makersRefNo, setMakersRefNo] = useState("");
   const itemName = useSelector((state) => state.requisition);
   const itemValue = localStorage.getItem("itemName");
-
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+  const [basketValues,setBasketValues]=useState([])
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -53,6 +56,19 @@ const CreateRequisitionSpares = () => {
     setMakersRefNo(e.target.value);
     setShowDropDown(true);
   };
+
+  const addToBasketCallback = (accordionData) => {
+    setSelectedItems([...selectedItems, { accordionData }]);
+  };
+
+  console.log('selectedComponent',selectedItems);
+
+  const addToBasket=()=>{
+    setBasketValues(selectedItems)
+  }
+
+  console.log('basketValues',basketValues);
+
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -143,7 +159,7 @@ const CreateRequisitionSpares = () => {
             </div>
             <div className="flex flex-row items-center justify-end mt-7">
               <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
-              <p className="ml-2 text-1xl underline font-semibold">
+              <p className="ml-2 text-1xl underline font-semibold" onClick={addToBasket}>
                 Add To Order Basket
               </p>
             </div>
@@ -154,7 +170,7 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            <AccordionComponent />
+            <AccordionComponent addToBasketCallback={addToBasketCallback}/>
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
@@ -173,9 +189,10 @@ const CreateRequisitionSpares = () => {
                 desc2Value="-39.46%"
                 desc3="Variance"
                 desc3Value="386.1K"
+                basketValues={basketValues}
               />
               <div
-                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[100px]"
+                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[250px]"
                 style={{ borderRadius: "15px" }}
               >
                 <div className="flex flex-row  justify-between items-center m-5">
@@ -188,9 +205,27 @@ const CreateRequisitionSpares = () => {
                   <p className="font-bold">$0.00</p>
                 </div>
                 <div className="flex flex-row justify-between ml-10">
-                  <p className="font-semibold">0 items</p>
+                  <p className="font-semibold">{basketValues?.length} item</p>
                   <h3 className="relative right-4 font-bold">estimated</h3>
                 </div>
+                <div className="h-[10px]" style={{borderBottom:'1px solid #CDD6DB',width:'80%',margin:'0 auto'}}></div>
+                <div className="flex flex-row  justify-between items-center m-5">
+                  <div className="flex flex-row ">
+                    <AiOutlineRight style={{ fontSize: "25px" }} />
+                    <h2 className="uppercase font-semibold ml-1">
+                      {basketValues[0]?.accordionData?.accordionData?.name || "M/E TURBOCHARGER#2"}
+                    </h2>
+                  </div>
+                  <p className="font-bold">{basketValues?.length} item</p>
+                </div>
+                <div className="flex flex-row justify-around ml-3">
+                  <p>Maker</p>
+                  <p>{basketValues[0]?.accordionData?.accordionData?.Maker|| "ABB TURBO SYSTEM AG"}</p>
+                  </div>
+                  <div className="flex flex-row justify-around mt-3 relative left-2">
+                  <p>Type</p>
+                  <p>{basketValues[0]?.accordionData?.accordionData?.Serial|| "TPL77-B11"}</p>
+                  </div>
               </div>
             </div>
           </div>

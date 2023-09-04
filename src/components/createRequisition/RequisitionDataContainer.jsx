@@ -1,7 +1,9 @@
 import React from "react";
 import "./RequisitionDataContainer.css";
 
-const RequisitionDataContainer = () => {
+const RequisitionDataContainer = ({basketValues}) => {
+
+  console.log('basketValues',basketValues);
   return (
     <div className="frame">
       <img
