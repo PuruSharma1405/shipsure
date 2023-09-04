@@ -28,7 +28,7 @@ import axios from 'axios';
 import VesselImage from '../images/VesselImage.png'
 import Image from "next/image";
 const CreateRequisition = () => {
-  const [item, setItem] = useState("Consumables");
+  const [item, setItem] = useState("consumables");
   const router = useRouter();
   const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
@@ -118,6 +118,7 @@ const CreateRequisition = () => {
                       <input
                         type="text"
                         placeholder="Search vessel"
+                        required
                         className="border-none outline-none bg-transparent ml-2 relative"
                         value={vesselName}
                         onChange={changeHandler}
@@ -137,21 +138,21 @@ const CreateRequisition = () => {
                         radioItems?.map((currData,index)=>{
                           return (
                             <div key={index}>
-                             <FormControlLabel value={currData?.PatName} control={<Radio defaultChecked={item==="Consumables"} checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
+                             <FormControlLabel value={currData?.PatName} control={<Radio checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
                           </div>
                         )})
                       }
                     </RadioGroup>
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">
-                  <CTAButton linkTo={"/createRequisitionItems"} className="w-[500px]">
+                  <CTAButton linkTo={"/createRequisitionItems"} vesselName={vesselName}>
                     <div className="flex gap-2 items-center w-full justify-center p-2">
                       <AiOutlinePlus />
                       <span className="uppercase">Create</span>
                     </div>
                   </CTAButton>
                 </div>
-              <Image src={VesselImage} height={900} width={1400} style={{position:'absolute',top:'2px',zIndex:-10,borderRadius:'20px'}}/>
+              <Image src={VesselImage} alt="vesselImage" height={900} width={1400} style={{position:'absolute',top:'2px',zIndex:-10,borderRadius:'20px'}}/>
             </div>
             <SuggestedRequisitions/>
           </div>

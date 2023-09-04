@@ -1,48 +1,64 @@
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./DropDown.css";
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 
+const initialLoadCount = 10;
+const loadMoreThreshold = 200;
 
-const menuDropDownData = [
-  "55.05 FLOOR MAINTENANCE",
-  "Available Main Lines",
-  "GE-1 Main Bearing No",
-  "GE-1 Main Bearing No 2",
-  "GE-1 Main Bearing No 3",
-  "GE-1 Main Bearing No 4",
-  "GE-1 Main Bearing No 5",
-  "GE-1 Main Bearing No 6",
-  "GE-1 Main Bearing No 7"
-];
+const DropDown = ({ fetchingItem, showDropDown, setShowDropdown, componentName, searchComponent, setSearchComponent }) => {
+  const [displayedComponents, setDisplayedComponents] = useState([]);
 
-const DropDown = ({fechingItem,showDropDown,setShowDropdown,componentName}) => {
-  const [menu, setMenu] = useState(menuDropDownData);
   const ref = useRef(null);
 
-  const filteredDropDown=()=>{
-    const filteredData =menu.filter((currData)=>{
-      return currData.toLowerCase().includes(componentName.toLowerCase());
-    })
-    if(filteredData?.length===0){
-      return;
-    }
-    setMenu(filteredData)
-  }
+  const filterComponents = () => {
+    const filteredData = searchComponent?.filter((currData) => {
+      return currData.ComponentName.toLowerCase().includes(componentName.toLowerCase());
+    });
+    setDisplayedComponents(filteredData?.slice(0, initialLoadCount));
+  };
 
-  useEffect(()=>{
-    filteredDropDown()
-  },[filteredDropDown])
+  useEffect(() => {
+    filterComponents();
+  }, [componentName, searchComponent]);
 
-  const fetchingItemValue=(currData)=>{
-    fechingItem(currData)
-  }
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - loadMoreThreshold
+      ) {
+        const nextBatch = searchComponent.slice(
+          displayedComponents.length,
+          displayedComponents.length + initialLoadCount
+        );
+        setDisplayedComponents((prev) => [...prev, ...nextBatch]);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [displayedComponents, searchComponent]);
+
+  const fetchingItemValue = (currData) => {
+    fetchingItem(currData?.ComponentName);
+  };
+
+  console.log('displayedComponents',displayedComponents);
 
   return (
     <div className="component-dropdown" ref={ref}>
-      {menu.map((currData, index) => (
+      {displayedComponents?.map((currData, index) => (
         <div className="frame-wrapper" key={index}>
           <div className="div">
-            <p className="text-wrapper" onClick={()=>fetchingItemValue(currData)}>{currData}</p>
+            <p
+              className="text-wrapper"
+              onClick={() => fetchingItemValue(currData)}
+            >
+              {currData.ComponentName}
+            </p>
           </div>
         </div>
       ))}
