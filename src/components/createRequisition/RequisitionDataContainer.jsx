@@ -1,7 +1,7 @@
 import React from "react";
 import "./RequisitionDataContainer.css";
 
-const RequisitionDataContainer = ({basketValues}) => {
+const RequisitionDataContainer = ({basketValues = null}) => {
 
   console.log('basketValues',basketValues);
   return (

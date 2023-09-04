@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppState } from "../store";
 import { HYDRATE } from "next-redux-wrapper";
 
 export interface DeliveryDetailsState {
@@ -36,7 +35,7 @@ export const deliveryDetailsSlice = createSlice({
   },
 });
 
-export const selectDeliveryDetailsState = (state: AppState) => state.deliveryDetails;
+export const selectDeliveryDetailsState = (state: any) => state.deliveryDetails;
 
 export const { setDeliveryDetailsState } = deliveryDetailsSlice.actions;
 

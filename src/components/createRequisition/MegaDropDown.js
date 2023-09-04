@@ -107,6 +107,7 @@ const MegaDropDown = ({
                 <ul>
                       {megaMenu.map((currData, index) => (
                         <li
+                          key={index}
                           dropdownKey={index}
                           className={`${currData["VesselName"]?'megamenu-vesselname':''}`}
                           onClick={() => clickHandler(currData)}
