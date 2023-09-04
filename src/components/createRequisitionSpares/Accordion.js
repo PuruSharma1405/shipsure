@@ -5,9 +5,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { selectClasses } from "@mui/material";
-
+import { setVivItems } from '../../redux/reducers/requisitionSlice';
+import { useDispatch } from "react-redux";
 export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAccordionDetails }) => {
   const [expanded, setExpanded] = useState(false);
+  const dispatch=useDispatch();
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
   const [newStockValues, setNewStockValues] = useState(
@@ -35,6 +37,8 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
     console.log('selectedData',selectedData);
 
     addToBasketCallback(selectedData);
+
+    dispatch(setVivItems(selectedData))
   };
 
 

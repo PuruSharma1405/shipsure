@@ -4,6 +4,7 @@ const initialState = {
   itemName: "",
   coyId:"",
   vesId: "",
+  vivItems: [],
 };
 
 const requisitionSlice = createSlice({
@@ -19,9 +20,12 @@ const requisitionSlice = createSlice({
     setCoyId(state, value) {
       state.loading = value.payload;
     },
+    setVivItems(state, action) {
+      state.vivItems = action.payload;
+    },
   },
 });
 
-export const { setItemName } = requisitionSlice.actions;
+export const { setItemName,setVesId,setCoyId,setVivItems } = requisitionSlice.actions;
 
 export default requisitionSlice.reducer;
