@@ -25,8 +25,10 @@ import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
 import axios from 'axios';
+import VesselImage from '../images/VesselImage.png'
+import Image from "next/image";
 const CreateRequisition = () => {
-  const [item, setItem] = useState("consumables");
+  const [item, setItem] = useState("Consumables");
   const router = useRouter();
   const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
@@ -100,15 +102,15 @@ const CreateRequisition = () => {
           </div>
 
           <div className="h-[100vh] flex flex-col  justify-center items-center">
-            <div className="w-full flex flex-col items-center">
-              <div className="flex flex-row items-center">
+            <div className="h-full w-full flex flex-col justify-center items-center relative mt-5" style={{zIndex:999}}>
+              <div className="flex flex-row items-center text-white mt-20">
                 <BsBoxSeamFill style={{ fontSize: "25px" }}/>
                 <h2 className="uppercase ml-3 font-bold">Create Requisition</h2>
               </div>
-                <div className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md">
+                <div className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md" style={{background:'white'}}>
                   <div
                     className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300"
-                    style={{ margin: "0 8%" }}
+                    style={{ margin: "0 8%",marginTop:'25px' }}
                   >
                     
                     <div className="flex flex-row p-2 items-center relative">
@@ -135,7 +137,7 @@ const CreateRequisition = () => {
                         radioItems?.map((currData,index)=>{
                           return (
                             <div key={index}>
-                             <FormControlLabel value={currData?.PatName} control={<Radio checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
+                             <FormControlLabel value={currData?.PatName} control={<Radio defaultChecked={item==="Consumables"} checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
                           </div>
                         )})
                       }
@@ -149,6 +151,7 @@ const CreateRequisition = () => {
                     </div>
                   </CTAButton>
                 </div>
+              <Image src={VesselImage} height={900} width={1400} style={{position:'absolute',top:'2px',zIndex:-10,borderRadius:'20px'}}/>
             </div>
             <SuggestedRequisitions/>
           </div>
