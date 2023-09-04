@@ -5,6 +5,7 @@ import {
   AiOutlineSearch,
   AiOutlineShoppingCart,
   AiOutlineClose,
+  AiOutlineArrowRight,
 } from "react-icons/ai";
 import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepper'
 import { CgMenuGridO } from "react-icons/cg";
@@ -20,12 +21,15 @@ import { getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCo
   getAuxList, getNationalityList, getCrewRankList, getVesselAUXList } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
+import { useRouter } from 'next/router';
 
 const OrderDetails = () => {
   const [item, setItem] = useState("normal");
   const [vesselName, setVesselName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [isUrgent, setIsUrgent] = useState(false);
+  const router = useRouter();
+
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
   const [selectedSparePartType, setSelectedSparePartType] = useState(null);
@@ -250,6 +254,10 @@ const OrderDetails = () => {
     item === "urgent" ? setIsUrgent(true) : setIsUrgent(false);
   }, [item]);
 
+  const handleNext = () => {
+    router.push('/deliveryDetails');
+  }
+
   console.log("item", item);
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto">
@@ -372,7 +380,7 @@ const OrderDetails = () => {
                       className="flex flex-col"
                       style={{ margin: "5% 0", borderBottom: "1px solid black" }}
                     >
-                      <label>Order Title</label>
+                      <label>Order Title<span style={{color: 'red'}}>*</span></label>
                       <div className="flex flex-row justify-between">
                         <div className="flex flex-row pr-2 pt-2 pb-2 pl-0">
                           <input
@@ -391,7 +399,7 @@ const OrderDetails = () => {
                       className="flex flex-col"
                       style={{ margin: "5% 0", borderBottom: "1px solid black" }}
                     >
-                      <label>Project</label>
+                      <label>Project <span style={{color: 'red'}}>*</span></label>
                       <div className="flex flex-row justify-between">
                         <div className="flex flex-row pr-2 pt-2 pb-2 pl-0">
                           <input
@@ -537,7 +545,10 @@ const OrderDetails = () => {
                 </div>
               </div>
             </div>
-
+            <div onClick={handleNext} className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
+              <p className="text-[14px]">Next</p>
+              <AiOutlineArrowRight className="ml-1" />
+            </div>
           </div>
           <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
