@@ -175,3 +175,16 @@ main{
 
     }
 }
+
+.order-details-switch{
+  span {
+    min-width: 400px;
+  }
+}
+.mw-300{
+  min-width: 300px;
+}
+
+.bg-color-primary {
+  background-color: '#F2EEEB' !important
+}

@@ -14,7 +14,7 @@ export const  SelectWithSearch = (props: any) => {
       includeInputInList
       id="auto-complete"
       isOptionEqualToValue={(option, value) =>
-        option && value && option.value === value.value
+        option && label && option.label === value.label
       }
       getOptionLabel={(option) => option.label}
       renderInput={(params) => (

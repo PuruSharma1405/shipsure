@@ -108,7 +108,7 @@ const DeliveryDetails = () => {
   };
 
   const updatePositionList = (e: any) => {
-    setPositionList(e.target.value);
+    setSelectedPositionList(e.target.value);
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -174,7 +174,7 @@ const DeliveryDetails = () => {
                         </FormControl>
                         <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                           {item === 'position_list' ? (
-                            <SelectBox options={options} value={positionList} label="Position List" onChange={updatePositionList}/>
+                            <SelectBox options={positionListOptions} value={selectedPositionList} label="Position List" onChange={updatePositionList}/>
                           ) : item === 'home_port' ? 
                            <SelectWithSearch 
                            label='select port'
