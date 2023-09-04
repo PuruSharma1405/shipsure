@@ -1,15 +1,23 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import StepIcon from "@mui/material/StepIcon";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CircleIcon from "@mui/icons-material/CheckCircle";
 
-const steps = ['ADD ORDER BASKET', 'ORDER DETAILS', 'DELIVERY DETAILS','SUMMARY'];
+const steps = [
+  "ADD ORDER BASKET",
+  "ORDER DETAILS",
+  "DELIVERY DETAILS",
+  "SUMMARY",
+];
 
 export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   const [skipped, setSkipped] = React.useState(new Set());
 
   const isStepOptional = (step) => {
@@ -53,17 +61,51 @@ export default function HorizontalLinearStepper() {
   };
 
   return (
-    <Box sx={{ width: '100%' }} className='mt-7'>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
+    <Box sx={{ width: "100%" }} className="mt-7">
+      <Stepper
+        activeStep={activeStep}
+        sx={{
+          "& .MuiStepConnector-line": {
+            border: activeStep >= 1 ? "1px dashed grey" : "1px dashed grey",
+          },
+        }}
+      >
+        {Object.keys(steps).map((stepNumber) => {
+          console.log("stepNumber", steps[stepNumber]);
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+            <Step
+              key={stepNumber}
+              sx={{
+                "& .MuiStepLabel-root .Mui-completed": {
+                  color: "green",
+                },
+                "& .MuiStepLabel-label.Mui-completed.MuiStepLabel-alternativeLabel":
+                  {
+                    color: "grey.500",
+                  },
+                "& .MuiStepLabel-root .Mui-active": {
+                  color: "#5E88AC",
+                },
+                "& .MuiStepLabel-label.Mui-active.MuiStepLabel-alternativeLabel":
+                  {
+                    color: "common.white",
+                  },
+                "& .MuiStepLabel-root .Mui-active .MuiStepIcon-text": {
+                  fill: "black",
+                },
+              }}
+            >
+              <StepLabel
+                icon={
+                  activeStep === stepNumber ? (
+                    <CheckCircleIcon color="primary" />
+                  ) : (
+                    ""
+                  )
+                }
+              >
+                {steps[stepNumber]}
+              </StepLabel>
             </Step>
           );
         })}
@@ -73,13 +115,12 @@ export default function HorizontalLinearStepper() {
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Box sx={{ flex: "1 1 auto" }} />
           </Box>
         </React.Fragment>
       ) : (
-        <React.Fragment>
-        </React.Fragment>
+        <React.Fragment></React.Fragment>
       )}
     </Box>
   );
