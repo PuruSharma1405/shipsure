@@ -20,39 +20,39 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import {getVesselPart} from "../services/operations/createVesselApi"
+import {getVesselPart} from "../services/operations/createVesselAPI";
 import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
-
+import axios from 'axios';
+import VesselImage from '../images/VesselImage.png'
+import Image from "next/image";
 const CreateRequisition = () => {
-  const [item, setItem] = useState("consumables");
+  const [item, setItem] = useState("Consumables");
   const router = useRouter();
-  const[vesselName,setVesselName]=useState()
+  const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
   const authState = useSelector(selectAuthState);
+  const[radioItems,setRadioItems]=useState()
   const dispatch = useDispatch()
   const authService = new AuthService();
+  const token=JSON.parse(localStorage.getItem('token'))?.access_token
  
+  const userData =  authService.getUser();
   const itemChange = async(e) => {
-    const userData = await authService.getUser();
     console.log('userData',userData);
     setItem(e.target.value);
-    getVesselPart(e.target.value,userData?.access_token)
+    getVesselPart(e.target.value,token)
     dispatch(setItemName(e.target.value))
     localStorage.setItem('itemName',e.target.value)
   };
 
   useEffect(() => {
-    // for redirect to login page
     if(!authState.isAuthenticated) {
       router.push('/');
     }
   }, []);
 
-  if(!authState.isAuthenticated) {
-      return null;
-  }
   const changeHandler=(e)=>{
     setVesselName(e.target.value.toLowerCase())
     setShowDropdown(true)
@@ -63,9 +63,30 @@ const CreateRequisition = () => {
     setShowDropdown(false)
   }
 
-  console.log("item", item);
+  const fetchingItems = async () => {
+    try {
+      const response = await axios.get(
+        'http://192.168.201.232:3012/purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setRadioItems(response?.data?.result?.recordset)
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchingItems();
+  }, []);
+
   return (
-      <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
+    <>
+      { authState.isAuthenticated ? (
+        <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
         <div className="mx-auto">
           <div className="flex justify-between w-10/12 items-center mx-auto">
             <div className="text-2xl font-bold mt-3">
@@ -80,15 +101,15 @@ const CreateRequisition = () => {
           </div>
 
           <div className="h-[100vh] flex flex-col  justify-center items-center">
-            <div className="w-full flex flex-col items-center">
-              <div className="flex flex-row items-center">
+            <div className="h-full w-full flex flex-col justify-center items-center relative mt-5" style={{zIndex:999}}>
+              <div className="flex flex-row items-center text-white mt-20">
                 <BsBoxSeamFill style={{ fontSize: "25px" }}/>
                 <h2 className="uppercase ml-3 font-bold">Create Requisition</h2>
               </div>
-                <div className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md">
+                <div className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md" style={{background:'white'}}>
                   <div
                     className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300"
-                    style={{ margin: "0 8%" }}
+                    style={{ margin: "0 8%",marginTop:'25px' }}
                   >
                     
                     <div className="flex flex-row p-2 items-center relative">
@@ -111,9 +132,14 @@ const CreateRequisition = () => {
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
                     >
-                      <FormControlLabel value="Consumables" control={<Radio checked={item === 'Consumables'} onChange={itemChange}/>} label="Consumables" />
-                      <FormControlLabel value="Materials" control={<Radio checked={item === 'Materials'} onChange={itemChange}/>} label="Materials" />
-                      <FormControlLabel value="Spares" control={<Radio checked={item === 'Spares'} onChange={itemChange}/>} label="Spares" />
+                      {
+                        radioItems?.map((currData,index)=>{
+                          return (
+                            <div key={index}>
+                             <FormControlLabel value={currData?.PatName} control={<Radio defaultChecked={item==="Consumables"} checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
+                          </div>
+                        )})
+                      }
                     </RadioGroup>
                 </div>
                 <div className="flex gap-7 mt-7 w-[500px]">
@@ -124,11 +150,14 @@ const CreateRequisition = () => {
                     </div>
                   </CTAButton>
                 </div>
+              <Image src={VesselImage} height={900} width={1400} style={{position:'absolute',top:'2px',zIndex:-10,borderRadius:'20px'}}/>
             </div>
             <SuggestedRequisitions/>
           </div>
         </div>
       </div>
+      ): null }
+      </>
   );
 };
 

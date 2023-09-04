@@ -11,6 +11,7 @@ export const endpoints={
     GET_AUX_LIST :ACCOUNT_BASE_URL+"/general-aux-list",
     GET_NATIONALITY_LIST :ACCOUNT_BASE_URL+"/nationality",
 
+    VESSEL_ITEMS:BASE_URL+"purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType",
     POSITION_LIST: VESSEL_BASE_URL+"/vessel-position-requisition",
     HOME_PORT_LIST: VESSEL_BASE_URL+"/procurement-setup-for-requisition",
     OTHER_PORT_LIST: VESSEL_BASE_URL+"/ports",

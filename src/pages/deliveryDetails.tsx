@@ -213,18 +213,7 @@ const DeliveryDetails = () => {
           </div>
           <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
-              <RequisitionDataContainer
-                height="320px"
-                width="370px"
-                title="Seaways Athens-9597109"
-                heading="Financials"
-                desc1="Budget:Actual YTD"
-                desc1Value="1.95M-2.34M"
-                desc2="Accrual"
-                desc2Value="-39.46%"
-                desc3="Variance"
-                desc3Value="386.1K"
-              />
+              <RequisitionDataContainer/>
               <div
                 className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[100px]"
                 style={{ borderRadius: "15px" }}

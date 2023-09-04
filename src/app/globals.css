@@ -188,3 +188,6 @@ main{
 .bg-color-primary {
   background-color: '#F2EEEB' !important
 }
+.active-step-label {
+  color:#04487F;
+}

@@ -18,7 +18,7 @@ const SuggestedRequisitions: React.FC = () => {
 
   console.log('suggestedRequisitions', suggestedRequisitions);
   return (
-    <div className='bg-[#E8ECED] w-[100vw] py-2 mt-20 h-[45vh] flex justify-center items-center'>
+    <div className='bg-[#E8ECED] w-[100vw] py-2 mt-56 h-[45vh] flex justify-center items-center'>
       <div className='w-11/12 mx-auto'>
         <h3 className='text-2xl font-semibold ml-5 suggested-requisition'>Suggested Requisitions</h3>
         <div className='flex flex-row justify-around flex-wrap suggested-requisition'>
