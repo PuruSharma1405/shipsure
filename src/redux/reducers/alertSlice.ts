@@ -1,6 +1,5 @@
 // src/store/alertSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
-import { AppState } from "../store";
 import { AlertProps } from '@mui/material';
 import { HYDRATE } from "next-redux-wrapper";
 
@@ -43,7 +42,7 @@ export const alertSlice = createSlice({
   },
 });
 
-export const selectAlertState = (state: AppState) => state.alert;
+export const selectAlertState = (state: any) => state.alert;
 
 export const { showAlert, hideAlert } = alertSlice.actions;
 

@@ -37,7 +37,7 @@ export const SearchWithDropDown: React.FC<SelectBoxProps> = ({ label, value, sho
                     <DropDown
                         fechingItem={fechingItem}
                         showDropDown={showDropDown}
-                        setShowDropDown={setShowDropDown}
+                        setShowDropdown={setShowDropDown}
                         componentName={value}
                     />
                     )}
