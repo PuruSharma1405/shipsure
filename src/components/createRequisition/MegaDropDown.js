@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MegaDropDown.css';
-import { dropDownData } from '@/app/data/DropDownData';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import axios from 'axios';
 
@@ -11,24 +10,22 @@ const MegaDropDown = ({
   fetchingDropDownData,
 }) => {
   const [megaMenu, setMegaMenu] = useState([]);
-  const [typedValue, setTypedValue] = useState('');
   const [startIndex, setStartIndex] = useState(0);
   const [loadMore, setLoadMore] = useState(true);
   const ref = useRef(null);
   const token = JSON.parse(localStorage.getItem('token'))?.access_token;
 
-  const megaDropDownKeys = [
-    'AccountingCompanyId',
-    'VesselName',
-    'ManagementStartDate',
-    'ManagementEndDate',
-    'VesselManagementPurchasingDateStart',
-    'VesselManagementPurchasingDateEnd',
-  ];
-  
+  const megaDropDownKeys = {
+    AccountingCompanyId: 'COY ID',
+    VesselName: 'VESSEL NAME',
+    ManagementStartDate: 'MGMT START',
+    ManagementEndDate: 'MGMT END',
+    VesselManagementPurchasingDateStart: 'PUR START',
+    VesselManagementPurchasingDateEnd: 'PUR END',
+  };
 
   const clickHandler = (currData) => {
-    console.log('currData',currData);
+    console.log('currData', currData);
     fetchingDropDownData(currData['VesselName']);
   };
 
@@ -36,9 +33,10 @@ const MegaDropDown = ({
 
   const filteredDropDown = () => {
     const filteredData = megaMenu.filter((currData) => {
-      if(currData["VesselName"]){
-      return currData['VesselName'].toLowerCase().includes(vesselName.toLowerCase());
+      if (currData['VesselName']) {
+        return currData['VesselName'].toLowerCase().includes(vesselName.toLowerCase());
       }
+      return false;
     });
     setMegaMenu(filteredData.slice(0, startIndex + 10));
     if (filteredData.length <= startIndex + 10) {
@@ -50,10 +48,10 @@ const MegaDropDown = ({
 
   useEffect(() => {
     filteredDropDown();
-  }, [vesselName,startIndex]);
+  }, [vesselName, startIndex]);
 
   const handleScroll = (e) => {
-    console.log('runned ');
+    console.log('runned');
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
       if (loadMore) {
         console.log('scrolled', loadMore);
@@ -63,6 +61,9 @@ const MegaDropDown = ({
   };
 
   useEffect(() => {
+    // Fetching initial data or setting dropDownData from your source
+    // Replace this with your data fetching logic
+    const dropDownData = []; // Replace with your actual data
     setMegaMenu(dropDownData.slice(0, 10));
   }, []);
 
@@ -84,7 +85,7 @@ const MegaDropDown = ({
 
   useEffect(() => {
     fetchingMegaDropDown();
-  }, []);
+  }, [vesselName, token]);
 
   const formatDate = (dateString) => {
     if (dateString) {
@@ -95,35 +96,35 @@ const MegaDropDown = ({
     return '-';
   };
 
-
   return (
-    megaMenu?.length>0 && <div className="mega-dropdown" ref={ref}>
-      {showDropdown && (
-        <div className="mega-dropdown-content" onScroll={handleScroll}>
-          <div className="row">
-            {megaMenu.length > 0 && megaDropDownKeys.map((dropdownKey) => (
-              <div className="column" key={dropdownKey}>
-                <h2>{dropdownKey}</h2>
-                <ul>
-                      {megaMenu.map((currData, index) => (
-                        <li
-                          key={index}
-                          dropdownKey={index}
-                          className={`${currData["VesselName"]?'megamenu-vesselname':''}`}
-                          onClick={() => clickHandler(currData)}
-                        >
-                          {dropdownKey.startsWith('Management') || dropdownKey.startsWith('VesselManagement')
-                            ? formatDate(currData[dropdownKey])
-                            : currData[dropdownKey]}
-                        </li>
-                      ))}
-                    </ul>
-              </div>
-            ))}
+    megaMenu?.length > 0 && (
+      <div className="mega-dropdown" ref={ref}>
+        {showDropdown && (
+          <div className="mega-dropdown-content" onScroll={handleScroll}>
+            <div className="row">
+              {Object.keys(megaDropDownKeys).map((backendKey) => (
+                <div className="column" key={backendKey}>
+                  <h2>{megaDropDownKeys[backendKey]}</h2>
+                  <ul>
+                    {megaMenu.map((currData, index) => (
+                      <li
+                        key={index}
+                        className={`${currData['VesselName'] ? 'megamenu-vesselname' : ''}`}
+                        onClick={() => clickHandler(currData)}
+                      >
+                        {backendKey.startsWith('Management') || backendKey.startsWith('VesselManagement')
+                          ? formatDate(currData[backendKey])
+                          : currData[backendKey]}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    )
   );
 };
 

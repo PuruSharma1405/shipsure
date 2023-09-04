@@ -19,3 +19,19 @@ export async function getVesselPart(item,token){
         console.log('error',error);
     }
 }
+
+export async function getVesselItems(item,token){
+    try {
+        const response = await axios.get(
+          'http://192.168.201.232:3012/purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setRadioItems(response?.data?.result?.recordset)
+      } catch (error) {
+        console.error('Error:', error);
+      }
+}
