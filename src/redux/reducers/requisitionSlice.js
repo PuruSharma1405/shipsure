@@ -6,7 +6,7 @@ const initialState = {
   vesId: "",
 };
 
-const requisitionSlice = createSlice({
+export const requisitionSlice = createSlice({
   name: "requisition",
   initialState: initialState,
   reducers: {
@@ -14,14 +14,14 @@ const requisitionSlice = createSlice({
       state.itemName = value.payload;
     },
     setVesId(state, value) {
-      state.loading = value.payload;
+      state.vesId = value.payload;
     },
     setCoyId(state, value) {
-      state.loading = value.payload;
+      state.coyId = value.payload;
     },
   },
 });
 
-export const { setItemName } = requisitionSlice.actions;
+export const { setItemName, setVesId, setCoyId } = requisitionSlice.actions;
 
 export default requisitionSlice.reducer;
