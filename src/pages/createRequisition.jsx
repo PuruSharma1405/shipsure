@@ -53,9 +53,6 @@ const CreateRequisition = () => {
     }
   }, []);
 
-  if(!authState.isAuthenticated) {
-      return null;
-  }
   const changeHandler=(e)=>{
     setVesselName(e.target.value.toLowerCase())
     setShowDropdown(true)
@@ -87,7 +84,9 @@ const CreateRequisition = () => {
   }, []);
 
   return (
-      <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
+    <>
+      { authState.isAuthenticated ? (
+        <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
         <div className="mx-auto">
           <div className="flex justify-between w-10/12 items-center mx-auto">
             <div className="text-2xl font-bold mt-3">
@@ -157,6 +156,8 @@ const CreateRequisition = () => {
           </div>
         </div>
       </div>
+      ): null }
+      </>
   );
 };
 
