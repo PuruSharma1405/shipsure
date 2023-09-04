@@ -158,8 +158,7 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
     const updatedTableData = [...mockTableData];
     updatedTableData[index].isChecked = !updatedTableData[index].isChecked;
     setMockTableData(updatedTableData);
-
-    const selectedAccordionData = item;
+    
 
     const selectedData = {
       accordionData: accordionIndexValue,
