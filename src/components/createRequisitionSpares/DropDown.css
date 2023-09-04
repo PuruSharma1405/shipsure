@@ -1,0 +1,66 @@
+.component-dropdown {
+    background-color: #ebe8df;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px;
+    position: relative;
+    width: 312px;
+    z-index:999;
+  }
+  
+  .component-dropdown .frame {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    gap: 80px;
+    height: 36px;
+    padding: 8px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .component-dropdown .div-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .component-dropdown .text-wrapper {
+    margin-top: -1px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .component-dropdown .frame-wrapper {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    gap: 80px;
+    height: 36px;
+    padding: 10px 8px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .component-dropdown .div {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    position: relative;
+  }
+  
+  .component-dropdown .GE-main-bearing-no-wrapper {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    flex-grow: 1;
+    gap: 10px;
+    position: relative;
+  }
+  

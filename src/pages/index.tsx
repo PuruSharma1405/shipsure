@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from "react-redux";
 import AuthService from '@/services/authService';
+import { ALERT_CONFIG } from '@/config/AlertConfig';
 import { CookieService } from '@/services/cookieService';
+import { setAuthState } from "@/redux/reducers/user";
+import { useAlertService } from '@/hooks/useAlertService';
 
 export default function Page() {
   const router = useRouter();
   const authService = new AuthService();
   const cookieService = new CookieService();
   const [redirectTo, setRedirectTo] = useState('');
+  const dispatch = useDispatch();
+  const { showAlertMessage } = useAlertService();
 
   useEffect(() => {
     try {
@@ -29,11 +35,21 @@ export default function Page() {
       }
       if(parseData && parseData.access_token && parseData.id_token && parseData.id_token) {
         authService.storeUser(parseData);
-        setRedirectTo('home');
+        dispatch(setAuthState({
+          isAuthenticated: true,
+          email: parseData.profile.email,
+          name: parseData.profile.name,
+          UserType: parseData.profile.UserType,
+          sid: parseData.profile.sid,
+          access_token: parseData.access_token,
+          expires_at: parseData.expires_at,
+        }))
+        setRedirectTo('createRequisition');
       } else {
         authService.login();
       }
-    } catch (error) {
+    } catch (error: any) {
+      showAlertMessage(error.message, ALERT_CONFIG.ERROR);
       console.log('error is', error);
     }
 

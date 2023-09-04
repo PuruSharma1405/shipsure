@@ -124,3 +124,54 @@ main{
   background:lightskyblue;
   transition: all 0.5s;
 }
+
+.create-requisition{
+ .MuiFormGroup-row{
+  justify-content: center;
+  margin-top: 2rem;
+ } 
+}
+
+@media only screen and (min-width: 800px) and (max-width: 1600px)  {
+  .suggested-requisition{
+    margin-top:6rem;
+  }
+}
+
+/* 
+@media only screen and (min-width: 1500px) and (max-width: 1700px)  {
+  .suggested-requisition{
+    border:5px solid red;
+    margin-top:80px;
+  } */
+/* } */
+.delivery-details {
+    padding: 2rem;
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .notes {
+      margin-top: 2rem;
+    }
+    /* min-height: 100vh; */
+    .MuiCard-root{
+      background: #F2EEEB;
+      padding: 53px;
+      border-radius: 20px;
+
+    }
+    .MuiContainer-root {
+      display: flex;
+      justify-content: center;
+    }
+    .position-list {
+      width: 200px;
+    }
+    .notes-text{
+
+    }
+    .position-list-label {
+
+    }
+}
