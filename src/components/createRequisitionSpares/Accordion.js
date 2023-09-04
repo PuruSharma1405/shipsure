@@ -4,8 +4,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { accordionData } from "../../app/data/accordionData";
 
-export const AccordionComponent = ({ addToBasketCallback }) => {
+export const AccordionComponent = ({ addToBasketCallback, accordionItems }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
@@ -19,139 +20,7 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
 
   console.log("accordionIndexValue", accordionIndexValue);
 
-  const accordionData = [
-    {
-      id: 1,
-      name: "M/E TURBOCHARGER#1",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 2,
-      name: "M/E TURBOCHARGER#2",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 3,
-      name: "M/E TURBOCHARGER#3",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 4,
-      name: "M/E TURBOCHARGER#4",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 5,
-      name: "M/E TURBOCHARGER#5",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-  ];
-
-  const [mockTableData, setMockTableData] = useState([
-    {
-      id: 1,
-      partName: "AIR SUCTION BRANCH",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "734.24",
-      isChecked: false,
-    },
-    {
-      id: 2,
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "82000",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      id: 3,
-      partName: "AXIAL BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "0",
-      isChecked: false,
-    },
-    {
-      id: 4,
-      partName: "BEARING BUSH",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "98",
-      isChecked: false,
-    },
-    {
-      id: 5,
-      partName: "BEARING CASINO",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-  ]);
+  const [mockTableData, setMockTableData] = useState(accordionItems);
 
   const handleCheckboxChange = (index, item) => {
     console.log("index,iten", index, item);
@@ -213,16 +82,24 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
           <AccordionDetails>
             <table className="table">
               <thead>
-              <tr>
-                <th style={{textAlign:'left',position:'relative',left:'10px'}}><input type="checkbox"/></th>
-                  <th style={{textAlign:'center'}}>Part Name</th>
-                  <th style={{textAlign:'left'}}>Maker&apos;s Ref. No</th>
-                  <th style={{textAlign:'left'}}>Drawing Pos</th>
-                  <th style={{textAlign:'left'}}>UOM</th>
-                  <th style={{textAlign:'left'}}>ROB</th>
-                  <th style={{textAlign:'left'}}>Pending Orders</th>
-                  <th style={{textAlign:'left'}}>Req Qty</th>
-                  <th style={{textAlign:'left'}}>Last Purchase Cost(USD)</th>
+                <tr>
+                  <th
+                    style={{
+                      textAlign: "left",
+                      position: "relative",
+                      left: "10px",
+                    }}
+                  >
+                    {mockTableData[0]?.item ? "" : <input type="checkbox" />}
+                  </th>
+                  <th style={{ textAlign: "center" }}>Part Name</th>
+                  <th style={{ textAlign: "left" }}>Maker&apos;s Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Drawing Pos</th>
+                  <th style={{ textAlign: "left" }}>UOM</th>
+                  <th style={{ textAlign: "left" }}>ROB</th>
+                  <th style={{ textAlign: "left" }}>Pending Orders</th>
+                  <th style={{ textAlign: "left" }}>Req Qty</th>
+                  <th style={{ textAlign: "left" }}>Last Purchase Cost(USD)</th>
                 </tr>
               </thead>
               <tbody>
@@ -236,11 +113,17 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
                       style={{ borderBottom: "1px solid #DCE1E5" }}
                     >
                       <td style={{ width: "5%", padding: "9px" }}>
-                        <input
-                          type="checkbox"
-                          checked={rowData.isChecked}
-                          onChange={() => handleCheckboxChange(rowIndex, item)}
-                        />
+                        {rowData?.item ? (
+                          rowData?.item
+                        ) : (
+                          <input
+                            type="checkbox"
+                            checked={rowData.isChecked}
+                            onChange={() =>
+                              handleCheckboxChange(rowIndex, item)
+                            }
+                          />
+                        )}
                       </td>
                       <td style={{ width: "20%", padding: "9px" }}>
                         {rowData.partName}

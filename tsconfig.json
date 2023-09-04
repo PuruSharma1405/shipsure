@@ -46,8 +46,12 @@
     ".next/types/**/*.ts",
     "src/pages/createRequisition.js",
     "tailwind.config.js",
-    "src/components/createRequisition/DropDown.js"
-, "src/pages/createRequisition.tsx", "src/components/createRequisition/MegaDropDown.js", "src/components/createRequisitionSpares/Stepper.js"  ],
+    "src/components/createRequisition/DropDown.js",
+    "src/pages/createRequisition.tsx",
+    "src/components/createRequisition/MegaDropDown.js",
+    "src/components/createRequisitionSpares/Stepper.js",
+    "src/pages/orderSummary.jsx"
+  ],
 
   "exclude": ["node_modules"]
 }

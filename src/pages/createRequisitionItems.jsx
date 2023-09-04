@@ -25,6 +25,7 @@ import useOnClickOutside from "../hooks/useOnClickOutside";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
 import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepper'
+import { accordionItems } from "../app/data/accordionItems";
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [componentName, setComponentName] = useState("");
@@ -170,7 +171,7 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            <AccordionComponent addToBasketCallback={addToBasketCallback}/>
+            <AccordionComponent addToBasketCallback={addToBasketCallback} accordionItems={accordionItems}/>
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
