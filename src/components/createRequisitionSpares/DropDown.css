@@ -15,7 +15,6 @@
     align-self: stretch;
     display: flex;
     gap: 80px;
-    height: 36px;
     padding: 8px;
     position: relative;
     width: 100%;
@@ -34,6 +33,7 @@
     position: relative;
     white-space: nowrap;
     width: fit-content;
+    cursor: pointer;
   }
   
   .component-dropdown .frame-wrapper {
@@ -41,7 +41,6 @@
     align-self: stretch;
     display: flex;
     gap: 80px;
-    height: 36px;
     padding: 10px 8px;
     position: relative;
     width: 100%;
