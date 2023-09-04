@@ -122,7 +122,12 @@ const CreateRequisitionSpares = () => {
     searchComponents();
   }, []);
 
-  console.log("searchComponent", searchComponent);
+  const searchAccordion=()=>{
+    if(componentName.length>0){
+    setShowAccordion(true)
+    }
+  }
+
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
       <div className="mx-auto">
@@ -162,7 +167,7 @@ const CreateRequisitionSpares = () => {
                     value={componentName}
                     onChange={changeHandler}
                   />
-                  <BsSearch />
+                  <BsSearch onClick={searchAccordion} className="cursor-pointer"/>
                 </div>
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
                 {componentName.length > 0 && showDropDown && (
@@ -208,7 +213,7 @@ const CreateRequisitionSpares = () => {
                 className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
                 style={{ border: "1px solid black" }}
               >
-                <p className="uppercase text-1xl ml-3">Search</p>
+                <p className="uppercase text-1xl ml-3 cursor-pointer" onClick={searchAccordion}>Search</p>
                 <BsSearch className="ml-2 mr-3" />
               </div>
             </div>
@@ -228,7 +233,7 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            <AccordionComponent addToBasketCallback={addToBasketCallback} />
+            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} />}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
