@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
 
-interface ButtonProps {
-  children: ReactNode;
-  linkTo: string;
-}
+// interface ButtonProps {
+//   children: ReactNode;
+//   linkTo: string;
+// }
 
-const Button: React.FC<ButtonProps> = ({ children, linkTo,vesselName }) => {
+const Button = ({ children, linkTo,vesselName }) => {
   return (
     <div>
       <Link href={`${vesselName?.length==0?'':linkTo}`}>
