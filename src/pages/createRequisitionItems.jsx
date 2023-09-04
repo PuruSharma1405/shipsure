@@ -45,6 +45,7 @@ const CreateRequisitionSpares = () => {
   const token = JSON.parse(localStorage.getItem("token"))?.access_token;
   const [showSection, setShowSection] = useState(false);
   const [showAccordion, setShowAccordion] = useState(false);
+  const[accordionDetails,setAccordionDetails]=useState();
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -127,6 +128,28 @@ const CreateRequisitionSpares = () => {
     setShowAccordion(true)
     }
   }
+
+  const accordionValue = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.201.232:3012/search-component?VES_ID=GLAS00012915&SearchConsumablesComponent=1&PageNumber=1&PageSize=100&ComponentName=${componentName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setAccordionDetails(response?.data?.result?.result?.recordset)
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    accordionValue();
+  }, []);
+
+  console.log('accordionDetails',accordionDetails);
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -233,7 +256,7 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} />}
+            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails}/>}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />

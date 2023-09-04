@@ -5,7 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export const AccordionComponent = ({ addToBasketCallback }) => {
+export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAccordionDetails }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
@@ -17,7 +17,7 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
     setAccordionIndexValue(accordionData[panel.slice(-1)]);
   };
 
-  console.log("accordionIndexValue", accordionIndexValue);
+  console.log("accordionDetails", accordionDetails);
 
   const accordionData = [
     {
@@ -178,8 +178,9 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
 
   return (
     <div>
-      {accordionData.map((item, index) => (
-        <Accordion
+      {accordionDetails?.slice(0,10)?.map((item, index) => {
+        console.log('item',item);
+       return( <Accordion
           key={index}
           expanded={expanded === `panel${index}`}
           onChange={handleChange(`panel${index}`)}
@@ -189,23 +190,23 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
             aria-controls={`panel${index}bh-content`}
             id={`panel${index}bh-header`}
           >
-            <Typography sx={{ width: "25%", flexShrink: 0 }}>
-              {item.name}
+            <Typography sx={{ width: "30%", flexShrink: 0 }}>
+              {item.VIV_Name}
             </Typography>
-            <Typography sx={{ width: "25%", color: "text.secondary" }}>
+            <Typography sx={{ width: "20%", color: "text.secondary" }}>
               Maker
               <br />
-              <span className="mt-1 font-semibold">{item.Maker}</span>
+              <span className="mt-1 font-semibold">{item.Maker?item.Maker:'-'}</span>
             </Typography>
             <Typography sx={{ width: "25%", color: "text.secondary" }}>
               Serial
               <br />
-              <span className="mt-1 font-semibold">{item.Serial}</span>
+              <span className="mt-1 font-semibold">{item.SerialNo?item.SerialNo:'-'}</span>
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
               Type
               <br />
-              <span className="mt-1 font-semibold">{item.Type}</span>
+              <span className="mt-1 font-semibold">{item.CidId?item.CidId:'-'}</span>
             </Typography>
           </AccordionSummary>
 
@@ -267,7 +268,8 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
             </table>
           </AccordionDetails>
         </Accordion>
-      ))}
+       )
+})}
     </div>
   );
 };
