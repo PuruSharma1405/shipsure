@@ -24,7 +24,7 @@ const lightTheme = createTheme({
       styleOverrides: {
         root: {
           '&.Mui-checked': {
-            color: '#1976d2', // Color when checked in light mode
+            color: '#008A25',
           },
         },
       },

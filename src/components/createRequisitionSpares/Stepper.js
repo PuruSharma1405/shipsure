@@ -104,7 +104,7 @@ export default function HorizontalLinearStepper() {
                   )
                 }
               >
-                {steps[stepNumber]}
+                <p className="font-semibold">{steps[stepNumber]}</p>
               </StepLabel>
             </Step>
           );
