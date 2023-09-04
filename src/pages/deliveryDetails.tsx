@@ -93,7 +93,7 @@ const DeliveryDetails = () => {
   });
 
   const [notes, setNotes] = useState('');
-  const updateNotes = () => {
+  const updateNotes = (e: any) => {
     setNotes(e.target.value);
   }
 

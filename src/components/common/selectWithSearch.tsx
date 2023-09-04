@@ -5,7 +5,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 export const  SelectWithSearch = (props: any) => {
   const { options, label, value, onChange, placeholder } = props;
-    console.log(label, options)
   return (
     <Autocomplete
       value={value}
