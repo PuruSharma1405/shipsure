@@ -100,8 +100,6 @@ const CreateRequisitionSpares = () => {
     fetchingVesselBasicDetails();
   }, []);
 
-  console.log("vesselBasicDetails", vesselBasicDetails);
-
   const searchComponents = async () => {
     try {
       const response = await axios.get(
@@ -149,7 +147,7 @@ const CreateRequisitionSpares = () => {
     accordionValue();
   }, []);
 
-  console.log('accordionDetails',accordionDetails);
+  console.log('basketValuess',basketValues);
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -258,7 +256,7 @@ const CreateRequisitionSpares = () => {
             </div>
             {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails}/>}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-              <p className="text-[14px]">Next</p>
+              <Link href="/orderDetails"><p className="text-[14px]">Next</p></Link>
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
@@ -317,7 +315,7 @@ const CreateRequisitionSpares = () => {
                       />
                     )}
                     <h2 className="uppercase font-semibold ml-1 text-green-600">
-                      {basketValues[0]?.accordionData?.accordionData?.name ||
+                      {basketValues[0]?.accordionData?.accordionData?.VIV_Name ||
                         "M/E TURBOCHARGER#2"}
                     </h2>
                   </div>
@@ -333,7 +331,7 @@ const CreateRequisitionSpares = () => {
                 <div className="flex flex-row justify-around mt-3 relative left-2">
                   <p>Type</p>
                   <p>
-                    {basketValues[0]?.accordionData?.accordionData?.Serial ||
+                    {basketValues[0]?.accordionData?.accordionData?.SerialNo ||
                       "HT 487167/HT 487168"}
                   </p>
                 </div>
@@ -341,14 +339,14 @@ const CreateRequisitionSpares = () => {
                   basketValues?.map((currData) => {
                     console.log('currDataa',currData);
                     return (
-                      <div className="flex flex-col">
+                      <div className="flex flex-col" style={{borderBottom:'1px solid grey'}}>
                         <div className="flex flex-row  justify-between items-center m-5 relative left-3">
                           <div className="flex flex-row ">
-                            <h2 className="uppercase font-semibold ml-1">
-                              {currData?.accordionData?.tableData?.partName}
+                            <h2 className="uppercase font-semibold" style={{width:'70%'}}>
+                            {currData?.accordionData?.tableData?.VIV_Name}
                             </h2>
                           </div>
-                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty} pieces</p>
+                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty?currData?.accordionData+'pieces'?.tableData?.reqQty:'1 piece'} </p>
                         </div>
                         <div>
                           <div className="flex flex-row justify-around">
@@ -356,8 +354,8 @@ const CreateRequisitionSpares = () => {
                             <p>Drawing Pos</p>
                           </div>
                           <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
-                            <p>{currData?.accordionData?.tableData?.makerRef}</p>
-                            <p>{currData?.accordionData?.tableData?.drawingPos}</p>
+                            <p className="relative mb-1 left-3">{currData?.accordionData?.tableData?.VIV_MakersRef}</p>
+                            <p>{currData?.accordionData?.tableData?.VIV_DrawingPos?currData?.accordionData?.tableData?.VIV_DrawingPos:'-'}</p>
                           </div>
                         </div>
                       </div>
