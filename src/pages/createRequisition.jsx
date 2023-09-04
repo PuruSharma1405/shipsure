@@ -20,7 +20,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import {getVesselPart} from "../services/operations/createVesselApi"
+import {getVesselPart} from "../services/operations/createVesselAPI";
 import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
