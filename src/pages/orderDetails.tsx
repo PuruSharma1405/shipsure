@@ -17,7 +17,7 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
 import { getToken } from '@/services/localstorageService';
 import { getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCode, getInsuranceClaimCoyid, 
-  getAuxList, getNationalityList } from '@/services/operations/deliveryDetailsApi';
+  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 
@@ -50,6 +50,18 @@ const OrderDetails = () => {
 
   const [nationalityOptions, setNationalityOptions] = useState([]);
   const [selectedNationality, setSelectedNationality] = useState(null);
+
+  const [rankOptions, setRankOptions] = useState([]);
+  const [selectedRank, setSelectedRank] = useState(null);
+
+  const [vesselAuxOptions, setVesselAuxOptions] = useState([]);
+  const [selectedVesselAux, setSelectedVesselAux] = useState(null);
+
+  const [general1Options, setGeneral1Options] = useState([]);
+  const [selectedGeneral1, setSelectedGeneral1] = useState(null);
+
+  const [general2Options, setGeneral2Options] = useState([]);
+  const [selectedGeneral2, setSelectedGeneral2] = useState(null);
 
   const [justification, setJustification] = useState('');
 
@@ -155,6 +167,58 @@ const OrderDetails = () => {
         });
         setNationalityOptions(nationalityListOptions);
       }
+      
+      const crewRankList = await getCrewRankList(token, {});
+      const crewRankListResult = crewRankList.result;
+      if(crewRankListResult.recordset) {
+        const crewRankListOptions = crewRankListResult.recordset.map((el: any) => {
+          return {
+            label: el.RnkDesc,
+            value: el.RnkId
+          }
+        });
+        setVesselAuxOptions(crewRankListOptions);
+      }
+      
+      const vesselAux = await getVesselAUXList(token, {});
+      const vesselAuxResult = vesselAux.result;
+      if(vesselAuxResult.recordset) {
+        const vesselAuxOptions = vesselAuxResult.recordset.map((el: any) => {
+          return {
+            label: el.RnkDesc,
+            value: el.RnkId
+          }
+        });
+        setRankOptions(vesselAuxOptions);
+      }
+      
+      const general1List = await getAuxList(token, {
+        AuxCodeType: 6
+      });
+      const general1ListResult = general1List.result;
+      if(general1ListResult.recordset) {
+        const general1ListOptions = general1ListResult.recordset.map((el: any) => {
+          return {
+            label: el.AuxDesc,
+            value: el.AuxId
+          }
+        });
+        setGeneral1Options(general1ListOptions);
+      }
+      
+      const general2List = await getAuxList(token, {
+        AuxCodeType: 6
+      });
+      const general2ListResult = general2List.result;
+      if(general2ListResult.recordset) {
+        const general2ListOptions = general2ListResult.recordset.map((el: any) => {
+          return {
+            label: el.AuxDesc,
+            value: el.AuxId
+          }
+        });
+        setGeneral2Options(general2ListOptions);
+      }
     }
     fetchData();
   }, []);
@@ -256,6 +320,50 @@ const OrderDetails = () => {
                         placeholder={'Nationality'} 
                         label="Nationality" 
                         onChange={setSelectedNationality}/>
+                    </FormControl>
+                  </div>
+
+                  <div style={{ margin: "0 8%" }}>
+                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                      <SelectWithSearch 
+                        options={rankOptions} 
+                        value={selectedRank} 
+                        placeholder={'Rank'} 
+                        label="Rank" 
+                        onChange={setSelectedRank}/>
+                    </FormControl>
+                  </div>
+
+                  <div style={{ margin: "0 8%" }}>
+                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                      <SelectWithSearch 
+                        options={vesselAuxOptions} 
+                        value={selectedVesselAux} 
+                        placeholder={'Vessel Aux'} 
+                        label="Vessel Aux" 
+                        onChange={setSelectedVesselAux}/>
+                    </FormControl>
+                  </div>
+
+                  <div style={{ margin: "0 8%" }}>
+                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                      <SelectWithSearch 
+                        options={general1Options} 
+                        value={selectedGeneral1} 
+                        placeholder={'General 1'} 
+                        label="General 1" 
+                        onChange={setSelectedGeneral1}/>
+                    </FormControl>
+                  </div>
+
+                  <div style={{ margin: "0 8%" }}>
+                    <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                      <SelectWithSearch 
+                        options={general2Options} 
+                        value={selectedGeneral2} 
+                        placeholder={'General 2'} 
+                        label="General 2" 
+                        onChange={setSelectedGeneral2}/>
                     </FormControl>
                   </div>
 

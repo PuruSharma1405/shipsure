@@ -2,7 +2,7 @@ import { apiConnector } from "../apiConnector";
 import { endpoints } from "../apis";
 
 const { OTHER_PORT_LIST, POSITION_LIST, HOME_PORT_LIST, SPARE_PART_DETAILS_API, GET_DEPARTMENTS, GET_ACCOUNT_CODE, 
-  GET_PURCH_ATTRIBUT_LOOKUP_CODE, INSURANCE_CLAIM_COYID, GET_AUX_LIST, GET_NATIONALITY_LIST } = endpoints;
+  GET_PURCH_ATTRIBUT_LOOKUP_CODE, INSURANCE_CLAIM_COYID, GET_AUX_LIST, GET_NATIONALITY_LIST, GET_CREW_RANK_LIST, GET_VESSEL_AUX_LIST } = endpoints;
 
 export interface IPagination {
   PageNumber?: number;
@@ -193,6 +193,46 @@ export async function getNationalityList(token: string, params: IPagination | an
   return new Promise(async (resolve, reject) => {
     try {
       const response = await apiConnector("GET", GET_NATIONALITY_LIST , null, {
+        Authorization: `Bearer ${token}`,
+      }, params);
+
+      console.log('response', response);
+
+      if (response.statusText !== 'OK') {
+        throw new Error(response.data.message);
+      }
+
+      resolve(response.data)
+    } catch (error) {
+      reject(error);
+    }
+  })
+}
+
+export async function getCrewRankList(token: string, params: IPagination | any): Promise<any> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await apiConnector("GET", GET_CREW_RANK_LIST , null, {
+        Authorization: `Bearer ${token}`,
+      }, params);
+
+      console.log('response', response);
+
+      if (response.statusText !== 'OK') {
+        throw new Error(response.data.message);
+      }
+
+      resolve(response.data)
+    } catch (error) {
+      reject(error);
+    }
+  })
+}
+
+export async function getVesselAUXList(token: string, params: IPagination | any): Promise<any> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await apiConnector("GET", GET_VESSEL_AUX_LIST , null, {
         Authorization: `Bearer ${token}`,
       }, params);
 
