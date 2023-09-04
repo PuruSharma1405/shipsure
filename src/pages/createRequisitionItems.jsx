@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AiOutlineSearch,
   AiOutlineClose,
   AiOutlineArrowRight,
   AiOutlineShoppingCart,
-  AiOutlineRight
+  AiOutlineDown,
+  AiOutlineRight,
 } from "react-icons/ai";
 import { BsSearch, BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
@@ -24,7 +25,9 @@ import useOnClickOutside from "../hooks/useOnClickOutside";
 // import VesselImage from "../../src/images/VesselImage.png";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSelector } from "react-redux";
-import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepper'
+import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepper";
+import axios from "axios";
+import Link from "next/link";
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [componentName, setComponentName] = useState("");
@@ -34,7 +37,14 @@ const CreateRequisitionSpares = () => {
   const itemValue = localStorage.getItem("itemName");
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
-  const [basketValues,setBasketValues]=useState([])
+  const [basketValues, setBasketValues] = useState([]);
+  const [vesselBasicDetails, setVesselBasicDetails] = useState();
+  const [searchComponent, setSearchComponent] = useState();
+  const coyId = localStorage.getItem("coyId");
+  const vesselId = localStorage.getItem("vesselId");
+  const token = JSON.parse(localStorage.getItem("token"))?.access_token;
+  const [showSection, setShowSection] = useState(false);
+  const [showAccordion, setShowAccordion] = useState(false);
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -61,14 +71,62 @@ const CreateRequisitionSpares = () => {
     setSelectedItems([...selectedItems, { accordionData }]);
   };
 
-  console.log('selectedComponent',selectedItems);
+  console.log("selectedComponent", selectedItems);
 
-  const addToBasket=()=>{
-    setBasketValues(selectedItems)
+  const addToBasket = () => {
+    setBasketValues(selectedItems);
+  };
+
+  console.log("basketValues", basketValues);
+
+  const fetchingVesselBasicDetails = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.201.232:3012/vessel-basic-details?VesId=${vesselId}&CoyId=${coyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setVesselBasicDetails(response?.data?.result?.recordset[0]);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchingVesselBasicDetails();
+  }, []);
+
+  console.log("vesselBasicDetails", vesselBasicDetails);
+
+  const searchComponents = async () => {
+    try {
+      const response = await axios.get(
+        `  http://192.168.201.232:3012/search-component?VES_ID=GLAS00012915&ComponentName=p&SearchConsumablesComponent=1&VesROBCondition=SYST00000004,SYST00000005&PageNumber=1&PageSize=100`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("responsee", response);
+      setSearchComponent(response?.data?.result?.result?.recordset);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    searchComponents();
+  }, []);
+
+  const searchAccordion=()=>{
+    if(componentName.length>0){
+    setShowAccordion(true)
+    }
   }
-
-  console.log('basketValues',basketValues);
-
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -90,9 +148,9 @@ const CreateRequisitionSpares = () => {
               <h1 className="text-2xl font-semibold">
                 Create Requisition-{itemValue}
               </h1>
-              <AiOutlineClose style={{ fontSize: "25px" }} />
+              <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
-            <HorizontalLinearStepper/>
+            <HorizontalLinearStepper />
             <div
               className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
               style={{ borderRadius: "20px" }}
@@ -109,15 +167,17 @@ const CreateRequisitionSpares = () => {
                     value={componentName}
                     onChange={changeHandler}
                   />
-                  <BsSearch />
+                  <BsSearch onClick={searchAccordion} className="cursor-pointer"/>
                 </div>
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
                 {componentName.length > 0 && showDropDown && (
                   <DropDown
-                    fechingItem={fechingItem}
+                    fetchingItem={fechingItem}
                     showDropDown={showDropDown}
                     setShowDropDown={setShowDropDown}
                     componentName={componentName}
+                    searchComponent={searchComponent}
+                    setSearchComponent={setSearchComponent}
                   />
                 )}
               </div>
@@ -153,13 +213,16 @@ const CreateRequisitionSpares = () => {
                 className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
                 style={{ border: "1px solid black" }}
               >
-                <p className="uppercase text-1xl ml-3">Search</p>
+                <p className="uppercase text-1xl ml-3 cursor-pointer" onClick={searchAccordion}>Search</p>
                 <BsSearch className="ml-2 mr-3" />
               </div>
             </div>
             <div className="flex flex-row items-center justify-end mt-7">
               <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
-              <p className="ml-2 text-1xl underline font-semibold" onClick={addToBasket}>
+              <p
+                className="ml-2 text-1xl underline font-semibold cursor-pointer"
+                onClick={addToBasket}
+              >
                 Add To Order Basket
               </p>
             </div>
@@ -170,13 +233,13 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            <AccordionComponent addToBasketCallback={addToBasketCallback}/>
+            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} />}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Next</p>
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
-          <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
+          <div className="w-4/12 bg-[#E8ECED] ml-[50px] max-h-full">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
               <RequisitionDataContainer
                 height="320px"
@@ -190,9 +253,10 @@ const CreateRequisitionSpares = () => {
                 desc3="Variance"
                 desc3Value="386.1K"
                 basketValues={basketValues}
+                vesselBasicDetails={vesselBasicDetails}
               />
               <div
-                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[250px]"
+                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] max-h-fit"
                 style={{ borderRadius: "15px" }}
               >
                 <div className="flex flex-row  justify-between items-center m-5">
@@ -208,24 +272,74 @@ const CreateRequisitionSpares = () => {
                   <p className="font-semibold">{basketValues?.length} item</p>
                   <h3 className="relative right-4 font-bold">estimated</h3>
                 </div>
-                <div className="h-[10px]" style={{borderBottom:'1px solid #CDD6DB',width:'80%',margin:'0 auto'}}></div>
+                <div
+                  className="h-[10px]"
+                  style={{
+                    borderBottom: "1px solid #CDD6DB",
+                    width: "80%",
+                    margin: "0 auto",
+                  }}
+                ></div>
                 <div className="flex flex-row  justify-between items-center m-5">
                   <div className="flex flex-row ">
-                    <AiOutlineRight style={{ fontSize: "25px" }} />
-                    <h2 className="uppercase font-semibold ml-1">
-                      {basketValues[0]?.accordionData?.accordionData?.name || "M/E TURBOCHARGER#2"}
+                    {showSection ? (
+                      <AiOutlineDown
+                        style={{ fontSize: "25px", color: "green" }}
+                        onClick={() => setShowSection(!showSection)}
+                      />
+                    ) : (
+                      <AiOutlineRight
+                        style={{ fontSize: "25px", color: "green" }}
+                        onClick={() => setShowSection(!showSection)}
+                      />
+                    )}
+                    <h2 className="uppercase font-semibold ml-1 text-green-600">
+                      {basketValues[0]?.accordionData?.accordionData?.name ||
+                        "M/E TURBOCHARGER#2"}
                     </h2>
                   </div>
                   <p className="font-bold">{basketValues?.length} item</p>
                 </div>
                 <div className="flex flex-row justify-around ml-3">
                   <p>Maker</p>
-                  <p>{basketValues[0]?.accordionData?.accordionData?.Maker|| "ABB TURBO SYSTEM AG"}</p>
-                  </div>
-                  <div className="flex flex-row justify-around mt-3 relative left-2">
+                  <p>
+                    {basketValues[0]?.accordionData?.accordionData?.Maker ||
+                      "ABB TURBO SYSTEM AG"}
+                  </p>
+                </div>
+                <div className="flex flex-row justify-around mt-3 relative left-2">
                   <p>Type</p>
-                  <p>{basketValues[0]?.accordionData?.accordionData?.Serial|| "TPL77-B11"}</p>
-                  </div>
+                  <p>
+                    {basketValues[0]?.accordionData?.accordionData?.Serial ||
+                      "HT 487167/HT 487168"}
+                  </p>
+                </div>
+                {showSection &&
+                  basketValues?.map((currData) => {
+                    console.log('currDataa',currData);
+                    return (
+                      <div className="flex flex-col">
+                        <div className="flex flex-row  justify-between items-center m-5 relative left-3">
+                          <div className="flex flex-row ">
+                            <h2 className="uppercase font-semibold ml-1">
+                              {currData?.accordionData?.tableData?.partName}
+                            </h2>
+                          </div>
+                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty} pieces</p>
+                        </div>
+                        <div>
+                          <div className="flex flex-row justify-around">
+                            <p>Maker's Ref</p>
+                            <p>Drawing Pos</p>
+                          </div>
+                          <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
+                            <p>{currData?.accordionData?.tableData?.makerRef}</p>
+                            <p>{currData?.accordionData?.tableData?.drawingPos}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

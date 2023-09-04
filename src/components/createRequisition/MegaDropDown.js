@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './MegaDropDown.css';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import axios from 'axios';
+import { setCoyId,setVesId } from "../../redux/reducers/requisitionSlice";
+import { useDispatch } from 'react-redux';
 
 const MegaDropDown = ({
   showDropdown,
@@ -13,6 +15,7 @@ const MegaDropDown = ({
   const [startIndex, setStartIndex] = useState(0);
   const [loadMore, setLoadMore] = useState(true);
   const ref = useRef(null);
+  const dispatch = useDispatch()
   const token = JSON.parse(localStorage.getItem('token'))?.access_token;
 
   const megaDropDownKeys = {
@@ -61,9 +64,7 @@ const MegaDropDown = ({
   };
 
   useEffect(() => {
-    // Fetching initial data or setting dropDownData from your source
-    // Replace this with your data fetching logic
-    const dropDownData = []; // Replace with your actual data
+    const dropDownData = [];
     setMegaMenu(dropDownData.slice(0, 10));
   }, []);
 
@@ -78,6 +79,10 @@ const MegaDropDown = ({
         }
       );
       setMegaMenu(response?.data?.result?.recordset);
+      dispatch(setCoyId(response?.data?.result?.recordset[0]?.AccountingCompanyId))
+      dispatch(setVesId(response?.data?.result?.recordset[0]?.VesselId))
+      localStorage.setItem('vesselId',response?.data?.result?.recordset[0]?.VesselId)
+      localStorage.setItem('coyId',response?.data?.result?.recordset[0]?.AccountingCompanyId)
     } catch (error) {
       console.error('Error:', error);
     }

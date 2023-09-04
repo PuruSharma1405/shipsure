@@ -1,7 +1,7 @@
 import React from "react";
 import "./RequisitionDataContainer.css";
 
-const RequisitionDataContainer = ({basketValues = null}) => {
+const RequisitionDataContainer = ({basketValues,vesselBasicDetails}) => {
 
   console.log('basketValues',basketValues);
   return (
@@ -20,7 +20,7 @@ const RequisitionDataContainer = ({basketValues = null}) => {
                 alt="Path"
                 src="https://generation-sessions.s3.amazonaws.com/abf5a8a71923e0f58e2282f69b36fd15/img/path-117.svg"
               />
-              <div className="label-text">Seaways Athens - 9597109</div>
+              <div className="label-text">{ `${vesselBasicDetails?.VesselName?vesselBasicDetails?.VesselName:''}-${vesselBasicDetails?.IMOnumber?vesselBasicDetails?.IMOnumber:''}`||'Seaways Athens - 9597109'}</div>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@ const RequisitionDataContainer = ({basketValues = null}) => {
             <div className="frame-wrapper">
               <div className="div-5">
                 <div className="text-wrapper">Budget : Actual YTD</div>
-                <div className="text-wrapper-2">1.95M - 2.34M</div>
+                <div className="text-wrapper-2"> { `${vesselBasicDetails?.Budget || '1.95M - 2.34M'}`}</div>
               </div>
             </div>
             <div className="div-wrapper">
