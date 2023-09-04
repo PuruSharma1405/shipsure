@@ -205,7 +205,7 @@ const CreateRequisitionSpares = () => {
                   <p className="font-bold">$0.00</p>
                 </div>
                 <div className="flex flex-row justify-between ml-10">
-                  <p className="font-semibold">0 items</p>
+                  <p className="font-semibold">{basketValues?.length} item</p>
                   <h3 className="relative right-4 font-bold">estimated</h3>
                 </div>
                 <div className="h-[10px]" style={{borderBottom:'1px solid #CDD6DB',width:'80%',margin:'0 auto'}}></div>
