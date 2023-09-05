@@ -26,20 +26,27 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
   console.log("accordionIndexValue", accordionIndexValue);
 
   const handleCheckboxChange = (index, item) => {
-    console.log("index,iten", index, item);
-    const updatedTableData = [...accordionDetails];
-    updatedTableData[index].isChecked = !updatedTableData[index].isChecked;
-
+    console.log("index, item", index, item);
+  
+    const updatedTableData = { ...item };
+  
+    updatedTableData.isChecked = !updatedTableData.isChecked;
+  
+    const updatedAccordionDetails = [...accordionDetails];
+    updatedAccordionDetails[index] = updatedTableData;
+  
     const selectedData = {
       accordionData: accordionIndexValue,
-      tableData: updatedTableData[index],
+      tableData: updatedTableData,
     };
-    console.log('selectedData',selectedData);
-
+  
+    console.log('selectedData', selectedData);
+  
+    setAccordionDetails(updatedAccordionDetails);
+  
     addToBasketCallback(selectedData);
-
-    // dispatch(setVivItems(selectedData))
   };
+  
 
 
   return (
@@ -90,7 +97,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                     <input type="checkbox" />
                   </th>
                   <th style={{ textAlign: "center" }}>Part Name</th>
-                  <th style={{ textAlign: "left" }}>Maker&apos;s Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Maker's Ref. No</th>
                   <th style={{ textAlign: "left" }}>Drawing Pos</th>
                   <th style={{ textAlign: "left" }}>UOM</th>
                   <th style={{ textAlign: "left" }}>ROB</th>

@@ -28,6 +28,9 @@ import { useSelector } from "react-redux";
 import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepper";
 import axios from "axios";
 import Link from "next/link";
+import { useDispatch } from 'react-redux';
+import { setItemsDetails } from "../redux/reducers/requisitionSlice";
+
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [componentName, setComponentName] = useState("");
@@ -51,6 +54,8 @@ const CreateRequisitionSpares = () => {
     setComponentName(e.target.value);
     setShowDropDown(true);
   };
+
+  const dispatch = useDispatch()
 
   console.log("itemNameeeee", itemName);
 
@@ -104,7 +109,7 @@ const CreateRequisitionSpares = () => {
   const searchComponents = async () => {
     try {
       const response = await axios.get(
-        `  http://192.168.201.232:3012/search-component?VES_ID=GLAS00012915&ComponentName=p&SearchConsumablesComponent=1&VesROBCondition=SYST00000004,SYST00000005&PageNumber=1&PageSize=100`,
+        `  http://192.168.201.232:3012/search-component?VES_ID=${vesselId}&ComponentName=${componentName}&SearchConsumablesComponent=1&VesROBCondition=SYST00000004,SYST00000005&PageNumber=1&PageSize=100`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -120,7 +125,7 @@ const CreateRequisitionSpares = () => {
 
   useEffect(() => {
     searchComponents();
-  }, []);
+  }, [componentName]);
 
   const searchAccordion=()=>{
     if(componentName.length>0){
@@ -139,6 +144,7 @@ const CreateRequisitionSpares = () => {
         }
       );
       setAccordionDetails(response?.data?.result?.result?.recordset)
+      dispatch(setItemsDetails(response?.data?.result?.result?.recordset))
     } catch (error) {
       console.error("Error:", error);
     }

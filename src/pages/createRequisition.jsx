@@ -26,6 +26,7 @@ import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
 import axios from 'axios';
 import VesselImage from '../images/VesselImage.png'
+import Search from "../images/Search.png"
 import Image from "next/image";
 const CreateRequisition = () => {
   const [item, setItem] = useState("consumables");
@@ -93,7 +94,8 @@ const CreateRequisition = () => {
               <h2>Procurement</h2>
             </div>
             <div className="search-icon mt-3 gap-3 flex items-center">
-              <AiOutlineSearch style={{ fontSize: "25px" }} />
+              {/* <AiOutlineSearch style={{ fontSize: "25px" }} /> */}
+              <Image src={Search} alt="Search" height={24} width={24}/>
               <IoMdNotificationsOutline style={{ fontSize: "25px" }}/>
               <CgMenuGridO style={{ fontSize: "25px" }} />
               <ProfileDropDown />
@@ -101,7 +103,7 @@ const CreateRequisition = () => {
           </div>
 
           <div className="h-[100vh] flex flex-col  justify-center items-center">
-            <div className="h-full w-full flex flex-col justify-center items-center relative mt-5" style={{zIndex:999}}>
+            <div className="h-full w-full flex flex-col justify-center items-center relative mt-16" style={{zIndex:999}}>
               <div className="flex flex-row items-center text-white mt-20">
                 <BsBoxSeamFill style={{ fontSize: "25px" }}/>
                 <h2 className="uppercase ml-3 font-bold">Create Requisition</h2>
