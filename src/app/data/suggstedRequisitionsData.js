@@ -16,11 +16,11 @@ export const suggestedRequisitionsData=[
         addOn:"+43 more"
     },
     {
-        requisitionName:"Pioneer",
-        title:"Blue November",
+        requisitionName:"Hydraulic Pump Spares",
+        title:"Pioneer",
         desc1:"Bearing Nut Type:Vertical Screw...",
-        desc2:"Floating Seat Type:Vertical scre...",
-        desc3:"Gloves Cut Resistant",
+        desc2:"Floating Seat Type:Vertical Screw...",
+        desc3:"Floating Seat Type:Vertical Scre...",
         addOn:"+8 more"
     },
     {

@@ -25,11 +25,11 @@ import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
 import axios from 'axios';
+import Image from "next/image";
 import VesselImage from '../images/VesselImage.png'
 import Search from "../images/Search.png"
-import Image from "next/image";
 const CreateRequisition = () => {
-  const [item, setItem] = useState("consumables");
+  const [item, setItem] = useState("Consumables");
   const router = useRouter();
   const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
@@ -115,7 +115,7 @@ const CreateRequisition = () => {
                   >
                     
                     <div className="flex flex-row p-2 items-center relative">
-                      <MdOutlineDirectionsBoat className="relative right-[15px]" />
+                      <MdOutlineDirectionsBoat  color="#697E85" className="relative right-[20px]" style={{fontSize:'25px'}} />
                       <input
                         type="text"
                         placeholder="Search vessel"
@@ -126,7 +126,7 @@ const CreateRequisition = () => {
                       />
                     </div>
                     <div style={{ fontSize: "25px" }}>
-                      <AiOutlineSearch />
+                      <AiOutlineSearch color="#697E85"/>
                     </div>
                   </div>
                   {vesselName?.length>0 && <MegaDropDown showDropdown={showDropdown} setShowDropdown={setShowDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}
