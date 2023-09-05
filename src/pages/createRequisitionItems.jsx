@@ -148,7 +148,15 @@ const CreateRequisitionSpares = () => {
     accordionValue();
   }, []);
 
-  console.log('basketValuess',basketValues);
+  console.log('currentStep',currentStep);
+
+  const nextStep=()=>{
+    setCurrentStep(1)
+  }
+
+  useEffect(()=>{
+    localStorage.setItem('currentStep',currentStep)
+  },[currentStep])
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -172,7 +180,7 @@ const CreateRequisitionSpares = () => {
               </h1>
               <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
-            <HorizontalLinearStepper currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+            <HorizontalLinearStepper/>
             <div
               className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
               style={{ borderRadius: "20px" }}
@@ -257,7 +265,7 @@ const CreateRequisitionSpares = () => {
             </div>
             {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails}/>}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-              <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>setCurrentStep(1)}>Next</p></Link>
+              <Link href="/orderDetails"><p className="text-[14px]" onClick={nextStep}>Next</p></Link>
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
