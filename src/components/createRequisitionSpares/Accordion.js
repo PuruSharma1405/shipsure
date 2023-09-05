@@ -90,7 +90,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                     <input type="checkbox" />
                   </th>
                   <th style={{ textAlign: "center" }}>Part Name</th>
-                  <th style={{ textAlign: "left" }}>Maker's Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Maker&apos;s Ref. No</th>
                   <th style={{ textAlign: "left" }}>Drawing Pos</th>
                   <th style={{ textAlign: "left" }}>UOM</th>
                   <th style={{ textAlign: "left" }}>ROB</th>

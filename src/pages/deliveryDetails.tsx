@@ -4,9 +4,10 @@ import {
   AiOutlineSearch,
   AiOutlineClose,
   AiOutlineShoppingCart,
+  AiOutlineArrowRight
 } from "react-icons/ai";
 import { CgMenuGridO } from "react-icons/cg";
-import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
+import ProfileDropDown from "@/components/createRequisition/ProfileDropDown";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,9 +27,12 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SearchWithDropDown } from '@/components/common/SearchWithDropdown';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
+import { useRouter } from 'next/router';
+
 
 const DeliveryDetails = () => {
   const itemValue = localStorage.getItem("itemName");
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -97,6 +101,11 @@ const DeliveryDetails = () => {
     setNotes(e.target.value);
   }
 
+  const handleNext = () => {
+    setTimeout(()=> {
+      router.push('/orderSummary');
+    }, 100)
+  }
   const changeHandler = (e: any): void => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -141,7 +150,7 @@ const DeliveryDetails = () => {
             <AiOutlineSearch style={{ fontSize: "25px" }} />
             <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
             <CgMenuGridO style={{ fontSize: "25px" }} />
-            <ProfileDropDown />
+            {/* <ProfileDropDown /> */}
           </div>
         </div>
         <div className="h-full w-full flex flex-row">
@@ -210,6 +219,10 @@ const DeliveryDetails = () => {
                 </Container>
               {/* </div> */}
             </div>
+            <div onClick={handleNext} className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
+              <p className="text-[14px]">Next</p>
+              <AiOutlineArrowRight className="ml-1" />
+            </div>
           </div>
           <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
@@ -237,6 +250,9 @@ const DeliveryDetails = () => {
         </div>
       </div>
     </div>
+    // <div>
+    //   hello
+    // </div>
   );
 };
 
