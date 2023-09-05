@@ -256,6 +256,10 @@ const OrderDetails = () => {
     setSelectedSparePartType(e.target.value)
   }
 
+  const updateJustification = (e: any) => {
+    setJustification(e.target.value);
+  }
+
   const updateSelectedDepartment = (e: any) => {
     setSelectedDepartment(e.target.value)
   }
@@ -338,7 +342,7 @@ const OrderDetails = () => {
                         onChange={setSelectedAccountCode}/>
                     </FormControl>
                   </div>
-
+{/* 
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -414,7 +418,7 @@ const OrderDetails = () => {
                         label="General 2" 
                         onChange={setSelectedProjects}/>
                     </FormControl>
-                  </div>
+                  </div> */}
 
                   <div style={{ margin: "0 8%" }}>
                     <div
@@ -518,7 +522,7 @@ const OrderDetails = () => {
                           <MultiLineTextBox 
                             label="Justification"
                             value={justification}
-                            onChange={setJustification}
+                            onChange={updateJustification}
                           />                          
                         </FormControl>
                       </div>{" "}
