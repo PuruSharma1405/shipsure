@@ -35,7 +35,7 @@ const ProfileDropDown= () => {
 
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
-      <div className="flex items-center gap-x-1 shadow p-3 rounded-full ml-3">
+      <div className="flex items-center gap-x-1 shadow p-2 rounded-full ml-3">
         <BiUser style={{ fontSize: '13px' }} />
         <p>{name || 'Dale Kirkwood'}</p>
         <AiOutlineCaretDown className="text-sm text-richblack-100" />
