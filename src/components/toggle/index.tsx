@@ -4,20 +4,15 @@ import { BsCheckCircle } from "react-icons/bs";
 import Switch from '@mui/material/Switch';
 
 export interface ToggleButtonProps {
-  onToggle: (isActive: boolean) => void;
+  isChecked: boolean;
+  onToggle: any;
 }
 
-const ToggleButton: React.FC<ToggleButtonProps> = ({ onToggle }) => {
-  const [isActive, setIsActive] = useState(false);
-  console.log(isActive)
+const ToggleButton: React.FC<ToggleButtonProps> = ({ isChecked, onToggle }) => {
 
-  const toggleButton = () => {
-    setIsActive(!isActive);
-    onToggle(!isActive);
-  };
 
   return (
-    <Switch defaultChecked />
+    <Switch checked={isChecked} onChange={onToggle}/>
     // <button
     //   onClick={toggleButton}
     //   className="relative w-16 rounded-full p-1 bg-gray-300"
