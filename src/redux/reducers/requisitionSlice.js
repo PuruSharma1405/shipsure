@@ -18,6 +18,11 @@ const initialState = {
   general2: '',
   projects: '',
   justification: '',
+  deliveryDate: '',
+  deliveryHomePort: '',
+  deliveryOtherPort: '',
+  selectedPosition: '',
+  note: '',
 };
 
 export const requisitionSlice = createSlice({
@@ -48,12 +53,19 @@ export const requisitionSlice = createSlice({
       state.general2 = value.payload.general2?.value ? value.payload.general2.value : null
       state.projects = value.payload.projects?.value ? value.payload.projects.value : null
       state.justification = value.payload.justification
+    },
+    setDeliveryDetails(state, value) {
+      state.deliveryDate = value.payload.deliveryDate || null
+      state.deliveryHomePort = value.payload.deliveryHomePort?.value ? value.payload.deliveryHomePort.value : null
+      state.deliveryOtherPort = value.payload.deliveryOtherPort?.value ? value.payload.deliveryOtherPort.value : null
+      state.selectedPosition = value.payload.selectedPosition?.value ? value.payload.selectedPosition.value : null
+      state.note = value.payload.note || null
     }
   },
 });
 
 export const selectRequisitionState = (state) => state.requisition;
 
-export const { setItemName, setVesId, setCoyId, setOrderDetails } = requisitionSlice.actions;
+export const { setItemName, setVesId, setCoyId, setOrderDetails, setDeliveryDetails } = requisitionSlice.actions;
 
 export default requisitionSlice.reducer;

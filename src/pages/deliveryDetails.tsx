@@ -27,12 +27,13 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SearchWithDropDown } from '@/components/common/SearchWithDropdown';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
+import { setDeliveryDetails } from "@/redux/reducers/requisitionSlice";
 import { useRouter } from 'next/router';
-
 
 const DeliveryDetails = () => {
   const itemValue = localStorage.getItem("itemName");
   const router = useRouter();
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -75,7 +76,6 @@ const DeliveryDetails = () => {
 
     fetchData();
   }, []);
-  const dispatch = useDispatch();
   const [item, setItem] = useState("position_list");
   const [homePortOptions, setHomePortOptions] = useState([]);
   const [selectedHomePort, setSelectedHomePort] = useState(null);
@@ -102,6 +102,13 @@ const DeliveryDetails = () => {
   }
 
   const handleNext = () => {
+    dispatch(setDeliveryDetails({
+      deliveryDate: selectedDate,
+      deliveryHomePort: selectedHomePort,
+      deliveryOtherPort: selectedOtherPort,
+      selectedPosition: selectedPositionList,
+      note: notes,
+    }));
     setTimeout(()=> {
       router.push('/orderSummary');
     }, 100)
@@ -136,8 +143,6 @@ const DeliveryDetails = () => {
   const itemChange = (e: any) => {
     setItem(e.target.value);
   };
-
-  const options = [10,20,30];
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -250,9 +255,6 @@ const DeliveryDetails = () => {
         </div>
       </div>
     </div>
-    // <div>
-    //   hello
-    // </div>
   );
 };
 
