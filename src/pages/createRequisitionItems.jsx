@@ -315,10 +315,10 @@ const CreateRequisitionSpares = () => {
                   </p>
                 </div>
                 {showSection &&
-                  basketValues?.map((currData) => {
+                  basketValues?.map((currData,index) => {
                     console.log('currDataa',currData);
                     return (
-                      <div className="flex flex-col">
+                      <div className="flex flex-col" key={index}>
                         <div className="flex flex-row  justify-between items-center m-5 relative left-3">
                           <div className="flex flex-row ">
                             <h2 className="uppercase font-semibold ml-1">
@@ -329,7 +329,7 @@ const CreateRequisitionSpares = () => {
                         </div>
                         <div>
                           <div className="flex flex-row justify-around">
-                            <p>Maker's Ref</p>
+                            <p>Maker&apos;s Ref</p>
                             <p>Drawing Pos</p>
                           </div>
                           <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">

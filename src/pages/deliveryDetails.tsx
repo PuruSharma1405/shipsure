@@ -213,7 +213,7 @@ const DeliveryDetails = () => {
           </div>
           <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
-              <RequisitionDataContainer/>
+              <RequisitionDataContainer basketValues="" vesselBasicDetails=""/>
               <div
                 className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[100px]"
                 style={{ borderRadius: "15px" }}
