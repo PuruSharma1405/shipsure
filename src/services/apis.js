@@ -19,4 +19,5 @@ export const endpoints={
     HOME_PORT_LIST: VESSEL_BASE_URL+"/procurement-setup-for-requisition",
     OTHER_PORT_LIST: VESSEL_BASE_URL+"/ports",
     INSURANCE_CLAIM_COYID: VESSEL_BASE_URL+"/insurance-claim-coyid",
+    GET_AUX_FOR_VESSEL: VESSEL_BASE_URL+"/aux-for-vessel",
 }

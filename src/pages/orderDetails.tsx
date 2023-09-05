@@ -18,7 +18,7 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
 import { getToken } from '@/services/localstorageService';
 import { getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCode, getInsuranceClaimCoyid, 
-  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList } from '@/services/operations/deliveryDetailsApi';
+  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList, getAuxForVessel } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { useRouter } from 'next/router';
@@ -76,9 +76,28 @@ const OrderDetails = () => {
   const [projectsOptions, setProjectsOptions] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState(null);
 
+  const [auxForVessel, setAuxForVessel] = useState({});
+
   const [justification, setJustification] = useState('');
   const itemName=localStorage.getItem('itemName')
 
+
+  useEffect(() => {
+    async function fetchData(){
+      const token = await getToken();
+      if(selectedAccountCode && selectedAccountCode.value) {
+        const auxForVesselRes = await getAuxForVessel(token, {
+          CoyId: requisitionState.coyId,
+          AccId: selectedAccountCode.value
+        });
+        const auxForVesselResult = auxForVesselRes.result;
+        if(auxForVesselResult.recordset) {
+          setAuxForVessel(auxForVesselResult.recordset[0]);
+        }
+      }
+    }
+    fetchData();
+  }, [selectedAccountCode])
 
   useEffect(() => {
     async function fetchData() {
@@ -157,20 +176,22 @@ const OrderDetails = () => {
       if(insuranceClaimResult.recordset) {
         const departmentOptions = insuranceClaimResult.recordset.map((el: any) => {
           return {
-            label: el.ChdDesc,
-            value: el.AccId
+            label: el.IclName,
+            value: el.IclId
           }
         });
         setInsuranceClaimOptions(departmentOptions);
       }
       
-      const auxList = await getAuxList(token, {});
+      const auxList = await getAuxList(token, {
+        AuxCodeType: 6
+      });
       const auxListResult = auxList.result;
       if(auxListResult.recordset) {
         const departmentOptions = auxListResult.recordset.map((el: any) => {
           return {
-            label: el.NatDescription,
-            value: el.NatId
+            label: el.AuxDesc,
+            value: el.AuxId
           }
         });
         setSeasonalOptions(departmentOptions);
@@ -190,14 +211,15 @@ const OrderDetails = () => {
       
       const crewRankList = await getCrewRankList(token, {});
       const crewRankListResult = crewRankList.result;
-      if(crewRankListResult.recordset) {
+      debugger
+      if(crewRankListResult.recordset && crewRankListResult.recordset) {
         const crewRankListOptions = crewRankListResult.recordset.map((el: any) => {
           return {
             label: el.RnkDesc,
             value: el.RnkId
           }
         });
-        setVesselAuxOptions(crewRankListOptions);
+        setRankOptions(crewRankListOptions);
       }
       
       const vesselAux = await getVesselAUXList(token, {});
@@ -209,11 +231,11 @@ const OrderDetails = () => {
             value: el.RnkId
           }
         });
-        setRankOptions(vesselAuxOptions);
+        setVesselAuxOptions(vesselAuxOptions);
       }
       
       const general1List = await getAuxList(token, {
-        AuxCodeType: 6
+        AuxCodeType: 7
       });
       const general1ListResult = general1List.result;
       if(general1ListResult.recordset) {
@@ -227,7 +249,7 @@ const OrderDetails = () => {
       }
       
       const general2List = await getAuxList(token, {
-        AuxCodeType: 6
+        AuxCodeType: 10
       });
       const general2ListResult = general2List.result;
       if(general2ListResult.recordset) {
@@ -348,7 +370,8 @@ const OrderDetails = () => {
                         onChange={setSelectedAccountCode}/>
                     </FormControl>
                   </div>
-{/* 
+
+                {auxForVessel && auxForVessel['ChdAuxClaims'] ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -359,7 +382,9 @@ const OrderDetails = () => {
                         onChange={setSelectedInsuranceClaim}/>
                     </FormControl>
                   </div>
+                ) : null}
 
+                {auxForVessel && auxForVessel['ChdAuxSeasonal'] ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -370,7 +395,9 @@ const OrderDetails = () => {
                         onChange={setSelectedSeasonal}/>
                     </FormControl>
                   </div>
+                ): null}
 
+              {auxForVessel && auxForVessel['ChdAuxNationality'] ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -381,7 +408,9 @@ const OrderDetails = () => {
                         onChange={setSelectedNationality}/>
                     </FormControl>
                   </div>
+              ): null }
 
+              {auxForVessel && auxForVessel['ChdAuxRank'] ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -392,7 +421,9 @@ const OrderDetails = () => {
                         onChange={setSelectedRank}/>
                     </FormControl>
                   </div>
+              ): null}
 
+              {auxForVessel &&  auxForVessel !== null && auxForVessel?.ChdAuxVessel ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -403,7 +434,9 @@ const OrderDetails = () => {
                         onChange={setSelectedVesselAux}/>
                     </FormControl>
                   </div>
+              ): null}
 
+              {auxForVessel &&  auxForVessel !== null && auxForVessel?.ChdAuxGen1 ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -414,17 +447,21 @@ const OrderDetails = () => {
                         onChange={setSelectedGeneral1}/>
                     </FormControl>
                   </div>
+              ): null}
 
+              {auxForVessel &&  auxForVessel !== null && auxForVessel?.ChdAuxgen3 ? (
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
                         options={general2Options} 
-                        value={selectedProjects} 
+                        value={selectedGeneral2} 
                         placeholder={'General 2'} 
                         label="General 2" 
-                        onChange={setSelectedProjects}/>
+                        onChange={setSelectedGeneral2}/>
                     </FormControl>
-                  </div> */}
+                  </div>
+              ): null}
+
 
                   <div style={{ margin: "0 8%" }}>
                     <div
@@ -449,10 +486,10 @@ const OrderDetails = () => {
                   <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
                         options={projectsOptions} 
-                        value={selectedGeneral1} 
+                        value={selectedProjects} 
                         placeholder={'Projects'} 
                         label="Projects" 
-                        onChange={setSelectedGeneral1}/>
+                        onChange={setSelectedProjects}/>
                     </FormControl>
                   </div>
                   <div style={{ margin: "0 8%" }}>
