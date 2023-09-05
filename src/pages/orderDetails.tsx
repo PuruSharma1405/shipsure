@@ -18,10 +18,12 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
 import { getToken } from '@/services/localstorageService';
 import { getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCode, getInsuranceClaimCoyid, 
-  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList } from '@/services/operations/deliveryDetailsApi';
+  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { useRouter } from 'next/router';
+import { selectRequisitionState, setOrderDetails } from "@/redux/reducers/requisitionSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const OrderDetails = () => {
   const [item, setItem] = useState("normal");
@@ -29,6 +31,8 @@ const OrderDetails = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isUrgent, setIsUrgent] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch()
+  const requisitionState = useSelector(selectRequisitionState);
 
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
@@ -67,6 +71,9 @@ const OrderDetails = () => {
   const [general2Options, setGeneral2Options] = useState([]);
   const [selectedGeneral2, setSelectedGeneral2] = useState(null);
 
+  const [projectsOptions, setProjectsOptions] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState(null);
+
   const [justification, setJustification] = useState('');
 
   useEffect(() => {
@@ -96,7 +103,10 @@ const OrderDetails = () => {
         setDepartmentListOptions(departmentOptions);
       }
 
-      const accountCodeRes = await getAccountCode(token, {});
+      const accountCodeRes = await getAccountCode(token, {
+        VesId: requisitionState.vesId,
+        CoyId: requisitionState.coyId,
+      });
       const accountCodeResult = accountCodeRes.result;
       if(accountCodeResult.recordset) {
         const departmentOptions = accountCodeResult.recordset.map((el: any) => {
@@ -136,7 +146,9 @@ const OrderDetails = () => {
       }
 
       
-      const insuranceClaim = await getInsuranceClaimCoyid(token, {});
+      const insuranceClaim = await getInsuranceClaimCoyid(token, {
+        CoyId: requisitionState.coyId,
+      });
       const insuranceClaimResult = insuranceClaim.result;
       if(insuranceClaimResult.recordset) {
         const departmentOptions = insuranceClaimResult.recordset.map((el: any) => {
@@ -223,6 +235,19 @@ const OrderDetails = () => {
         });
         setGeneral2Options(general2ListOptions);
       }
+      const projects = await getProjectsList(token, {
+        VesId: requisitionState.vesId
+      });
+      const projectsResult = projects.result;
+      if(projectsResult.recordset) {
+        const projectsOptions = projectsResult.recordset.map((el: any) => {
+          return {
+            label: el.PrjDesc,
+            value: el.PrjId
+          }
+        });
+        setProjectsOptions(projectsOptions);
+      }
     }
     fetchData();
   }, []);
@@ -255,7 +280,23 @@ const OrderDetails = () => {
   }, [item]);
 
   const handleNext = () => {
-    router.push('/deliveryDetails');
+    dispatch(setOrderDetails({
+      accountCode: selectedAccountCode,
+      sparePartType: selectedSparePartType,
+      fastTrackPriorityReason: selectedFastTrackPriorityReason,
+      urgentPriorityReason: selectedUrgentPriorityReason,
+      department: selectedDepartment,
+      insuranceClaim: selectedInsuranceClaim,
+      seasonal: selectedSeasonal,
+      nationality: selectedNationality,
+      rank: selectedRank,
+      vesselAux: selectedVesselAux,
+      general1: selectedGeneral1,
+      general2: selectedGeneral2,
+      projects: selectedProjects,
+      justification: justification,
+    }));
+    // router.push('/deliveryDetails');
   }
 
   console.log("item", item);
@@ -368,10 +409,10 @@ const OrderDetails = () => {
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
                         options={general2Options} 
-                        value={selectedGeneral2} 
+                        value={selectedProjects} 
                         placeholder={'General 2'} 
                         label="General 2" 
-                        onChange={setSelectedGeneral2}/>
+                        onChange={setSelectedProjects}/>
                     </FormControl>
                   </div>
 
@@ -395,26 +436,14 @@ const OrderDetails = () => {
                     </div>
                   </div>
                   <div style={{ margin: "0 8%" }}>
-                    <div
-                      className="flex flex-col"
-                      style={{ margin: "5% 0", borderBottom: "1px solid black" }}
-                    >
-                      <label>Project <span style={{color: 'red'}}>*</span></label>
-                      <div className="flex flex-row justify-between">
-                        <div className="flex flex-row pr-2 pt-2 pb-2 pl-0">
-                          <input
-                            type="text"
-                            placeholder="Select Project"
-                            className="border-none outline-none bg-transparent"
-                            value={vesselName}
-                            onChange={changeHandler}
-                          />
-                        </div>
-                        <div style={{ fontSize: "25px", padding: "20px" }}>
-                          <AiOutlineSearch />
-                        </div>
-                      </div>
-                    </div>
+                  <FormControl fullWidth sx={{ m: 1 }} variant="filled">
+                      <SelectWithSearch 
+                        options={projectsOptions} 
+                        value={selectedGeneral1} 
+                        placeholder={'Projects'} 
+                        label="Projects" 
+                        onChange={setSelectedGeneral1}/>
+                    </FormControl>
                   </div>
                   <div style={{ margin: "0 8%" }}>
                     <div
