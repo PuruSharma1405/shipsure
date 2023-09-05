@@ -300,7 +300,9 @@ const OrderDetails = () => {
       projects: selectedProjects,
       justification: justification,
     }));
-    // router.push('/deliveryDetails');
+    setTimeout(()=> {
+      router.push('/deliveryDetails');
+    }, 100)
   }
 
   console.log("item", item);
