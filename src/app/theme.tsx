@@ -29,6 +29,20 @@ const lightTheme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#F2EEEB',
+        },
+      },
+    },
+    MuiNativeSelect: {
+      styleOverrides: {
+        select: {
+          backgroundColor: '#F2EEEB',
+        },
+      },
+    },
   }
 });
 

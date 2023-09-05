@@ -12,7 +12,7 @@ import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
 import AuthService from '@/services/authService';
 
-const ProfileDropDown: React.FC = () => {
+const ProfileDropDown= () => {
   const authService = new AuthService();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

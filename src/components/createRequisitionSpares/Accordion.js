@@ -79,16 +79,24 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
           <AccordionDetails>
             <table className="table">
               <thead>
-              <tr>
-                <th style={{textAlign:'left',position:'relative',left:'10px'}}><input type="checkbox"/></th>
-                  <th style={{textAlign:'center'}}>Part Name</th>
-                  <th style={{textAlign:'left'}}>Maker&apos;s Ref. No</th>
-                  <th style={{textAlign:'left'}}>Drawing Pos</th>
-                  <th style={{textAlign:'left'}}>UOM</th>
-                  <th style={{textAlign:'left'}}>ROB</th>
-                  <th style={{textAlign:'left'}}>Pending Orders</th>
-                  <th style={{textAlign:'left'}}>Req Qty</th>
-                  <th style={{textAlign:'left'}}>Last Purchase Cost(USD)</th>
+                <tr>
+                  <th
+                    style={{
+                      textAlign: "left",
+                      position: "relative",
+                      left: "10px",
+                    }}
+                  >
+                    <input type="checkbox" />
+                  </th>
+                  <th style={{ textAlign: "center" }}>Part Name</th>
+                  <th style={{ textAlign: "left" }}>Maker's Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Drawing Pos</th>
+                  <th style={{ textAlign: "left" }}>UOM</th>
+                  <th style={{ textAlign: "left" }}>ROB</th>
+                  <th style={{ textAlign: "left" }}>Pending Orders</th>
+                  <th style={{ textAlign: "left" }}>Req Qty</th>
+                  <th style={{ textAlign: "left" }}>Last Purchase Cost(USD)</th>
                 </tr>
               </thead>
               <tbody>
