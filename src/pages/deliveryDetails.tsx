@@ -27,55 +27,14 @@ import { SelectBox } from '@/components/common/SelectBox';
 import { SearchWithDropDown } from '@/components/common/SearchWithDropdown';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { SelectWithSearch } from '@/components/common/selectWithSearch';
-import { setDeliveryDetails } from "@/redux/reducers/requisitionSlice";
+import { selectRequisitionState, setDeliveryDetails } from "@/redux/reducers/requisitionSlice";
 import { useRouter } from 'next/router';
 
 const DeliveryDetails = () => {
   const itemValue = localStorage.getItem("itemName");
   const router = useRouter();
   const dispatch = useDispatch();
-
-
-  useEffect(() => {
-    async function fetchData() {
-      const token = await getToken();
-      const homePortRes = await getHomeList(token, {});
-      const { recordset } = homePortRes;
-      if(recordset) {
-        const homePortOptions = recordset.map((el: any) => {
-          return {
-            label: el.PrtIdDefHome,
-            value: el.PrtName
-          }
-        });
-        setHomePortOptions(homePortOptions);
-      }
-
-      const otherPortRes = await getOtherPortList(token, {});
-      if(otherPortRes?.result?.recordset) {
-        const otherPortOptions = otherPortRes.result.recordset.map((el: any) => {
-          return {
-            value: el.PrtId,
-            label: el.PrtName
-          }
-        });
-        setOtherPortOptions(otherPortOptions);
-      }
-
-      const positionList = await getPositionList(token, {});
-      if(positionList?.recordset) {
-        const otherPortOptions = positionList.recordset.map((el: any) => {
-          return {
-            label: el.PrtName,
-            value: el.PrtIdDefHome
-          }
-        });
-        setPositionListOptions(otherPortOptions);
-      }
-    }
-
-    fetchData();
-  }, []);
+  const requisitionStateData = useSelector(selectRequisitionState);
   const [item, setItem] = useState("position_list");
   const [homePortOptions, setHomePortOptions] = useState([]);
   const [selectedHomePort, setSelectedHomePort] = useState(null);
@@ -85,16 +44,60 @@ const DeliveryDetails = () => {
 
   const [positionListOptions, setPositionListOptions] = useState([]);
   const [selectedPositionList, setSelectedPositionList] = useState(null);
+  
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const deliveryDetailsState = useSelector(selectDeliveryDetailsState);
-  const [positionList, setPositionList] = useState(10);
-  const [componentName, setComponentName] = useState("");
-  const [showDropDown, setShowDropDown] = useState(false);
-  const [formData, setFormData] = useState({
-    deliveryDate: deliveryDetailsState?.deliveryDate || '',
-    deliveryPort: deliveryDetailsState?.deliveryPort || '',
-    notes: deliveryDetailsState?.notes || '',
-  });
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedDate]);
+
+  const fetchData = async () => {
+    const token = await getToken();
+    const homePortRes = await getHomeList(token, {
+      VesId: requisitionStateData.vesId,
+      CoyId: requisitionStateData.coyId,
+    });
+    const { recordset } = homePortRes;
+    if(recordset) {
+      const homePortOptions = recordset.map((el: any) => {
+        return {
+          label: el.PrtIdDefHome,
+          value: el.PrtName
+        }
+      });
+      setHomePortOptions(homePortOptions);
+    }
+
+    const otherPortRes = await getOtherPortList(token, {});
+    if(otherPortRes?.result?.recordset) {
+      const otherPortOptions = otherPortRes.result.recordset.map((el: any) => {
+        return {
+          value: el.PrtId,
+          label: el.PrtName
+        }
+      });
+      setOtherPortOptions(otherPortOptions);
+    }
+
+    const positionList = await getPositionList(token, {
+      VesselId: requisitionStateData.vesId,
+      ExpectedDeliveryDate: requisitionStateData.deliveryDate
+    });
+    if(positionList?.recordset) {
+      const otherPortOptions = positionList.recordset.map((el: any) => {
+        return {
+          label: el.PrtName,
+          value: el.PrtIdDefHome
+        }
+      });
+      setPositionListOptions(otherPortOptions);
+    }
+  }
+  
 
   const [notes, setNotes] = useState('');
   const updateNotes = (e: any) => {
@@ -113,28 +116,14 @@ const DeliveryDetails = () => {
       router.push('/orderSummary');
     }, 100)
   }
-  const changeHandler = (e: any): void => {
-    setComponentName(e.target.value);
-    setShowDropDown(true);
-  };
-
-  const fechingItem = (currItem: string) => {
-    setComponentName(currItem);
-    setShowDropDown(false);
-  };
-
   const updatePositionList = (e: any) => {
     setSelectedPositionList(e.target.value);
   }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(setDeliveryDetailsState({
-      ...formData
-    }))
   };
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
@@ -155,7 +144,7 @@ const DeliveryDetails = () => {
             <AiOutlineSearch style={{ fontSize: "25px" }} />
             <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
             <CgMenuGridO style={{ fontSize: "25px" }} />
-            {/* <ProfileDropDown /> */}
+            <ProfileDropDown />
           </div>
         </div>
         <div className="h-full w-full flex flex-row">
