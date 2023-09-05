@@ -256,6 +256,10 @@ const OrderDetails = () => {
     setSelectedSparePartType(e.target.value)
   }
 
+  const updateJustification = (e: any) => {
+    setJustification(e.target.value);
+  }
+
   const updateSelectedDepartment = (e: any) => {
     setSelectedDepartment(e.target.value)
   }
@@ -518,7 +522,7 @@ const OrderDetails = () => {
                           <MultiLineTextBox 
                             label="Justification"
                             value={justification}
-                            onChange={setJustification}
+                            onChange={updateJustification}
                           />                          
                         </FormControl>
                       </div>{" "}
