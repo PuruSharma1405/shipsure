@@ -20,7 +20,8 @@ const RequisitionDataContainer = ({basketValues,vesselBasicDetails}) => {
                 alt="Path"
                 src="https://generation-sessions.s3.amazonaws.com/abf5a8a71923e0f58e2282f69b36fd15/img/path-117.svg"
               />
-              <div className="label-text">{ `${vesselBasicDetails?.VesselName?vesselBasicDetails?.VesselName:''}-${vesselBasicDetails?.IMOnumber?vesselBasicDetails?.IMOnumber:''}`||'Seaways Athens - 9597109'}</div>
+              <div className="label-text">{ `${vesselBasicDetails?.VesselName?vesselBasicDetails?.VesselName:'Seaways Athens - 9597109'}-${vesselBasicDetails?.IMOnumber?vesselBasicDetails?.IMOnumber:''}`||'Seaways Athens - 9597109'}</div>
+              {localStorage.setItem('VESSEL_NAME',vesselBasicDetails?.IMOnumber?vesselBasicDetails?.VesselName:'Seaways Athens - 9597109')}
             </div>
           </div>
         </div>

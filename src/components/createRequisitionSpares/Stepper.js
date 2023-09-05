@@ -16,8 +16,8 @@ const steps = [
   "SUMMARY",
 ];
 
-export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+export default function HorizontalLinearStepper({currentStep}) {
+  const [activeStep, setActiveStep] = React.useState(currentStep);
   const [skipped, setSkipped] = React.useState(new Set());
 
   const isStepOptional = (step) => {

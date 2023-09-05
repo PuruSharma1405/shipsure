@@ -46,6 +46,7 @@ const CreateRequisitionSpares = () => {
   const [showSection, setShowSection] = useState(false);
   const [showAccordion, setShowAccordion] = useState(false);
   const[accordionDetails,setAccordionDetails]=useState();
+  const[currentStep,setCurrentStep]=useState(0)
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -171,7 +172,7 @@ const CreateRequisitionSpares = () => {
               </h1>
               <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
-            <HorizontalLinearStepper />
+            <HorizontalLinearStepper currentStep={currentStep} setCurrentStep={setCurrentStep}/>
             <div
               className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
               style={{ borderRadius: "20px" }}
@@ -256,11 +257,11 @@ const CreateRequisitionSpares = () => {
             </div>
             {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails}/>}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-              <Link href="/orderDetails"><p className="text-[14px]">Next</p></Link>
+              <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>setCurrentStep(1)}>Next</p></Link>
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
-          <div className="w-4/12 bg-[#E8ECED] ml-[50px] max-h-full">
+          <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
             <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
               <RequisitionDataContainer
                 height="320px"
