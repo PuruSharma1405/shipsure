@@ -330,7 +330,8 @@ const OrderDetails = () => {
       projects: selectedProjects,
       justification: justification,
       isRequiredDryDock: isRequiredDryDock,
-      isHazardousMaterial: isHazardousMaterial
+      isHazardousMaterial: isHazardousMaterial,
+      priority: item
     }));
     setTimeout(()=> {
       router.push('/deliveryDetails');

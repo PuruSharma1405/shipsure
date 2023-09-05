@@ -18,6 +18,7 @@ const initialState = {
   general2: '',
   projects: '',
   justification: '',
+  priority: '',
   isHazardousMaterial: false,
   isRequiredDryDock: false,
 
@@ -59,6 +60,7 @@ export const requisitionSlice = createSlice({
       state.justification = value.payload.justification,
       state.isHazardousMaterial = value.payload.isHazardousMaterial,
       state.isRequiredDryDock = value.payload.isRequiredDryDock
+      state.priority = value.payload.priority
     },
     setDeliveryDetails(state, value) {
       state.deliveryDate = value.payload.deliveryDate || null
