@@ -4,181 +4,49 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
-export const AccordionComponent = ({ addToBasketCallback }) => {
+import { selectClasses } from "@mui/material";
+import { setVivItems } from '../../redux/reducers/requisitionSlice';
+import { useDispatch } from "react-redux";
+export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAccordionDetails }) => {
   const [expanded, setExpanded] = useState(false);
+  const dispatch=useDispatch();
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
+  const [newStockValues, setNewStockValues] = useState(
+    accordionDetails.map(() => 0)
+  );
 
   const handleChange = (panel, index) => (event, isExpanded) => {
     console.log("expanded", expanded, panel);
     setExpanded(isExpanded ? panel : false);
-    console.log("panel", panel.slice(-1), accordionData[panel.slice(-1)]);
-    setAccordionIndexValue(accordionData[panel.slice(-1)]);
+    console.log('panel',panel);
+    setAccordionIndexValue(accordionDetails[panel.slice(-1)]);
   };
 
   console.log("accordionIndexValue", accordionIndexValue);
 
-  const accordionData = [
-    {
-      id: 1,
-      name: "M/E TURBOCHARGER#1",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 2,
-      name: "M/E TURBOCHARGER#2",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 3,
-      name: "M/E TURBOCHARGER#3",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 4,
-      name: "M/E TURBOCHARGER#4",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 5,
-      name: "M/E TURBOCHARGER#5",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-  ];
-
-  const [mockTableData, setMockTableData] = useState([
-    {
-      id: 1,
-      partName: "AIR SUCTION BRANCH",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "734.24",
-      isChecked: false,
-    },
-    {
-      id: 2,
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "82000",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      id: 3,
-      partName: "AXIAL BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "0",
-      isChecked: false,
-    },
-    {
-      id: 4,
-      partName: "BEARING BUSH",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "98",
-      isChecked: false,
-    },
-    {
-      id: 5,
-      partName: "BEARING CASINO",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-  ]);
-
   const handleCheckboxChange = (index, item) => {
     console.log("index,iten", index, item);
-    const updatedTableData = [...mockTableData];
+    const updatedTableData = [...accordionDetails];
     updatedTableData[index].isChecked = !updatedTableData[index].isChecked;
-    setMockTableData(updatedTableData);
 
     const selectedData = {
       accordionData: accordionIndexValue,
       tableData: updatedTableData[index],
     };
+    console.log('selectedData',selectedData);
 
     addToBasketCallback(selectedData);
+
+    dispatch(setVivItems(selectedData))
   };
 
-  const [reqQtyValues, setReqQtyValues] = useState(mockTableData.map(() => ""));
-
-  const handleReqQtyChange = (index, value) => {
-    const updatedMockTableData = [...mockTableData];
-    updatedMockTableData[index].reqQty = value;
-    setMockTableData(updatedMockTableData);
-  };
 
   return (
     <div>
-      {accordionData.map((item, index) => (
-        <Accordion
+      {accordionDetails?.slice(0,10)?.map((item, index) => {
+        console.log('item',item);
+       return( <Accordion
           key={index}
           expanded={expanded === `panel${index}`}
           onChange={handleChange(`panel${index}`)}
@@ -188,23 +56,23 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
             aria-controls={`panel${index}bh-content`}
             id={`panel${index}bh-header`}
           >
-            <Typography sx={{ width: "25%", flexShrink: 0 }}>
-              {item.name}
+            <Typography sx={{ width: "30%", flexShrink: 0 }}>
+              {item.VIV_Name}
             </Typography>
-            <Typography sx={{ width: "25%", color: "text.secondary" }}>
+            <Typography sx={{ width: "20%", color: "text.secondary" }}>
               Maker
               <br />
-              <span className="mt-1 font-semibold">{item.Maker}</span>
+              <span className="mt-1 font-semibold">{item.Maker?item.Maker:'-'}</span>
             </Typography>
             <Typography sx={{ width: "25%", color: "text.secondary" }}>
               Serial
               <br />
-              <span className="mt-1 font-semibold">{item.Serial}</span>
+              <span className="mt-1 font-semibold">{item.SerialNo?item.SerialNo:'-'}</span>
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
               Type
               <br />
-              <span className="mt-1 font-semibold">{item.Type}</span>
+              <span className="mt-1 font-semibold">{item.CidId?item.CidId:'-'}</span>
             </Typography>
           </AccordionSummary>
 
@@ -232,10 +100,11 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
                 </tr>
               </thead>
               <tbody>
-                {mockTableData.map((rowData, rowIndex) => {
-                  const item = accordionData.find(
+                {accordionDetails?.slice(0,8)?.map((rowData, rowIndex) => {
+                  const item = accordionDetails?.find(
                     (accordionItem) => accordionItem.id === rowData.id
                   );
+                  console.log('rowData',rowData);
                   return (
                     <tr
                       key={rowIndex}
@@ -249,24 +118,21 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
                         />
                       </td>
                       <td style={{ width: "20%", padding: "9px" }}>
-                        {rowData.partName}
+                        {rowData?.VIV_Name}
                       </td>
-                      <td style={{ width: "15%" }}>{rowData.makerRef}</td>
-                      <td style={{ width: "15%" }}>{rowData.drawingPos}</td>
-                      <td style={{ width: "10%" }}>{rowData.uom}</td>
-                      <td style={{ width: "10%" }}>{rowData.rob}</td>
-                      <td style={{ width: "10%" }}>{rowData.pendingOrders}</td>
+                      <td style={{ width: "15%" }}>{rowData?.VIV_MakersRef}</td>
+                      <td style={{ width: "15%",textAlign:'center' }}>{rowData?.VIV_DrawingPos?rowData?.VIV_DrawingPos:'-'}</td>
+                      <td style={{ width: "10%" }}>{rowData.Unit}</td>
+                      <td style={{ width: "10%" }}>{rowData.ROB}</td>
+                      <td style={{ width: "10%" }}>0</td>
                       <td style={{ width: "9%" }}>
                         <input
                           type="number"
-                          value={rowData.reqQty > 0 ? rowData.reqQty : 0}
-                          onChange={(e) =>
-                            handleReqQtyChange(rowIndex, e.target.value)
-                          }
+                          value={rowData.NewStock > 0 ? rowData.NewStock : 0}
                           style={{ width: "50%" }}
                         />
                       </td>
-                      <td style={{ width: "15 %" }}>{rowData.lastPurchase}</td>
+                      <td style={{ width: "15 %" }}>0</td>
                     </tr>
                   );
                 })}
@@ -274,7 +140,8 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
             </table>
           </AccordionDetails>
         </Accordion>
-      ))}
+       )
+})}
     </div>
   );
 };
