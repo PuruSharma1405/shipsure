@@ -6,7 +6,7 @@ interface SelectBoxProps {
   label: string;
   value: any;
   options: Array<any>;
-  onChange: (date: Date | null) => void;
+  onChange: (e: any | null) => void;
 }
 
 export const SelectBox: React.FC<SelectBoxProps> = ({ label, value, options, onChange }) => {
@@ -18,13 +18,14 @@ export const SelectBox: React.FC<SelectBoxProps> = ({ label, value, options, onC
         <NativeSelect
             defaultValue={value}
             inputProps={{
-                name: label,
-                id: label,
+              name: label,
+              id: label,
+              className : "native-select-box-global",
             }}
         >
         {options.map((option, index) => {
             return (
-                <option key={index} value={option.value}>{option.label}</option>
+                <option style={{backgroundColor: '#F2EEEB'}} key={index} value={option.value}>{option.label}</option>
             )
         })}
         </NativeSelect>
