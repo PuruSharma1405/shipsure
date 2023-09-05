@@ -15,39 +15,39 @@ export interface OrderLineItems {
   ACC_ID: number;
 }
 
-export interface OrderSummaryState {
-  VccShortCode: string;
-  VesselId: string;
-  OrdStage: string;
-  AccountingCompanyId: string;
-  OrderName: string;
-  AccountId: string;
-  OrderType: string;
-  OrderPriority: string;
-  ExpectedPortId: string;
-  ExpectedDeliveryDate: string;
-  SparePartTypeId: string;
-  IsHazardousMaterial: number;
-  EquipmentId: string;
-  OrderNotes: string;
-  ProjectId: string;
-  DepartmentId: string;
-  IsRequisitionAuthorised: string;
-  CertificateRequired: string;
-  CatalogId: string;
-  ApplicableForDryDock: string;
-  PatIdPriorityReason: string;
-  PriorityJustification: string;
-  ClaimsId: string;
-  CrewRankId: string;
-  General1Id: string;
-  General3Id: string;
-  NationalityId: string;
-  SeasonalId: string;
-  OrdAuxvessel: string;
-  CatalogueSource: string;
-  CatalogueSourceId: string;
-  UserId: string;
-  OrderLinesXML: Array<OrderLineItems>;
-  RoleIdentifier: string;
-}
+// export interface OrderSummaryState {
+//   VccShortCode: string;
+//   VesselId: string;
+//   OrdStage: string;
+//   AccountingCompanyId: string;
+//   OrderName: string;
+//   AccountId: string;
+//   OrderType: string;
+//   OrderPriority: string;
+//   ExpectedPortId: string;
+//   ExpectedDeliveryDate: string;
+//   SparePartTypeId: string;
+//   IsHazardousMaterial: number;
+//   EquipmentId: string;
+//   OrderNotes: string;
+//   ProjectId: string;
+//   DepartmentId: string;
+//   IsRequisitionAuthorised: string;
+//   CertificateRequired: string;
+//   CatalogId: string;
+//   ApplicableForDryDock: string;
+//   PatIdPriorityReason: string;
+//   PriorityJustification: string;
+//   ClaimsId: string;
+//   CrewRankId: string;
+//   General1Id: string;
+//   General3Id: string;
+//   NationalityId: string;
+//   SeasonalId: string;
+//   OrdAuxvessel: string;
+//   CatalogueSource: string;
+//   CatalogueSourceId: string;
+//   UserId: string;
+//   OrderLinesXML: Array<OrderLineItems>;
+//   RoleIdentifier: string;
+// }

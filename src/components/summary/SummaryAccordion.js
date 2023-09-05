@@ -4,8 +4,9 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { LuFileSpreadsheet } from "react-icons/lu";
 
-export const AccordionComponent = ({ addToBasketCallback }) => {
+export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
@@ -92,7 +93,6 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
       pendingOrders: "4",
       reqQty: "10",
       lastPurchase: "0",
-      isChecked: false,
     },
     {
       id: 4,
@@ -104,7 +104,6 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
       pendingOrders: "4",
       reqQty: "10",
       lastPurchase: "98",
-      isChecked: false,
     },
     {
       id: 5,
@@ -116,7 +115,6 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
       pendingOrders: "4",
       reqQty: "10",
       lastPurchase: "99767",
-      isChecked: false,
     },
     {
       partName: "AUXILLARY BEARING",
@@ -127,29 +125,6 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
       pendingOrders: "4",
       reqQty: "10",
       lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
-    },
-    {
-      partName: "AUXILLARY BEARING",
-      makerRef: "32104",
-      drawingPos: "11.2",
-      uom: "pcs",
-      rob: "0",
-      pendingOrders: "4",
-      reqQty: "10",
-      lastPurchase: "99767",
-      isChecked: false,
     },
   ]);
 
@@ -218,9 +193,7 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
                       position: "relative",
                       left: "10px",
                     }}
-                  >
-                    <input type="checkbox" />
-                  </th>
+                  ></th>
                   <th style={{ textAlign: "center" }}>Part Name</th>
                   <th style={{ textAlign: "left" }}>Maker's Ref. No</th>
                   <th style={{ textAlign: "left" }}>Drawing Pos</th>
@@ -242,11 +215,7 @@ export const AccordionComponent = ({ addToBasketCallback }) => {
                       style={{ borderBottom: "1px solid #DCE1E5" }}
                     >
                       <td style={{ width: "5%", padding: "9px" }}>
-                        <input
-                          type="checkbox"
-                          checked={rowData.isChecked}
-                          onChange={() => handleCheckboxChange(rowIndex, item)}
-                        />
+                        <LuFileSpreadsheet />
                       </td>
                       <td style={{ width: "20%", padding: "9px" }}>
                         {rowData.partName}

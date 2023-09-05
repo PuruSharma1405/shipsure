@@ -11,39 +11,19 @@ import { CgMenuGridO } from "react-icons/cg";
 import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
-import {
-  AccordionComponent,
-} from "../components/createRequisitionSpares/Accordion";
 import { useSelector } from "react-redux";
 import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepper";
-import {accordionItemsSummary} from '../app/data/accDataSummary'
+import { OrderSummaryAccordion } from "../components/summary/SummaryAccordion";
 const OrderSummary = () => {
-  const itemName = useSelector((state) => state.requisition);
+  // const itemName = useSelector();
   const itemValue = localStorage.getItem("itemName");
   const [selectedItems, setSelectedItems] = useState([]);
   const [basketValues, setBasketValues] = useState([]);
+
   const notes = `SUPPLY CERTIFICATE item 1. Width - 3 mtrs Length - 2,5 mtrs Dear Ms Jayme: Good day I will ro-back to re-order, tks. Thanks & Best Regards.Luo Pei Xin Fleet Superintendent Vships Asia Group Pte Ltd As agent and manager only for and on behalf of Owner Tel: 65-68850610DID: 65-68850345 Mob: 65-98506724 Emails:luo.peixin@vships.com Fleet-2 From: Jayme - Glazar, Ederlyn Sent: Tuesday, 29 August, 20179:47 AM To: PeiXin, Luo Subject: FW: BRIGHTOL LEAGUE CANCEL PO 3658-01255 & 3658-01245 Dear Luo, Kindly cancel following PO/ roll...`;
-  const changeHandler = (e) => {
-    setComponentName(e.target.value);
-    setShowDropDown(true);
-  };
 
-  console.log("itemNameeeee", itemName);
+  // console.log("itemNameeeee", itemName);
 
-  const fechingItem = (currItem) => {
-    setComponentName(currItem);
-    setShowDropDown(false);
-  };
-
-  const partNameChangeHandler = (e) => {
-    setPartName(e.target.value);
-    setShowDropDown(true);
-  };
-
-  const makersRefNoChangeHandler = (e) => {
-    setMakersRefNo(e.target.value);
-    setShowDropDown(true);
-  };
 
   const addToBasketCallback = (accordionData) => {
     setSelectedItems([...selectedItems, { accordionData }]);
@@ -51,9 +31,6 @@ const OrderSummary = () => {
 
   console.log("selectedComponent", selectedItems);
 
-  const addToBasket = () => {
-    setBasketValues(selectedItems);
-  };
 
   console.log("basketValues", basketValues);
 
@@ -209,7 +186,7 @@ const OrderSummary = () => {
                 </div>
               </div>
             </div>
-            <AccordionComponent addToBasketCallback={addToBasketCallback} accordionItems={accordionItemsSummary} />
+            <OrderSummaryAccordion addToBasketCallback={addToBasketCallback} />
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <p className="text-[14px]">Finish</p>
               <AiOutlineArrowRight className="ml-1" />
