@@ -24,6 +24,7 @@ import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
 import { useRouter } from 'next/router';
 import { selectRequisitionState, setOrderDetails } from "@/redux/reducers/requisitionSlice";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 
 const OrderDetails = () => {
   const [item, setItem] = useState("normal");
@@ -33,6 +34,7 @@ const OrderDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch()
   const requisitionState = useSelector(selectRequisitionState);
+  const VESSEL_NAME=localStorage.getItem('VESSEL_NAME')
 
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
@@ -75,6 +77,7 @@ const OrderDetails = () => {
   const [selectedProjects, setSelectedProjects] = useState(null);
 
   const [justification, setJustification] = useState('');
+  const itemName=localStorage.getItem('itemName')
 
   useEffect(() => {
     async function fetchData() {
@@ -318,11 +321,11 @@ const OrderDetails = () => {
         <div className="h-full w-full flex flex-row overflow-y-auto">
           <div className=" w-8/12 mt-7 ml-36 relative">
 
-          <div className="flex flex-row">
+          <div className="flex flex-row justify-between">
             <h1 className="text-2xl font-semibold">
-              Create Requisition-
+              Create Requisition-{itemName}
             </h1>
-            <AiOutlineClose style={{ fontSize: "25px" }} />
+            <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
           </div>
             <div className="flex flex-col justify-center items-center">
               <div className="w-full flex flex-col items-center  overflow-y-auto">
