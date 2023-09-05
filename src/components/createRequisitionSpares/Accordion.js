@@ -13,7 +13,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
   const [newStockValues, setNewStockValues] = useState(
-    accordionDetails.map(() => 0)
+    accordionDetails?.map(() => 0)
   );
 
   const handleChange = (panel, index) => (event, isExpanded) => {
@@ -38,7 +38,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
 
     addToBasketCallback(selectedData);
 
-    dispatch(setVivItems(selectedData))
+    // dispatch(setVivItems(selectedData))
   };
 
 

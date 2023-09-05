@@ -15,7 +15,7 @@ import AuthService from '@/services/authService';
 const ProfileDropDown= () => {
   const authService = new AuthService();
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
   const [name, setName] = useState('');
   const authState = useSelector(selectAuthState);
   useOnClickOutside(ref, () => setOpen(false));
