@@ -18,13 +18,15 @@ const initialState = {
   general2: '',
   projects: '',
   justification: '',
+  isHazardousMaterial: false,
+  isRequiredDryDock: false,
+
   deliveryDate: '',
   deliveryHomePort: '',
   deliveryOtherPort: '',
   selectedPosition: '',
   note: '',
-  isHazardousMaterial: false,
-  isRequiredDryDock: false,
+  deliveryLocation: '',
 };
 
 export const requisitionSlice = createSlice({
@@ -64,6 +66,7 @@ export const requisitionSlice = createSlice({
       state.deliveryOtherPort = value.payload.deliveryOtherPort?.value ? value.payload.deliveryOtherPort.value : null
       state.selectedPosition = value.payload.selectedPosition?.value ? value.payload.selectedPosition.value : null
       state.note = value.payload.note || null
+      state.deliveryLocation = value.payload.deliveryLocation || null
     }
   },
 });

@@ -57,10 +57,14 @@ const DeliveryDetails = () => {
 
   const fetchData = async () => {
     const token = await getToken();
-    const homePortRes = await getHomeList(token, {
-      VesId: requisitionStateData.vesId,
-      CoyId: requisitionStateData.coyId,
-    });
+    let homeListParams: any = {};
+    if(requisitionStateData.vesId) {
+      homeListParams['VesId'] = requisitionStateData.vesId
+    }
+    if(requisitionStateData.coyId) {
+      homeListParams['CoyId'] = requisitionStateData.coyId
+    }
+    const homePortRes = await getHomeList(token, homeListParams);
     const { recordset } = homePortRes;
     if(recordset) {
       const homePortOptions = recordset.map((el: any) => {
@@ -83,10 +87,14 @@ const DeliveryDetails = () => {
       setOtherPortOptions(otherPortOptions);
     }
 
-    const positionList = await getPositionList(token, {
-      VesselId: requisitionStateData.vesId,
-      ExpectedDeliveryDate: requisitionStateData.deliveryDate
-    });
+    let positionListParams: any = {};
+    if(requisitionStateData.vesId) {
+      positionListParams.VesselId = requisitionStateData.vesId
+    }
+    if(selectedDate) {
+      positionListParams.ExpectedDeliveryDate = selectedDate
+    }
+    const positionList = await getPositionList(token, positionListParams);
     if(positionList?.recordset) {
       const otherPortOptions = positionList.recordset.map((el: any) => {
         return {
@@ -110,6 +118,7 @@ const DeliveryDetails = () => {
       deliveryHomePort: selectedHomePort,
       deliveryOtherPort: selectedOtherPort,
       selectedPosition: selectedPositionList,
+      deliveryLocation: item,
       note: notes,
     }));
     setTimeout(()=> {
