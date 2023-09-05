@@ -339,7 +339,7 @@ const CreateRequisitionSpares = () => {
                   basketValues?.map((currData,index) => {
                     console.log('currDataa',currData);
                     return (
-                      <div className="flex flex-col" style={{borderBottom:'1px solid grey'}}>
+                      <div key={index} className="flex flex-col" style={{borderBottom:'1px solid grey'}}>
                         <div className="flex flex-row  justify-between items-center m-5 relative left-3">
                           <div className="flex flex-row ">
                             <h2 className="uppercase font-semibold" style={{width:'70%'}}>
