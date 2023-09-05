@@ -76,6 +76,9 @@ const OrderDetails = () => {
   const [projectsOptions, setProjectsOptions] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState(null);
 
+  const [isHazardousMaterial, setIsHazardousMaterial] = useState(false);
+  const [isRequiredDryDock, setIsRequiredDryDock] = useState(false);
+
   const [auxForVessel, setAuxForVessel] = useState({});
 
   const [justification, setJustification] = useState('');
@@ -211,7 +214,6 @@ const OrderDetails = () => {
       
       const crewRankList = await getCrewRankList(token, {});
       const crewRankListResult = crewRankList.result;
-      debugger
       if(crewRankListResult.recordset && crewRankListResult.recordset) {
         const crewRankListOptions = crewRankListResult.recordset.map((el: any) => {
           return {
@@ -299,7 +301,13 @@ const OrderDetails = () => {
     setShowDropdown(true);
   };
 
-  const handleToggle = (event: boolean) => { }
+  const updateIsHazardousMaterial = (event: any) => { 
+    setIsHazardousMaterial(event.target.checked);
+  }
+
+  const updateIsRequiredDryDock = (event: any) => { 
+    setIsRequiredDryDock(event.target.checked);
+  }
 
   const fetchingDropDownData = (vesselName: any) => {
     setVesselName(vesselName);
@@ -325,6 +333,8 @@ const OrderDetails = () => {
       general2: selectedGeneral2,
       projects: selectedProjects,
       justification: justification,
+      isRequiredDryDock: isRequiredDryDock,
+      isHazardousMaterial: isHazardousMaterial
     }));
     setTimeout(()=> {
       router.push('/deliveryDetails');
@@ -603,7 +613,7 @@ const OrderDetails = () => {
                     >
                       <label className="flex items-center">
                         <span className="mw-300">Hazardous Material Requested</span>
-                        <ToggleButton onToggle={handleToggle} />
+                        <ToggleButton onToggle={updateIsHazardousMaterial} isChecked={isHazardousMaterial} />
                       </label>
                     </div>
                   </div>
@@ -614,7 +624,7 @@ const OrderDetails = () => {
                     >
                       <label className="flex items-center">
                         <span className="mw-300">Required For Dry Dock</span>
-                        <ToggleButton onToggle={handleToggle} />
+                        <ToggleButton onToggle={updateIsRequiredDryDock} isChecked={isRequiredDryDock} />
                       </label>
                     </div>
                   </div>
