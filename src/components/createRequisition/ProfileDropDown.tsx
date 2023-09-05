@@ -42,7 +42,7 @@ const ProfileDropDown: React.FC = () => {
       </div>
       {open && (
         <div
-          className="absolute top-[105%] right-0 z-[1000] overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
+          className="absolute top-[105%] right-0 z-[1000] overflow-hidden rounded-md border-[1px] border-richblack-700 bg-white"
           ref={ref}
         >
           <Link href="/dashboard/my-profile">
