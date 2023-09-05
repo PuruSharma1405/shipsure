@@ -342,7 +342,7 @@ const OrderDetails = () => {
                         onChange={setSelectedAccountCode}/>
                     </FormControl>
                   </div>
-
+{/* 
                   <div style={{ margin: "0 8%" }}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="filled">
                       <SelectWithSearch 
@@ -418,7 +418,7 @@ const OrderDetails = () => {
                         label="General 2" 
                         onChange={setSelectedProjects}/>
                     </FormControl>
-                  </div>
+                  </div> */}
 
                   <div style={{ margin: "0 8%" }}>
                     <div
