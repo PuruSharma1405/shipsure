@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import './MegaDropDown.css';
 import useOnClickOutside from '@/hooks/useOnClickOutside';
 import axios from 'axios';
-import { setCoyId,setVesId } from "../../redux/reducers/requisitionSlice";
+import { setCoyId, setVesId } from "../../redux/reducers/requisitionSlice";
 import { useDispatch } from 'react-redux';
-
+import Image from "next/image";
+import RequisitionBasket from '../../images/RequisitionBasket.png';
+import RequisitionSpares from "../../images/RequisitionSpares.png";
+import HoverToolTip from '../common/Tooltip';
 const MegaDropDown = ({
   showDropdown,
   setShowDropdown,
@@ -81,8 +84,8 @@ const MegaDropDown = ({
       setMegaMenu(response?.data?.result?.recordset);
       dispatch(setCoyId(response?.data?.result?.recordset[0]?.AccountingCompanyId))
       dispatch(setVesId(response?.data?.result?.recordset[0]?.VesselId))
-      localStorage.setItem('vesselId',response?.data?.result?.recordset[0]?.VesselId)
-      localStorage.setItem('coyId',response?.data?.result?.recordset[0]?.AccountingCompanyId)
+      localStorage.setItem('vesselId', response?.data?.result?.recordset[0]?.VesselId)
+      localStorage.setItem('coyId', response?.data?.result?.recordset[0]?.AccountingCompanyId)
     } catch (error) {
       console.error('Error:', error);
     }
@@ -92,45 +95,39 @@ const MegaDropDown = ({
     fetchingMegaDropDown();
   }, [vesselName, token]);
 
-  const formatDate = (dateString) => {
-    if (dateString) {
-      const options = { day: 'numeric', month: 'short', year: 'numeric' };
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', options);
-    }
-    return '-';
-  };
-
   return (
     megaMenu?.length > 0 && (
       <div className="mega-dropdown" ref={ref}>
         {showDropdown && (
-          <div className="mega-dropdown-content" onScroll={handleScroll}>
+          <div className="mega-dropdown-content left-[50%] translate-x-[-50%]" onScroll={handleScroll}>
             <div className="row">
-              {Object.keys(megaDropDownKeys).map((backendKey) => (
-                <div className="column" key={backendKey}>
-                  <h2>{megaDropDownKeys[backendKey]}</h2>
-                  <ul>
-                    {megaMenu.map((currData, index) => (
-                      <li
-                        key={index}
-                        className={`${currData['VesselName'] ? 'megamenu-vesselname' : ''}`}
-                        onClick={() => clickHandler(currData)}
-                      >
-                        {backendKey.startsWith('Management') || backendKey.startsWith('VesselManagement')
-                          ? formatDate(currData[backendKey])
-                          : currData[backendKey]}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              <div className="column">
+                <ul>
+                  {megaMenu.map((currData, index) => (
+                    <li key={index} onClick={() => clickHandler(currData)} className='each-column'>
+                      <div className='coyId'>
+                        {currData['AccountingCompanyId']}
+                      </div>
+                      <div className="megamenu-vesselname">
+                        {currData['VesselName']}
+                      </div>
+                      <div>
+                        <Image src={RequisitionBasket} alt="Search" height={35} width={35} className='requisitionBasket'/>
+                        {/* <HoverToolTip tooltipContent="Tooltip for Basket" /> */}
+                      </div>
+                      <div>
+                        <Image src={RequisitionSpares} alt="Search" height={20} width={20} className='requisitionTool'/>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         )}
       </div>
     )
-  );
+  )
 };
 
 export default MegaDropDown;

@@ -20,32 +20,33 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
     console.log("expanded", expanded, panel);
     setExpanded(isExpanded ? panel : false);
     console.log('panel',panel);
-    setAccordionIndexValue(accordionDetails[panel.slice(-1)]);
+    setAccordionIndexValue(isExpanded ? accordionDetails[panel.slice(-1)] : null);
   };
 
   console.log("accordionIndexValue", accordionIndexValue);
 
   const handleCheckboxChange = (index, item) => {
-    console.log("index, item", index, item);
-  
-    const updatedTableData = { ...item };
-  
-    updatedTableData.isChecked = !updatedTableData.isChecked;
   
     const updatedAccordionDetails = [...accordionDetails];
-    updatedAccordionDetails[index] = updatedTableData;
+  
+    const updatedItem = { ...updatedAccordionDetails[index] };
+  
+    updatedItem.isChecked = !updatedItem.isChecked;
+  
+    updatedAccordionDetails[index] = updatedItem;
   
     const selectedData = {
       accordionData: accordionIndexValue,
-      tableData: updatedTableData,
+      tableData: updatedItem,
     };
-  
     console.log('selectedData', selectedData);
   
     setAccordionDetails(updatedAccordionDetails);
   
     addToBasketCallback(selectedData);
   };
+  
+  
   
 
 

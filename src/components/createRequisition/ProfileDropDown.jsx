@@ -1,6 +1,6 @@
 "use client";
 import React, {  useState,useRef, useEffect } from 'react'
-import { AiOutlineCaretDown,AiOutlineInfoCircle } from "react-icons/ai"
+import { AiOutlineCaretDown,AiOutlineInfoCircle,AiOutlineCaretUp } from "react-icons/ai"
 import { VscDashboard, VscSignOut } from "react-icons/vsc"
 import { BiUser,BiHelpCircle } from 'react-icons/bi'
 import { BsMoon } from 'react-icons/bs';
@@ -11,6 +11,8 @@ import useOnClickOutside from "../../hooks/useOnClickOutside"
 import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
 import AuthService from '@/services/authService';
+import Image from "next/image";
+import User from "../../../src/images/User.png"
 
 const ProfileDropDown= () => {
   const authService = new AuthService();
@@ -36,16 +38,17 @@ const ProfileDropDown= () => {
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
       <div className="flex items-center gap-x-1 shadow p-2 rounded-full ml-3">
-        <BiUser style={{ fontSize: '13px' }} />
-        <p>{name || 'Dale Kirkwood'}</p>
-        <AiOutlineCaretDown className="text-sm text-richblack-100" />
+        {/* <BiUser style={{ fontSize: '13px' }} /> */}
+        <Image src={User} alt="Search" height={24} width={24}/>
+        <p className='font-semibold'>{name || 'Dale Kirkwood'}</p>
+        {open?<AiOutlineCaretUp className="text-sm text-richblack-100" color="#00704b"/>:<AiOutlineCaretDown className="text-sm text-richblack-100" color="#00704b"/>}
       </div>
       {open && (
         <div
           className="absolute top-[105%] right-0 z-[1000] overflow-hidden rounded-md border-[1px] border-richblack-700 bg-white"
           ref={ref}
         >
-          <Link href="/dashboard/my-profile">
+          <Link href="/createRequisition">
             <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25 profile-dropdown">
               <BsMoon className="text-lg" />
               Dark Mode
