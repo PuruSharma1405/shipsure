@@ -17,6 +17,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({ label, value, options, onC
         </InputLabel>
         <NativeSelect
             defaultValue={value}
+            onChange={onChange}
             inputProps={{
               name: label,
               id: label,
