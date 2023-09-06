@@ -35,6 +35,9 @@ input[type='radio'] {
 } */
 
 
+.color-golden {
+  color: #80531B !important
+} 
 html,
 body {
   margin: 0;
@@ -190,4 +193,9 @@ main{
 }
 .active-step-label {
   color:#04487F;
+}
+.dialog-title{
+  display: flex;
+  padding-left: 25px;
+  align-items: center;
 }

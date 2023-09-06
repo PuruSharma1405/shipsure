@@ -45,10 +45,10 @@ export const requisitionSlice = createSlice({
     },
     setOrderDetails(state, value) {
       state.accountCode = value.payload.accountCode?.value ? value.payload.accountCode.value : null
-      state.sparePartType = value.payload.sparePartType ? value.payload.sparePartType : null
+      state.sparePartType = value.payload.sparePartType?.value ? value.payload.sparePartType.value : null
       state.fastTrackPriorityReason = value.payload.fastTrackPriorityReason?.value ? value.payload.fastTrackPriorityReason.value : null
       state.urgentPriorityReason = value.payload.urgentPriorityReason?.value ? value.payload.urgentPriorityReason.value : null
-      state.department = value.payload.department ? value.payload.department : null
+      state.department = value.payload.department?.value ? value.payload.department.value : null
       state.insuranceClaim = value.payload.insuranceClaim?.value ? value.payload.insuranceClaim.value : null
       state.seasonal = value.payload.seasonal?.value ? value.payload.seasonal.value : null
       state.nationality = value.payload.nationality?.value ? value.payload.nationality.value : null

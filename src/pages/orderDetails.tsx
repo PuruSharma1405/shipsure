@@ -11,7 +11,6 @@ import HorizontalLinearStepper from '../components/createRequisitionSpares/Stepp
 import { CgMenuGridO } from "react-icons/cg";
 import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import ToggleButton from "@/components/toggle";
 import RequisitionDataContainer from "../components/createRequisition/RequisitionDataContainer";
 import { SelectBox } from '@/components/common/SelectBox';
@@ -21,20 +20,23 @@ import { getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCo
   getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList, getAuxForVessel } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
+import CommonDialog from '@/components/common/dailog';
 import { useRouter } from 'next/router';
 import { selectRequisitionState, setOrderDetails } from "@/redux/reducers/requisitionSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { COMMON_TEXT_CONFIG } from "@/config/common";
 import Link from "next/link";
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 
 const OrderDetails = () => {
   const [item, setItem] = useState("normal");
   const [vesselName, setVesselName] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
   const [isUrgent, setIsUrgent] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch()
   const requisitionState = useSelector(selectRequisitionState);
-  const VESSEL_NAME=localStorage.getItem('VESSEL_NAME')
+  const confirmContent = COMMON_TEXT_CONFIG.CREATE_REQUISITION_URGENT_CONFIRM_TEXT;
+
 
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
@@ -83,6 +85,35 @@ const OrderDetails = () => {
 
   const [justification, setJustification] = useState('');
   const itemName=localStorage.getItem('itemName')
+
+  //for dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleDialogSave = () => {
+    setIsDialogOpen(false);
+  }
+
+  const handleDialogCancel = () => {
+    setItem('normal')
+    setIsDialogOpen(false);
+  }
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const dialogActions = [
+    {
+      label: 'Cancel',
+      onClick: handleDialogCancel,
+      color: 'secondary',
+    },
+    {
+      label: 'Save',
+      onClick: handleDialogSave,
+      color: 'primary',
+    },
+  ];
 
 
   useEffect(() => {
@@ -298,7 +329,6 @@ const OrderDetails = () => {
 
   const changeHandler = (e: any) => {
     setVesselName(e.target.value.toLowerCase());
-    setShowDropdown(true);
   };
 
   const updateIsHazardousMaterial = (event: any) => { 
@@ -309,12 +339,13 @@ const OrderDetails = () => {
     setIsRequiredDryDock(event.target.checked);
   }
 
-  const fetchingDropDownData = (vesselName: any) => {
-    setVesselName(vesselName);
-    setShowDropdown(false);
-  };
   useEffect(() => {
-    item === "urgent" ? setIsUrgent(true) : setIsUrgent(false);
+    if(item === "urgent") {
+      handleOpenDialog()
+      setIsUrgent(true)
+    } else {
+      setIsUrgent(false);
+    }
   }, [item]);
 
   const handleNext = () => {
@@ -342,7 +373,6 @@ const OrderDetails = () => {
     }, 100)
   }
 
-  console.log("item", item);
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto">
       <div className="mx-auto">
@@ -357,6 +387,15 @@ const OrderDetails = () => {
             <ProfileDropDown />
           </div>
         </div>
+
+        <CommonDialog
+          open={isDialogOpen}
+          onClose={handleDialogSave}
+          title="Confirm"
+          icon={<HelpOutlineOutlinedIcon className="color-golden" />}
+          content={confirmContent}
+          actions={dialogActions}
+        />
 
         <div className="h-full w-full flex flex-row overflow-y-auto">
           <div className=" w-8/12 mt-7 ml-36 relative">
@@ -599,12 +638,22 @@ const OrderDetails = () => {
 
                   <div style={{ margin: "0 8%" }}>
                   <FormControl fullWidth sx={{ m: 1 }} variant="filled" className="global-native-select">
-                    <SelectBox options={sparePartTypeOptions} value={selectedSparePartType} label="Spare Part Type" onChange={updateSelectedSparePartType}/>
+                    <SelectWithSearch 
+                          options={sparePartTypeOptions} 
+                          value={selectedSparePartType} 
+                          placeholder={'Select Spare Part Type'} 
+                          label="Spare Part Type" 
+                          onChange={setSelectedSparePartType}/>
                   </FormControl>
                   </div>
                   <div style={{ margin: "0 8%" }}>
                   <FormControl fullWidth sx={{ m: 1 }} variant="filled">
-                    <SelectBox options={departmentListOptions} value={selectedDepartment} label="Department" onChange={updateSelectedDepartment}/>
+                    <SelectWithSearch 
+                          options={departmentListOptions} 
+                          value={selectedDepartment} 
+                          placeholder={'Select Department'} 
+                          label="Department" 
+                          onChange={setSelectedDepartment}/>
                   </FormControl>
                   </div>
                   <div style={{ margin: "0 8%" }}>
