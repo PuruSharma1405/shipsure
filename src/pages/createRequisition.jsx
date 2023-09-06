@@ -25,10 +25,11 @@ import { useDispatch } from "react-redux"
 import AuthService from '@/services/authService';
 import { setItemName } from "../redux/reducers/requisitionSlice";
 import axios from 'axios';
-import VesselImage from '../images/VesselImage.png'
 import Image from "next/image";
+import VesselImage from '../images/VesselImage.png'
+import Search from "../images/Search.png"
 const CreateRequisition = () => {
-  const [item, setItem] = useState("consumables");
+  const [item, setItem] = useState("Consumables");
   const router = useRouter();
   const[vesselName,setVesselName]=useState('')
   const [showDropdown, setShowDropdown] = useState(false);
@@ -93,7 +94,8 @@ const CreateRequisition = () => {
               <h2>Procurement</h2>
             </div>
             <div className="search-icon mt-3 gap-3 flex items-center">
-              <AiOutlineSearch style={{ fontSize: "25px" }} />
+              {/* <AiOutlineSearch style={{ fontSize: "25px" }} /> */}
+              <Image src={Search} alt="Search" height={24} width={24}/>
               <IoMdNotificationsOutline style={{ fontSize: "25px" }}/>
               <CgMenuGridO style={{ fontSize: "25px" }} />
               <ProfileDropDown />
@@ -101,7 +103,7 @@ const CreateRequisition = () => {
           </div>
 
           <div className="h-[100vh] flex flex-col  justify-center items-center">
-            <div className="h-full w-full flex flex-col justify-center items-center relative mt-5" style={{zIndex:999}}>
+            <div className="h-full w-full flex flex-col justify-center items-center relative mt-16" style={{zIndex:999}}>
               <div className="flex flex-row items-center text-white mt-20">
                 <BsBoxSeamFill style={{ fontSize: "25px" }}/>
                 <h2 className="uppercase ml-3 font-bold">Create Requisition</h2>
@@ -113,7 +115,7 @@ const CreateRequisition = () => {
                   >
                     
                     <div className="flex flex-row p-2 items-center relative">
-                      <MdOutlineDirectionsBoat className="relative right-[15px]" />
+                      <MdOutlineDirectionsBoat  color="#697E85" className="relative right-[20px]" style={{fontSize:'25px'}} />
                       <input
                         type="text"
                         placeholder="Search vessel"
@@ -124,7 +126,7 @@ const CreateRequisition = () => {
                       />
                     </div>
                     <div style={{ fontSize: "25px" }}>
-                      <AiOutlineSearch />
+                      <AiOutlineSearch color="#697E85"/>
                     </div>
                   </div>
                   {vesselName?.length>0 && <MegaDropDown showDropdown={showDropdown} setShowDropdown={setShowDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}

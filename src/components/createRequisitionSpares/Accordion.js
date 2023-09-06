@@ -20,26 +20,34 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
     console.log("expanded", expanded, panel);
     setExpanded(isExpanded ? panel : false);
     console.log('panel',panel);
-    setAccordionIndexValue(accordionDetails[panel.slice(-1)]);
+    setAccordionIndexValue(isExpanded ? accordionDetails[panel.slice(-1)] : null);
   };
 
   console.log("accordionIndexValue", accordionIndexValue);
 
   const handleCheckboxChange = (index, item) => {
-    console.log("index,iten", index, item);
-    const updatedTableData = [...accordionDetails];
-    updatedTableData[index].isChecked = !updatedTableData[index].isChecked;
-
+  
+    const updatedAccordionDetails = [...accordionDetails];
+  
+    const updatedItem = { ...updatedAccordionDetails[index] };
+  
+    updatedItem.isChecked = !updatedItem.isChecked;
+  
+    updatedAccordionDetails[index] = updatedItem;
+  
     const selectedData = {
       accordionData: accordionIndexValue,
-      tableData: updatedTableData[index],
+      tableData: updatedItem,
     };
-    console.log('selectedData',selectedData);
-
+    console.log('selectedData', selectedData);
+  
+    setAccordionDetails(updatedAccordionDetails);
+  
     addToBasketCallback(selectedData);
-
-    // dispatch(setVivItems(selectedData))
   };
+  
+  
+  
 
 
   return (
@@ -90,7 +98,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                     <input type="checkbox" />
                   </th>
                   <th style={{ textAlign: "center" }}>Part Name</th>
-                  <th style={{ textAlign: "left" }}>Maker&apos;s Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Maker's Ref. No</th>
                   <th style={{ textAlign: "left" }}>Drawing Pos</th>
                   <th style={{ textAlign: "left" }}>UOM</th>
                   <th style={{ textAlign: "left" }}>ROB</th>

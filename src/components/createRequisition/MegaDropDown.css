@@ -3,31 +3,63 @@
     display: inline-block;
     z-index:999;
     position: 'relative';
-    right: 50%;
-    margin-top:10px;
+    margin-top:5px;
   }
   
   .mega-dropdown-content {
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 50%;
     display: flex;
     background-color: #EBE8DF;
     border: 1px solid #ddd;
-    width: 1100px;
+    width: 450px;
     max-height: 400px;
-    overflow-x: scroll;
     overflow-y: scroll;
   }
-  
-  .row {
-    display: flex;
-  }
-  
-  .column {
+
+
+  .columnId{
     flex: 1;
     padding-left:10px;
     padding-top:5px;
+    width:100px;
+  }
+  
+  .columnName {
+    flex: 1;
+    padding-left:10px;
+    padding-top:5px;
+    width:230px;
+  }
+
+  .columnBasket {
+    padding-left:10px;
+    padding-top:10px;
+  }
+
+  .columnTool{
+    padding-left:20px;
+    padding-top:5px;
+  }
+
+  .column {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+  }
+
+  .each-column{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .coyId{
+    width: 100px;
+  }
+
+  .requisitionTool{
+    margin-left: 40px;
   }
   
   ul {
@@ -43,11 +75,23 @@
 
   .column>h2{
     color: #7D7161;
-    width:130px;
   }
 
   .megamenu-vesselname{
-    width:225px;
+    width:250px;
+    position: relative;
+  }
+
+  .column {
+    flex: 1;
+    padding-left:10px;
+    padding-top:5px;
+    width:220px;
   }
   
+  .columnBasket img,
+  .columnTool img {
+    display: block;
+    margin: 0 auto; 
+  }
   
