@@ -29,7 +29,7 @@ const CommonDialog: React.FC<CommonDialogProps> = ({ open, onClose, title, conte
                 {el ? (
                     <>
                         <p key={index}>{el}</p>
-                        <br/>
+                        <br key={index+'_br'}/>
                     </>
                 ): null}
             </>

@@ -136,177 +136,201 @@ const OrderDetails = () => {
   useEffect(() => {
     async function fetchData() {
       const token = await getToken();
-      const sparePartListRes = await getSparePartList(token, {});
-      const { recordset } = sparePartListRes.result;
-      if(recordset) {
-        const sparePartOptions = recordset.map((el: any) => {
-          return {
-            label: el.SptName,
-            value: el.SptId
-          }
-        });
-        setSparePartTypeOptions(sparePartOptions);
-      }
+    
+      const promises = [
+        getSparePartList(token, {}),
+        getDepartmentList(token, {}),
+        getAccountCode(token, {
+          VesId: requisitionState.vesId,
+          CoyId: requisitionState.coyId,
+        }),
+        getPurchAttributCode(token, {
+          LookupCode: 'UrgentPriorityReason',
+        }),
+        getPurchAttributCode(token, {
+          LookupCode: 'FastTrackPriorityReason',
+        }),
+        getInsuranceClaimCoyid(token, {
+          CoyId: requisitionState.coyId,
+        }),
+        getAuxList(token, {
+          AuxCodeType: 6,
+        }),
+        getNationalityList(token, {}),
+        getCrewRankList(token, {}),
+        getVesselAUXList(token, {}),
+        getAuxList(token, {
+          AuxCodeType: 7,
+        }),
+        getAuxList(token, {
+          AuxCodeType: 10,
+        }),
+        getProjectsList(token, {
+          VesId: requisitionState.vesId,
+        }),
+      ];
 
-      const departListRes = await getDepartmentList(token, {});
-      const departListResult = departListRes.result;
-      if(departListResult.recordset) {
-        const departmentOptions = departListResult.recordset.map((el: any) => {
-          return {
-            label: el.DepName,
-            value: el.DepId
-          }
-        });
-        setDepartmentListOptions(departmentOptions);
-      }
+      Promise.all(promises).then(([
+        sparePartListRes, 
+        departListRes, 
+        accountCodeRes, 
+        purchAttributCode, 
+        fastTrackPriorityCode, 
+        insuranceClaim,
+        auxList,
+        nationalityList,
+        crewRankList,
+        vesselAux,
+        general1List,
+        general2List,
+        projects,
+        ...all]: any[]) => {
+        const { recordset: sparePartRecordset } = sparePartListRes.result;
+        if(sparePartRecordset) {
+          const sparePartOptions = sparePartRecordset.map((el: any) => {
+            return {
+              label: el.SptName,
+              value: el.SptId
+            }
+          });
+          setSparePartTypeOptions(sparePartOptions);
+        }
 
-      const accountCodeRes = await getAccountCode(token, {
-        VesId: requisitionState.vesId,
-        CoyId: requisitionState.coyId,
-      });
-      const accountCodeResult = accountCodeRes.result;
-      if(accountCodeResult.recordset) {
-        const departmentOptions = accountCodeResult.recordset.map((el: any) => {
-          return {
-            label: el.ChdDesc,
-            value: el.AccId
-          }
-        });
-        setAccountCodeOptions(departmentOptions);
-      }
-      const purchAttributCode = await getPurchAttributCode(token, {
-        LookupCode: 'UrgentPriorityReason'
-      });
-      const purchAttributCodeult = purchAttributCode.result;
-      if(purchAttributCodeult.recordset) {
-        const purchAttributCodeOptions = purchAttributCodeult.recordset.map((el: any) => {
-          return {
-            label: el.PatDescription,
-            value: el.PatId
-          }
-        });
-        setUrgentPriorityReasonOptions(purchAttributCodeOptions);
-      }
+        const departListResult = departListRes.result;
+        if(departListResult.recordset) {
+          const departmentOptions = departListResult.recordset.map((el: any) => {
+            return {
+              label: el.DepName,
+              value: el.DepId
+            }
+          });
+          setDepartmentListOptions(departmentOptions);
+        }
 
-      const fastTrackPriorityCode = await getPurchAttributCode(token, {
-        LookupCode: 'FastTrackPriorityReason'
-      });
-      const fastTrackPriorityCodeResult = fastTrackPriorityCode.result;
-      if(fastTrackPriorityCodeResult.recordset) {
-        const fastTrackPriorityCodeOptions = fastTrackPriorityCodeResult.recordset.map((el: any) => {
-          return {
-            label: el.PatDescription,
-            value: el.PatId
-          }
-        });
-        setFastTrackPriorityReasonOptions(fastTrackPriorityCodeOptions);
-      }
+        const accountCodeResult = accountCodeRes.result;
+        if(accountCodeResult.recordset) {
+          const departmentOptions = accountCodeResult.recordset.map((el: any) => {
+            return {
+              label: el.ChdDesc,
+              value: el.AccId
+            }
+          });
+          setAccountCodeOptions(departmentOptions);
+        }
 
-      
-      const insuranceClaim = await getInsuranceClaimCoyid(token, {
-        CoyId: requisitionState.coyId,
-      });
-      const insuranceClaimResult = insuranceClaim.result;
-      if(insuranceClaimResult.recordset) {
-        const departmentOptions = insuranceClaimResult.recordset.map((el: any) => {
-          return {
-            label: el.IclName,
-            value: el.IclId
-          }
-        });
-        setInsuranceClaimOptions(departmentOptions);
-      }
-      
-      const auxList = await getAuxList(token, {
-        AuxCodeType: 6
-      });
-      const auxListResult = auxList.result;
-      if(auxListResult.recordset) {
-        const departmentOptions = auxListResult.recordset.map((el: any) => {
-          return {
-            label: el.AuxDesc,
-            value: el.AuxId
-          }
-        });
-        setSeasonalOptions(departmentOptions);
-      }
-      
-      const nationalityList = await getNationalityList(token, {});
-      const nationalityListResult = nationalityList.result;
-      if(nationalityListResult.recordset) {
-        const nationalityListOptions = nationalityListResult.recordset.map((el: any) => {
-          return {
-            label: el.NatDescription,
-            value: el.NatId
-          }
-        });
-        setNationalityOptions(nationalityListOptions);
-      }
-      
-      const crewRankList = await getCrewRankList(token, {});
-      const crewRankListResult = crewRankList.result;
-      if(crewRankListResult.recordset && crewRankListResult.recordset) {
-        const crewRankListOptions = crewRankListResult.recordset.map((el: any) => {
-          return {
-            label: el.RnkDesc,
-            value: el.RnkId
-          }
-        });
-        setRankOptions(crewRankListOptions);
-      }
-      
-      const vesselAux = await getVesselAUXList(token, {});
-      const vesselAuxResult = vesselAux.result;
-      if(vesselAuxResult.recordset) {
-        const vesselAuxOptions = vesselAuxResult.recordset.map((el: any) => {
-          return {
-            label: el.RnkDesc,
-            value: el.RnkId
-          }
-        });
-        setVesselAuxOptions(vesselAuxOptions);
-      }
-      
-      const general1List = await getAuxList(token, {
-        AuxCodeType: 7
-      });
-      const general1ListResult = general1List.result;
-      if(general1ListResult.recordset) {
-        const general1ListOptions = general1ListResult.recordset.map((el: any) => {
-          return {
-            label: el.AuxDesc,
-            value: el.AuxId
-          }
-        });
-        setGeneral1Options(general1ListOptions);
-      }
-      
-      const general2List = await getAuxList(token, {
-        AuxCodeType: 10
-      });
-      const general2ListResult = general2List.result;
-      if(general2ListResult.recordset) {
-        const general2ListOptions = general2ListResult.recordset.map((el: any) => {
-          return {
-            label: el.AuxDesc,
-            value: el.AuxId
-          }
-        });
-        setGeneral2Options(general2ListOptions);
-      }
-      const projects = await getProjectsList(token, {
-        VesId: requisitionState.vesId
-      });
-      const projectsResult = projects.result;
-      if(projectsResult.recordset) {
-        const projectsOptions = projectsResult.recordset.map((el: any) => {
-          return {
-            label: el.PrjDesc,
-            value: el.PrjId
-          }
-        });
-        setProjectsOptions(projectsOptions);
-      }
+        const purchAttributCodeResult = purchAttributCode.result;
+        if(purchAttributCodeResult.recordset) {
+          const purchAttributCodeOptions = purchAttributCodeResult.recordset.map((el: any) => {
+            return {
+              label: el.PatDescription,
+              value: el.PatId
+            }
+          });
+          setUrgentPriorityReasonOptions(purchAttributCodeOptions);
+        }
+
+        const fastTrackPriorityCodeResult = fastTrackPriorityCode.result;
+        if(fastTrackPriorityCodeResult.recordset) {
+          const fastTrackPriorityCodeOptions = fastTrackPriorityCodeResult.recordset.map((el: any) => {
+            return {
+              label: el.PatDescription,
+              value: el.PatId
+            }
+          });
+          setFastTrackPriorityReasonOptions(fastTrackPriorityCodeOptions);
+        }
+
+        const insuranceClaimResult = insuranceClaim.result;
+        if(insuranceClaimResult.recordset) {
+          const departmentOptions = insuranceClaimResult.recordset.map((el: any) => {
+            return {
+              label: el.IclName,
+              value: el.IclId
+            }
+          });
+          setInsuranceClaimOptions(departmentOptions);
+        }
+
+        const auxListResult = auxList.result;
+        if(auxListResult.recordset) {
+          const departmentOptions = auxListResult.recordset.map((el: any) => {
+            return {
+              label: el.AuxDesc,
+              value: el.AuxId
+            }
+          });
+          setSeasonalOptions(departmentOptions);
+        }
+        
+        const nationalityListResult = nationalityList.result;
+        if(nationalityListResult.recordset) {
+          const nationalityListOptions = nationalityListResult.recordset.map((el: any) => {
+            return {
+              label: el.NatDescription,
+              value: el.NatId
+            }
+          });
+          setNationalityOptions(nationalityListOptions);
+        }
+
+        const crewRankListResult = crewRankList.result;
+        if(crewRankListResult.recordset && crewRankListResult.recordset) {
+          const crewRankListOptions = crewRankListResult.recordset.map((el: any) => {
+            return {
+              label: el.RnkDesc,
+              value: el.RnkId
+            }
+          });
+          setRankOptions(crewRankListOptions);
+        }
+
+        const vesselAuxResult = vesselAux.result;
+        if(vesselAuxResult.recordset) {
+          const vesselAuxOptions = vesselAuxResult.recordset.map((el: any) => {
+            return {
+              label: el.RnkDesc,
+              value: el.RnkId
+            }
+          });
+          setVesselAuxOptions(vesselAuxOptions);
+        }
+
+        const general1ListResult = general1List.result;
+        if(general1ListResult.recordset) {
+          const general1ListOptions = general1ListResult.recordset.map((el: any) => {
+            return {
+              label: el.AuxDesc,
+              value: el.AuxId
+            }
+          });
+          setGeneral1Options(general1ListOptions);
+        }
+
+        const general2ListResult = general2List.result;
+        if(general2ListResult.recordset) {
+          const general2ListOptions = general2ListResult.recordset.map((el: any) => {
+            return {
+              label: el.AuxDesc,
+              value: el.AuxId
+            }
+          });
+          setGeneral2Options(general2ListOptions);
+        }
+
+        const projectsResult = projects.result;
+        if(projectsResult.recordset) {
+          const projectsOptions = projectsResult.recordset.map((el: any) => {
+            return {
+              label: el.PrjDesc,
+              value: el.PrjId
+            }
+          });
+          setProjectsOptions(projectsOptions);
+        }
+      }).catch((error)=> {
+        console.log('something went wrong', error.message);
+      })
+
     }
     fetchData();
   }, []);
