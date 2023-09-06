@@ -82,7 +82,7 @@ const CreateRequisitionSpares = () => {
 
   const addToBasket = () => {
     setBasketValues(selectedItems);
-    dispatch(setItemsDetails(response?.data?.result?.result?.recordset))
+    dispatch(setItemsDetails(selectedItems))
   };
 
   console.log("basketValues", basketValues);
@@ -111,7 +111,7 @@ const CreateRequisitionSpares = () => {
   const searchComponents = async () => {
     try {
       const response = await axios.get(
-        `  http://192.168.201.232:3012/search-component?VES_ID=${vesselId}&ComponentName=${componentName}&SearchConsumablesComponent=1&VesROBCondition=SYST00000004,SYST00000005&PageNumber=1&PageSize=100`,
+        `  http://192.168.201.232:3012/search-component?PageNumber=1&VesROBCondition=SYST00000004,SYST00000005&VES_ID=${vesselId}&ComponentName=${componentName}&SearchBycomponent=1&SearchConsumablesComponent=0&PageSize=100`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -133,29 +133,31 @@ const CreateRequisitionSpares = () => {
     if(componentName.length>0){
     setShowAccordion(true)
     }
+    accordionValue()
   }
 
   const accordionValue = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.201.232:3012/search-component?VES_ID=GLAS00012915&SearchConsumablesComponent=1&PageNumber=1&PageSize=100&ComponentName=${componentName}`,
+        `http://192.168.201.232:3012/search-component?VES_ID=${vesselId}&SearchConsumablesComponent=1&PageNumber=1&PageSize=100&ComponentName=${componentName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      console.log('responseee',response);
       setAccordionDetails(response?.data?.result?.result?.recordset)
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  useEffect(() => {
-    accordionValue();
-  }, []);
+  // useEffect(() => {
+  //   accordionValue();
+  // }, [searchComponent]);
 
-  console.log('currentStep',currentStep);
+  console.log('',currentStep);
 
   const nextStep=()=>{
     setCurrentStep(1)
