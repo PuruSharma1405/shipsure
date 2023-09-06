@@ -43,7 +43,44 @@ const lightTheme = createTheme({
         },
       },
     },
-  }
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#F2EEEB',
+        }
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          padding: '24px 0px 24px 0px',
+
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        spacing: '20px'
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.MuiButton-containedPrimary': {
+            backgroundColor: '#1C1C17', // Primary button background color
+            color: '#FFFFFF', // Primary button text color
+          },
+          '&.MuiButton-containedSecondary': {
+            backgroundColor: '#FFFFFF', // Secondary button background color
+            color: '#1C1C17', // Secondary button text color
+          },
+        }
+      },
+    },
+  },
+  shape: {
+    borderRadius: 24, // You can adjust this value to make the buttons more or less round
+  },
 });
 
 // Create a dark theme by extending the light theme and overriding specific values
