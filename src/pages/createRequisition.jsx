@@ -129,6 +129,7 @@ const CreateRequisition = () => {
                   <Image
                     src={VesselImage}
                     alt="vesselImage"
+                    className="vesselImage"
                     style={{
                       position: "absolute",
                       top: "2px",
