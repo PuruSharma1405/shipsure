@@ -37,7 +37,7 @@ const ProfileDropDown= () => {
 
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
-      <div className="flex items-center gap-x-1 shadow p-2 rounded-full ml-3">
+      <div className="flex items-center gap-x-1 shadow p-2 rounded-full ml-3 profile-button">
         {/* <BiUser style={{ fontSize: '13px' }} /> */}
         <Image src={User} alt="Search" height={24} width={24}/>
         <p className='font-semibold'>{name || 'Dale Kirkwood'}</p>

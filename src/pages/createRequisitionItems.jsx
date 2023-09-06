@@ -50,6 +50,7 @@ const CreateRequisitionSpares = () => {
   const [showAccordion, setShowAccordion] = useState(false);
   const[accordionDetails,setAccordionDetails]=useState();
   const[currentStep,setCurrentStep]=useState(0)
+  const [reqQty, setReqQty] = useState(1);
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -152,10 +153,6 @@ const CreateRequisitionSpares = () => {
       console.error("Error:", error);
     }
   };
-
-  // useEffect(() => {
-  //   accordionValue();
-  // }, [searchComponent]);
 
   console.log('',currentStep);
 

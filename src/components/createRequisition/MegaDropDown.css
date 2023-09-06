@@ -36,6 +36,7 @@
   .columnBasket {
     padding-left:10px;
     padding-top:10px;
+    border:5px solid red;
   }
 
   .columnTool{
@@ -94,4 +95,32 @@
     display: block;
     margin: 0 auto; 
   }
+
+  @media only screen and (min-width: 310px) and  (max-width: 390px)  {
+    .coyId{
+      width:40px;
+      margin-left:55px;
+      margin-right:10px;
+    }
+  }
+
+  @media only screen and (min-width: 390px) and  (max-width: 440px)  {
+    .coyId{
+      width:60px;
+      margin-left:20px;
+    }
+  }
   
+  @media only screen  and  (max-width: 440px)  {
+    .requisitionBasket{
+      position: relative;
+      right:50px;
+    }
+  }
+
+  @media only screen  and  (max-width: 440px)  {
+    .requisitionTool {
+      position: relative;
+      right:50px;
+    }
+  }

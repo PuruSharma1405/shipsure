@@ -24,9 +24,6 @@ const DropDown= ({
   const clickHandler = (currData) => {
     fetchingDropDownData(currData['Vessel Name']);
   };
-  
-
-  
 
   return (
     <div className="mega-dropdown" ref={ref}>
