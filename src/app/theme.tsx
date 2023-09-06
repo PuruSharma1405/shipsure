@@ -43,6 +43,13 @@ const lightTheme = createTheme({
         },
       },
     },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#F2EEEB',
+        }
+      },
+    },
     MuiDialog: {
       styleOverrides: {
         paper: {
