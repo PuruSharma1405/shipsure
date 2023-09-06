@@ -51,7 +51,7 @@
     "src/components/createRequisition/MegaDropDown.js",
     "src/components/createRequisitionSpares/Stepper.js",
     "src/pages/orderSummary.tsx"
-  ],
+, "src/components/createRequisition/SuggestedRequisitions.tsx"  ],
 
   "exclude": ["node_modules"]
 }

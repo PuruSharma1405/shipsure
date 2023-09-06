@@ -5,6 +5,7 @@ const initialState = {
   coyId:"",
   vesId: "",
   itemsDetails:[],
+  vesselDetails:[],
   accountCode: '',
   sparePartType: '',
   fastTrackPriorityReason: '',
@@ -22,7 +23,6 @@ const initialState = {
   priority: '',
   isHazardousMaterial: false,
   isRequiredDryDock: false,
-
   deliveryDate: '',
   deliveryHomePort: '',
   deliveryOtherPort: '',
@@ -48,6 +48,9 @@ export const requisitionSlice = createSlice({
     },
     setItemsDetails(state,value){
       state.itemsDetails=value.payload
+    },
+    setVesselDetails(state,value){
+      state.vesselDetails=value.payload
     },
     setOrderDetails(state, value) {
       state.accountCode = value.payload.accountCode?.value ? value.payload.accountCode.value : null
@@ -81,6 +84,6 @@ export const requisitionSlice = createSlice({
 
 export const selectRequisitionState = (state) => state.requisition;
 
-export const { setItemName, setVesId, setCoyId, setItemsDetails,setOrderDetails,setDeliveryDetails } = requisitionSlice.actions;
+export const { setItemName, setVesId, setCoyId, setItemsDetails,setVesselDetails,setOrderDetails,setDeliveryDetails } = requisitionSlice.actions;
 
 export default requisitionSlice.reducer;
