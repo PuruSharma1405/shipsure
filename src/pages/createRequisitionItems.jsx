@@ -29,7 +29,7 @@ import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepp
 import axios from "axios";
 import Link from "next/link";
 import { useDispatch } from 'react-redux';
-import { setItemsDetails } from "../redux/reducers/requisitionSlice";
+import { setItemsDetails,setVesselDetails } from "../redux/reducers/requisitionSlice";
 
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -82,6 +82,7 @@ const CreateRequisitionSpares = () => {
 
   const addToBasket = () => {
     setBasketValues(selectedItems);
+    dispatch(setItemsDetails(response?.data?.result?.result?.recordset))
   };
 
   console.log("basketValues", basketValues);
@@ -97,6 +98,7 @@ const CreateRequisitionSpares = () => {
         }
       );
       setVesselBasicDetails(response?.data?.result?.recordset[0]);
+    dispatch(setVesselDetails(response?.data?.result?.recordset[0]))
     } catch (error) {
       console.error("Error:", error);
     }
@@ -144,7 +146,6 @@ const CreateRequisitionSpares = () => {
         }
       );
       setAccordionDetails(response?.data?.result?.result?.recordset)
-      dispatch(setItemsDetails(response?.data?.result?.result?.recordset))
     } catch (error) {
       console.error("Error:", error);
     }

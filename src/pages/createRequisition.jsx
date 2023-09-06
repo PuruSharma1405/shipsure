@@ -15,9 +15,6 @@ import SuggestedRequisitions from "../components/createRequisition/SuggestedRequ
 import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
 import { useRouter } from 'next/router';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import {getVesselPart} from "../services/operations/createVesselAPI";
@@ -28,6 +25,16 @@ import axios from 'axios';
 import Image from "next/image";
 import VesselImage from '../images/VesselImage.png'
 import Search from "../images/Search.png"
+import {
+  Container,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 const CreateRequisition = () => {
   const [item, setItem] = useState("Consumables");
   const router = useRouter();
@@ -94,7 +101,6 @@ const CreateRequisition = () => {
               <h2>Procurement</h2>
             </div>
             <div className="search-icon mt-3 gap-3 flex items-center">
-              {/* <AiOutlineSearch style={{ fontSize: "25px" }} /> */}
               <Image src={Search} alt="Search" height={24} width={24}/>
               <IoMdNotificationsOutline style={{ fontSize: "25px" }}/>
               <CgMenuGridO style={{ fontSize: "25px" }} />

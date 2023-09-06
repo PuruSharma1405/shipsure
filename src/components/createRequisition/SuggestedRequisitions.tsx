@@ -32,7 +32,6 @@ const SuggestedRequisitions: React.FC = () => {
             >
               <h3 className='text-xl font-bold text-[#208262] flex flex-row justify-between items-center' style={{fontSize:'1.3rem',fontFamily:'Inter'}}>
                 {currData?.requisitionName}
-                {/* <BsFillArrowUpRightCircleFill style={{ fontSize: '35px' }} /> */}
                 <Image src={SquareArrow} alt="Search" height={40} width={40}/>
               </h3>
               <div className='mt-2 flex flex-col gap-2'>
