@@ -244,6 +244,7 @@ body {
 }
 .main-grid{
   overflow-y: scroll;
+  /* margin-left: 24px; */
 }
 .height-100 {
   height: 100vh;
@@ -264,4 +265,7 @@ body {
   .MuiDialogActions-root{
     padding-right: 2em;
   }
+}
+.requisition-layout{
+
 }
