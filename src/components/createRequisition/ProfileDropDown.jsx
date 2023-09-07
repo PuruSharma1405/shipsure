@@ -12,6 +12,7 @@ import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
 import AuthService from '@/services/authService';
 import Image from "next/image";
+import PersonIcon from '@mui/icons-material/Person';
 import User from "../../../src/images/User.png"
 
 const ProfileDropDown= () => {
@@ -38,8 +39,7 @@ const ProfileDropDown= () => {
   return (
     <button className="relative" onClick={() => setOpen(!open)}>
       <div className="flex items-center gap-x-1 shadow p-2 rounded-full ml-3 profile-button">
-        {/* <BiUser style={{ fontSize: '13px' }} /> */}
-        <Image src={User} alt="Search" height={24} width={24}/>
+        <PersonIcon/>
         <p className='font-semibold'>{name || 'Dale Kirkwood'}</p>
         {open?<AiOutlineCaretUp className="text-sm text-richblack-100" color="#00704b"/>:<AiOutlineCaretDown className="text-sm text-richblack-100" color="#00704b"/>}
       </div>

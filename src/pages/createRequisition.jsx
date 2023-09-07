@@ -24,6 +24,7 @@ import { setItemName } from "../redux/reducers/requisitionSlice";
 import axios from "axios";
 import Image from "next/image";
 import VesselImage from "../images/VesselImage.png";
+import IconButton from "@mui/material/IconButton";
 import Search from "../images/Search.png";
 import {
   Container,
@@ -35,10 +36,11 @@ import {
   Paper,
   Radio,
   RadioGroup,
+  InputBase,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
 const CreateRequisition = () => {
-
-  const [item, setItem] = useState('');
+  const [item, setItem] = useState("");
   const router = useRouter();
   const [vesselName, setVesselName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -83,12 +85,13 @@ const CreateRequisition = () => {
           },
         }
       );
-      setRadioItems(response?.data?.result?.recordset)
-      const firstItem = response?.data?.result?.recordset ? response?.data?.result?.recordset[0].PatName: '';
-      
-      setItem(firstItem);
-      localStorage.setItem('itemName',firstItem);
+      setRadioItems(response?.data?.result?.recordset);
+      const firstItem = response?.data?.result?.recordset
+        ? response?.data?.result?.recordset[0].PatName
+        : "";
 
+      setItem(firstItem);
+      localStorage.setItem("itemName", firstItem);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -103,30 +106,50 @@ const CreateRequisition = () => {
       {authState.isAuthenticated ? (
         <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
           <div className="mx-auto">
-            <div className="flex justify-between w-10/12 items-center mx-auto">
-              <div className="text-2xl font-bold mt-3">
-                <h2>Procurement</h2>
-              </div>
-              <div className="search-icon mt-3 gap-3 flex items-center">
-                <Image src={Search} alt="Search" height={24} width={24} className="top-search"/>
-                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
-                <CgMenuGridO style={{ fontSize: "25px" }} />
-                <ProfileDropDown />
-              </div>
+            <div className="flex justify-between w-11/12 items-center mx-auto">
+              <Typography variant="h6" component="div">
+                Procurement
+              </Typography>
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <div className="search-icon mt-3 gap-3 flex items-center relative right-10">
+                  <Image
+                    src={Search}
+                    alt="Search"
+                    height={24}
+                    width={24}
+                    className="top-search"
+                  />
+                  <IconButton color="inherit">
+                    <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
+                  </IconButton>
+                  <IconButton color="inherit">
+                    <CgMenuGridO style={{ fontSize: "25px" }} />
+                  </IconButton>
+                  <ProfileDropDown />
+                </div>
+              </Box>
             </div>
 
             <div
               className="h-[100vh] flex flex-col  justify-center items-center"
               relative
             >
-              <div
-                className="h-[65vh] w-full flex flex-col   items-center relative mt-16"
-                style={{ zIndex: 999 }}
+              <Grid
+                container
+                spacing={2}
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: "57vh", zIndex: 999, marginTop: "10px" }}
               >
                 <div
+                  className="w-10/12 h-[500px] relative"
                   style={{
                     display: "flex",
-                    flexDirection:'column',
+                    flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -134,93 +157,175 @@ const CreateRequisition = () => {
                   <Image
                     src={VesselImage}
                     alt="vesselImage"
-                    className="vesselImage"
+                    className="vesselImage w-full"
                     style={{
                       position: "absolute",
-                      top: "2px",
+                      bottom: "15px",
                       zIndex: -10,
-                      // borderRadius: "20px",
-                      height: VesselImage.height < 450 ? "450px" : "500px",
-                      width: "auto",
+                      borderRadius: "20px",
+                      height: "500px",
                       maxWidth: "100%",
                     }}
                   />
-                <div className="flex flex-row items-center text-white mt-16">
-                  <BsBoxSeamFill style={{ fontSize: "25px" }} />
-                  <h2 className="uppercase ml-3 font-bold">
-                    Create Requisition
-                  </h2>
-                </div>
-                <Paper className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md">
-                  <div className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300 mx-5 search-vessel-wrapper">
-                    <div className="flex flex-row p-2 items-center relative">
-                      <MdOutlineDirectionsBoat
-                        color="#697E85"
-                        className="relative right-[20px] vessel-directions-boat"
-                        style={{ fontSize: "25px" }}
-                      />
-                      <input
-                        type="text"
-                        placeholder="Search vessel"
-                        required
-                        className="border-none outline-none bg-transparent ml-2 relative"
-                        value={vesselName}
-                        onChange={changeHandler}
-                      />
-                    </div>
-                    <AiOutlineSearch
-                      color="#697E85"
-                      style={{ fontSize: "25px" }}
-                      className="vessel-search"
-                    />
-                  </div>
-                  {vesselName?.length > 0 && (
-                    <MegaDropDown
-                      showDropdown={showDropdown}
-                      setShowDropdown={setShowDropdown}
-                      vesselName={vesselName}
-                      fetchingDropDownData={fetchingDropDownData}
-                    />
-                  )}
-                  <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
+                  <Grid
+                    container
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={1}
                   >
-                    <div className="requisition-radio-items">
-                    {radioItems?.map((currData, index) => (
-                      <FormControlLabel
-                        key={index}
-                        value={currData?.PatName}
-                        control={
-                          <Radio
-                            checked={item === currData?.PatName}
-                            onChange={itemChange}
-                          />
-                        }
-                        label={currData?.PatName}
+                    <Grid item>
+                      <BsBoxSeamFill
+                        style={{ fontSize: "25px", color: "white" }}
                       />
-                      ))}
+                    </Grid>
+                    <Grid item>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          textTransform: "uppercase",
+                          fontSize:'16px',
+                          color: "white",
+                        }}
+                      >
+                        Create Requisition
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                  <Paper className="w-[500px] h-[180px] flex flex-col mt-[35px] mb-4 shadow justify-center"
+                   sx={{"@media (max-width: 600px)": {
+                    height: "270px",
+                  },
+                  "@media (max-width: 480px)": {
+                    width: "300px",
+                  }, }}
+                  >
+                    <Paper
+                      elevation={3}
+                      sx={{
+                        backgroundColor: "#EBE8DF",
+                        borderRadius: "50px",
+                        border: "1px solid #ccc",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        padding: "10px",
+                        margin: "0 auto",
+                        width: "430px",
+                        maxWidth: "500px",
+                        marginTop: "20px",
+                        "@media (max-width: 768px)": {
+                          width: "80%",
+                        },
+                        "@media (max-width: 480px)": {
+                          width: "70%",
+                        },
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <MdOutlineDirectionsBoat
+                          color="#697E85"
+                          style={{ fontSize: "25px",marginLeft:"10px",marginRight: "10px" }}
+                        />
+                        <InputBase
+                          type="text"
+                          placeholder="Search Vessel"
+                          fullWidth
+                          required
+                          sx={{
+                            "& input": {
+                              border: "none",
+                              outline: "none",
+                              backgroundColor: "transparent",
+                              marginLeft: "10px",
+                            },
+                          }}
+                          value={vesselName}
+                          onChange={changeHandler}
+                        />
                       </div>
-                  </RadioGroup>
-                </Paper>
+                      <IconButton color="#71858A">
+                        <AiOutlineSearch style={{ fontSize: "25px" }} />
+                      </IconButton>
+                    </Paper>
+                    {vesselName?.length > 0 && (
+                      <MegaDropDown
+                        showDropdown={showDropdown}
+                        setShowDropdown={setShowDropdown}
+                        vesselName={vesselName}
+                        fetchingDropDownData={fetchingDropDownData}
+                      />
+                    )}
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <div className="requisition-radio-items">
+                        {radioItems?.map((currData, index) => (
+                          <FormControlLabel
+                            key={index}
+                            value={currData?.PatName}
+                            control={
+                              <Radio
+                                checked={item === currData?.PatName}
+                                onChange={itemChange}
+                              />
+                            }
+                            label={currData?.PatName}
+                          />
+                        ))}
+                      </div>
+                    </RadioGroup>
+                  </Paper>
 
-                <div className="flex gap-7 mt-7">
-                  <CTAButton
-                    linkTo={"/createRequisitionItems"}
-                    vesselName={vesselName}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: "10px",
+                    }}
                   >
-                    <div className="flex gap-2 items-center w-full justify-center p-2">
-                      <AiOutlinePlus />
-                      <span className="uppercase">Create</span>
-                    </div>
-                  </CTAButton>
+                    <CTAButton
+                      linkTo={"/createRequisitionItems"}
+                      vesselName={vesselName}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          width: "100%",
+                          justifyContent: "center",
+                          padding: "10px",
+                        }}
+                      >
+                        <AiOutlinePlus />
+                        <Typography
+                          variant="body1"
+                          sx={{ textTransform: "uppercase" }}
+                        >
+                          Create
+                        </Typography>
+                      </div>
+                    </CTAButton>
+                  </div>
                 </div>
-                </div>
-              </div>
-              <div className="h-[35vh]">
-                <SuggestedRequisitions/>
-              </div>
+              </Grid>
+              <Grid
+                container
+                spacing={2}
+                style={{ minHeight: "43vh"}}
+              >
+                <SuggestedRequisitions />
+              </Grid>
             </div>
           </div>
         </div>
