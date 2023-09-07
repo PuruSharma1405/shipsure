@@ -8,23 +8,23 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiUser } from "react-icons/bi";
 import { CgMenuGridO } from "react-icons/cg";
 import CTAButton from "../components/createRequisition/Button";
-import ProfileDropDown from "../components/createRequisition/ProfileDropDown"
-import {IoMdNotificationsOutline} from 'react-icons/io'
+import ProfileDropDown from "../components/createRequisition/ProfileDropDown";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import MegaDropDown from "../components/createRequisition/MegaDropDown";
 import SuggestedRequisitions from "../components/createRequisition/SuggestedRequisitions";
 import { selectAuthState } from "@/redux/reducers/user";
 import { useSelector } from "react-redux";
-import { useRouter } from 'next/router';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import {getVesselPart} from "../services/operations/createVesselAPI";
-import { useDispatch } from "react-redux"
-import AuthService from '@/services/authService';
+import { useRouter } from "next/router";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import { getVesselPart } from "../services/operations/createVesselAPI";
+import { useDispatch } from "react-redux";
+import AuthService from "@/services/authService";
 import { setItemName } from "../redux/reducers/requisitionSlice";
-import axios from 'axios';
+import axios from "axios";
 import Image from "next/image";
-import VesselImage from '../images/VesselImage.png'
-import Search from "../images/Search.png"
+import VesselImage from "../images/VesselImage.png";
+import Search from "../images/Search.png";
 import {
   Container,
   Typography,
@@ -32,50 +32,51 @@ import {
   TextField,
   Button,
   FormControlLabel,
+  Paper,
   Radio,
   RadioGroup,
-} from '@mui/material';
+} from "@mui/material";
 const CreateRequisition = () => {
 
   const [item, setItem] = useState('');
   const router = useRouter();
-  const[vesselName,setVesselName]=useState('')
+  const [vesselName, setVesselName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const authState = useSelector(selectAuthState);
-  const[radioItems,setRadioItems]=useState()
-  const dispatch = useDispatch()
+  const [radioItems, setRadioItems] = useState();
+  const dispatch = useDispatch();
   const authService = new AuthService();
-  const token=JSON.parse(localStorage.getItem('token'))?.access_token
- 
-  const userData =  authService.getUser();
-  const itemChange = async(e) => {
-    console.log('userData',userData);
+  const token = JSON.parse(localStorage.getItem("token"))?.access_token;
+
+  const userData = authService.getUser();
+  const itemChange = async (e) => {
+    console.log("userData", userData);
     setItem(e.target.value);
-    getVesselPart(e.target.value,token)
-    dispatch(setItemName(e.target.value))
-    localStorage.setItem('itemName',e.target.value)
+    getVesselPart(e.target.value, token);
+    dispatch(setItemName(e.target.value));
+    localStorage.setItem("itemName", e.target.value);
   };
 
   useEffect(() => {
-    if(!authState.isAuthenticated) {
-      router.push('/');
+    if (!authState.isAuthenticated) {
+      router.push("/");
     }
   }, []);
 
-  const changeHandler=(e)=>{
-    setVesselName(e.target.value.toLowerCase())
-    setShowDropdown(true)
-  }
+  const changeHandler = (e) => {
+    setVesselName(e.target.value.toLowerCase());
+    setShowDropdown(true);
+  };
 
-  const fetchingDropDownData=(vesselName)=>{
-    setVesselName(vesselName)
-    setShowDropdown(false)
-  }
+  const fetchingDropDownData = (vesselName) => {
+    setVesselName(vesselName);
+    setShowDropdown(false);
+  };
 
   const fetchingItems = async () => {
     try {
       const response = await axios.get(
-        'http://192.168.201.232:3012/purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType',
+        "http://192.168.201.232:3012/purch-attribute-lookup-code?LookupCode=VesselRequisitionOrderType",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -89,45 +90,75 @@ const CreateRequisition = () => {
       localStorage.setItem('itemName',firstItem);
 
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-  
-  useEffect(() => {  
+
+  useEffect(() => {
     fetchingItems();
   }, []);
 
   return (
     <>
-      { authState.isAuthenticated ? (
+      {authState.isAuthenticated ? (
         <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
-        <div className="mx-auto">
-          <div className="flex justify-between w-10/12 items-center mx-auto">
-            <div className="text-2xl font-bold mt-3">
-              <h2>Procurement</h2>
-            </div>
-            <div className="search-icon mt-3 gap-3 flex items-center">
-              <Image src={Search} alt="Search" height={24} width={24}/>
-              <IoMdNotificationsOutline style={{ fontSize: "25px" }}/>
-              <CgMenuGridO style={{ fontSize: "25px" }} />
-              <ProfileDropDown />
-            </div>
-          </div>
-
-          <div className="h-[100vh] flex flex-col  justify-center items-center">
-            <div className="h-full w-full flex flex-col justify-center items-center relative mt-16" style={{zIndex:999}}>
-              <div className="flex flex-row items-center text-white mt-20">
-                <BsBoxSeamFill style={{ fontSize: "25px" }}/>
-                <h2 className="uppercase ml-3 font-bold">Create Requisition</h2>
+          <div className="mx-auto">
+            <div className="flex justify-between w-10/12 items-center mx-auto">
+              <div className="text-2xl font-bold mt-3">
+                <h2>Procurement</h2>
               </div>
-                <div className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md" style={{background:'white'}}>
-                  <div
-                    className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300"
-                    style={{ margin: "0 8%",marginTop:'25px' }}
-                  >
-                    
+              <div className="search-icon mt-3 gap-3 flex items-center">
+                <Image src={Search} alt="Search" height={24} width={24} className="top-search"/>
+                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
+                <CgMenuGridO style={{ fontSize: "25px" }} />
+                <ProfileDropDown />
+              </div>
+            </div>
+
+            <div
+              className="h-[100vh] flex flex-col  justify-center items-center"
+              relative
+            >
+              <div
+                className="h-[65vh] w-full flex flex-col   items-center relative mt-16"
+                style={{ zIndex: 999 }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection:'column',
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    src={VesselImage}
+                    alt="vesselImage"
+                    className="vesselImage"
+                    style={{
+                      position: "absolute",
+                      top: "2px",
+                      zIndex: -10,
+                      // borderRadius: "20px",
+                      height: VesselImage.height < 450 ? "450px" : "500px",
+                      width: "auto",
+                      maxWidth: "100%",
+                    }}
+                  />
+                <div className="flex flex-row items-center text-white mt-16">
+                  <BsBoxSeamFill style={{ fontSize: "25px" }} />
+                  <h2 className="uppercase ml-3 font-bold">
+                    Create Requisition
+                  </h2>
+                </div>
+                <Paper className="w-[500px] h-[180px] requisition-form flex flex-col mt-[35px] mb-4 shadow justify-center rounded-md">
+                  <div className="flex flex-row justify-around items-center bg-[#EBE8DF] rounded-full p-2 border border-solid border-gray-300 mx-5 search-vessel-wrapper">
                     <div className="flex flex-row p-2 items-center relative">
-                      <MdOutlineDirectionsBoat  color="#697E85" className="relative right-[20px]" style={{fontSize:'25px'}} />
+                      <MdOutlineDirectionsBoat
+                        color="#697E85"
+                        className="relative right-[20px] vessel-directions-boat"
+                        style={{ fontSize: "25px" }}
+                      />
                       <input
                         type="text"
                         placeholder="Search vessel"
@@ -137,42 +168,64 @@ const CreateRequisition = () => {
                         onChange={changeHandler}
                       />
                     </div>
-                    <div style={{ fontSize: "25px" }}>
-                      <AiOutlineSearch color="#697E85"/>
-                    </div>
+                    <AiOutlineSearch
+                      color="#697E85"
+                      style={{ fontSize: "25px" }}
+                      className="vessel-search"
+                    />
                   </div>
-                  {vesselName?.length>0 && <MegaDropDown showDropdown={showDropdown} setShowDropdown={setShowDropdown} vesselName={vesselName} fetchingDropDownData={fetchingDropDownData}/>}
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
-                    >
-                      {
-                        radioItems?.map((currData,index)=>{
-                          return (
-                            <div key={index}>
-                             <FormControlLabel value={currData?.PatName} control={<Radio checked={item === currData?.PatName} onChange={itemChange}/>} label={currData?.PatName} />
-                          </div>
-                        )})
-                      }
-                    </RadioGroup>
-                </div>
-                <div className="flex gap-7 mt-7 w-[500px]">
-                  <CTAButton linkTo={"/createRequisitionItems"} vesselName={vesselName}>
+                  {vesselName?.length > 0 && (
+                    <MegaDropDown
+                      showDropdown={showDropdown}
+                      setShowDropdown={setShowDropdown}
+                      vesselName={vesselName}
+                      fetchingDropDownData={fetchingDropDownData}
+                    />
+                  )}
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <div className="requisition-radio-items">
+                    {radioItems?.map((currData, index) => (
+                      <FormControlLabel
+                        key={index}
+                        value={currData?.PatName}
+                        control={
+                          <Radio
+                            checked={item === currData?.PatName}
+                            onChange={itemChange}
+                          />
+                        }
+                        label={currData?.PatName}
+                      />
+                      ))}
+                      </div>
+                  </RadioGroup>
+                </Paper>
+
+                <div className="flex gap-7 mt-7">
+                  <CTAButton
+                    linkTo={"/createRequisitionItems"}
+                    vesselName={vesselName}
+                  >
                     <div className="flex gap-2 items-center w-full justify-center p-2">
                       <AiOutlinePlus />
                       <span className="uppercase">Create</span>
                     </div>
                   </CTAButton>
                 </div>
-              <Image src={VesselImage} alt="vesselImage" height={900} width={1400} style={{position:'absolute',top:'2px',zIndex:-10,borderRadius:'20px'}}/>
+                </div>
+              </div>
+              <div className="h-[35vh]">
+                <SuggestedRequisitions/>
+              </div>
             </div>
-            <SuggestedRequisitions/>
           </div>
         </div>
-      </div>
-      ): null }
-      </>
+      ) : null}
+    </>
   );
 };
 
