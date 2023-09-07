@@ -269,7 +269,7 @@ const CreateRequisition = () => {
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
                     >
-                      <div className="requisition-radio-items">
+                      <div className="relative bottom-3 requisition-radio-items">
                         {radioItems?.map((currData, index) => (
                           <FormControlLabel
                             key={index}
