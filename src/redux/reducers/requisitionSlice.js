@@ -74,7 +74,6 @@ export const requisitionSlice = createSlice({
       state.orderTitle = value.payload.orderTitle
     },
     setDeliveryDetails(state, value) {
-      debugger
       state.deliveryDate = value.payload.deliveryDate || null
       state.deliveryHomePort = value.payload.deliveryHomePort ? value.payload.deliveryHomePort : null
       state.deliveryOtherPort = value.payload.deliveryOtherPort ? value.payload.deliveryOtherPort : null
