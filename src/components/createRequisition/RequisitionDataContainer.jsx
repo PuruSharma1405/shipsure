@@ -3,7 +3,12 @@ import "./RequisitionDataContainer.css";
 
 const RequisitionDataContainer = ({basketValues,vesselBasicDetails}) => {
 
-  console.log('basketValues',basketValues);
+  console.log('vesselBasicDetails',vesselBasicDetails);
+
+  const dateBuilt = vesselBasicDetails?.VES_DateBuilt
+  ? new Date(vesselBasicDetails?.VES_DateBuilt).toLocaleDateString()
+  : "N/A";
+
   return (
     <div className="frame">
       <img
@@ -26,31 +31,35 @@ const RequisitionDataContainer = ({basketValues,vesselBasicDetails}) => {
           </div>
         </div>
         <div className="div-2">
-          <div className="div-3">
-            <img
-              className="vector"
-              alt="Vector"
-              src="https://generation-sessions.s3.amazonaws.com/abf5a8a71923e0f58e2282f69b36fd15/img/vector.svg"
-            />
-            <div className="financials">FINANCIALS</div>
-          </div>
           <div className="div-4">
-            <div className="frame-wrapper">
+          <div className="div-wrapper">
               <div className="div-5">
-                <div className="text-wrapper">Budget : Actual YTD</div>
-                <div className="text-wrapper-2"> { `${vesselBasicDetails?.Budget || '1.95M - 2.34M'}`}</div>
+                <div className="text-wrapper">IMO</div>
+                <div className="text-wrapper-2">{vesselBasicDetails?.IMOnumber}</div>
               </div>
             </div>
             <div className="div-wrapper">
               <div className="div-5">
-                <div className="text-wrapper">Accrual</div>
-                <div className="text-wrapper-2">-39.46%</div>
+                <div className="text-wrapper">Type of vessel</div>
+                <div className="text-wrapper-2">{vesselBasicDetails?.VesselType}</div>
               </div>
             </div>
             <div className="div-wrapper">
               <div className="div-5">
-                <div className="text-wrapper">Variance</div>
-                <div className="text-wrapper-2">386.1K</div>
+                <div className="text-wrapper">Vessel Build Date</div>
+                <div className="text-wrapper-2">{dateBuilt}</div>
+              </div>
+            </div>
+            <div className="div-wrapper">
+              <div className="div-5">
+                <div className="text-wrapper">Age</div>
+                <div className="text-wrapper-2">{vesselBasicDetails?.VesselAgeInYears}</div>
+              </div>
+            </div>
+            <div className="div-wrapper">
+              <div className="div-5">
+                <div className="text-wrapper">Budget-Actual YTD</div>
+                <div className="text-wrapper-2">{vesselBasicDetails?.Budget?vesselBasicDetails?.Budget:'392.4M'}</div>
               </div>
             </div>
           </div>
