@@ -422,7 +422,7 @@ const OrderDetails = () => {
       </div>
       <div className="flex flex-row justify-between">
         <h1 className="text-2xl font-semibold">
-          Create Requisition-{itemName}
+          Create Requisition - {itemName}
         </h1>
         <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
       </div>
