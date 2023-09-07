@@ -18,7 +18,7 @@ interface CommonDialogProps {
 const CommonDialog: React.FC<CommonDialogProps> = ({ open, onClose, title, content, actions, icon }) => {
     const contentWithNewLine = content?.toLocaleString().split('\n');
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} className='dialog-padding' sx={{p: '24px 0px 24px 0px'}}>
       <div className='color-golden dialog-title'>
         {icon && (<Avatar>{icon}</Avatar>)}
         {title && <DialogTitle>{title}</DialogTitle>}

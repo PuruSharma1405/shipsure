@@ -63,20 +63,20 @@ const lightTheme = createTheme({
     //     spacing: '20px'
     //   },
     // },
-    // MuiButton: {
-    //   styleOverrides: {
-    //     root: {
-    //       '&.MuiButton-containedPrimary': {
-    //         backgroundColor: '#1C1C17', // Primary button background color
-    //         color: '#FFFFFF', // Primary button text color
-    //       },
-    //       '&.MuiButton-containedSecondary': {
-    //         backgroundColor: '#FFFFFF', // Secondary button background color
-    //         color: '#1C1C17', // Secondary button text color
-    //       },
-    //     }
-    //   },
-    // },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.MuiButton-containedPrimary': {
+            backgroundColor: '#1C1C17', // Primary button background color
+            color: '#FFFFFF', // Primary button text color
+          },
+          '&.MuiButton-containedSecondary': {
+            backgroundColor: '#FFFFFF', // Secondary button background color
+            color: '#1C1C17', // Secondary button text color
+          },
+        }
+      },
+    },
   },
   shape: {
     borderRadius: 24, // You can adjust this value to make the buttons more or less round
