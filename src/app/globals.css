@@ -156,14 +156,13 @@ main{
   }
 }
 
-    @media only screen and (min-width:310px) and (max-width: 600px)  {
       .suggested-requisition-details{
-        display: flex;
+    display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     margin:0 auto;
+    position: relative;
       }
-    }
 
 @media only screen and (max-width: 310px)  {
   .suggested-requisition-details{
@@ -180,6 +179,29 @@ main{
   .profile-button{
     width:170px;
   }
+}
+
+.suggested-requisition-title{
+  background-color: #80E7FF;
+  width: 150px;
+  border-radius:2px;
+}
+
+.suggested-requisition-title-icon{
+  margin-left:5px;
+}
+
+.suggested-requisition-title-data{
+  margin-left:10px;
+  padding:2px;
+}
+
+.suggested-requisition-name{
+  justify-content: space-between;
+}
+
+.suggested-requisition-content{
+  width: 100%;
 }
 
 @media only screen and (max-width: 500px)  {
