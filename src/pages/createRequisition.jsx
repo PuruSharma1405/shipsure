@@ -105,7 +105,7 @@ const CreateRequisition = () => {
   return (
     <>
       {authState.isAuthenticated ? (
-        <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-auto create-requisition">
+        <div className="h-[100vh]  relative w-[100vw] bg-[#F5F5F5] overflow-x-hidden overflow-y-hidden create-requisition">
           <div className="mx-auto">
             <div className="flex justify-between w-11/12 items-center mx-auto">
               <Typography variant="h6" component="div">
@@ -324,7 +324,7 @@ const CreateRequisition = () => {
               </Grid>
               <Grid
                 container
-                spacing={2}
+                rowSpacing={1}
                 style={{ minHeight: "43vh"}}
               >
                 <SuggestedRequisitions />

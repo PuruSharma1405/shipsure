@@ -30,12 +30,12 @@ const SuggestedRequisitions: React.FC = () => {
 
   console.log('suggestedRequisitions', suggestedRequisitions);
   return (
-    <Box bgcolor="#E8ECED" width="100vw" py={2} minHeight="45vh" display="flex">
+    <Box bgcolor="#E8ECED" width="100vw" py={1} minHeight="45vh" display="flex">
       <Box  mx="auto" className="w-10/12">
         <Typography variant="h5" fontWeight="bold">
           Suggested Requisitions
         </Typography>
-        <Grid container spacing={2} style={{marginTop:'5px'}}>
+        <Grid container spacing={3} style={{marginTop:'5px'}}>
           {suggestedRequisitions?.map((currData, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={2.4}>
               <Card elevation={3}>
