@@ -92,19 +92,19 @@ const SuggestedRequisitions: React.FC = () => {
         </Typography>
         <Grid container spacing={2} className="suggested-requisition" style={{marginTop:'15px'}}>
           {suggestedRequisitions?.map((currData, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-              <Card elevation={3} className="w-[300px] h-[300px] mb-3 suggested-requisition-details">
-                <CardContent>
-                  <Typography variant="h6" fontWeight="bold" color="#208262" style={{ fontSize: '1.3rem', fontFamily: 'Inter',display:'flex',flexDirection:'row',alignItems:'center' }}>
-                    {currData?.requisitionName}
+            <Grid item key={index} xs={12} sm={6} md={4} lg={2.4}>
+              <Card elevation={3} className="w-[300px] h-[315px] mb-3 suggested-requisition-details">
+                <CardContent className='suggested-requisition-content'>
+                  <Typography variant="h6" fontWeight="bold" color="#208262" style={{ fontSize: '1.3rem', fontFamily: 'Inter',display:'flex',flexDirection:'row',alignItems:'center' }} className='w-full suggested-requisition-name'>
+                    <p className='suggested-requisition-name-data'>{currData?.requisitionName}</p>
                     <IconButton>
                       <Image src={SquareArrow} alt="Search" height={40} width={40} />
                     </IconButton>
                   </Typography>
                   <Box mt={2} display="flex" flexDirection="column" gap={2}>
-                    <Typography variant="subtitle1" color="#1b6697" style={{ borderRadius: '10px', display: 'flex', alignItems: 'center', fontFamily: 'Inter', fontWeight: '600' }}>
-                      <MdOutlineDirectionsBoat className="relative" />
-                      <span className="ml-1">{currData?.title}</span>
+                    <Typography variant="subtitle1" color="#1b6697" style={{ borderRadius: '10px', display: 'flex', alignItems: 'center', fontFamily: 'Inter', fontWeight: '600' }} className='suggested-requisition-title'>
+                      <MdOutlineDirectionsBoat className="relative suggested-requisition-title-icon" />
+                      <span className="ml-1 suggested-requisition-title-data">{currData?.title}</span>
                     </Typography>
                     <Typography variant="body1" color="#244845" style={{ fontFamily: 'Inter', fontWeight: '500' }}>{currData?.desc1}</Typography>
                     <Typography variant="body1" color="#244845" style={{ fontFamily: 'Inter', fontWeight: '500' }}>{currData?.desc2}</Typography>
