@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { COMMON_TEXT_CONFIG } from "@/config/common";
 import Link from "next/link";
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { IAuxForVessel } from '@/interfaces/index';
+import { IAuxForVessel, IOption } from '@/interfaces/index';
 import Layout from '@/components/common/requisitionLayout';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -37,56 +37,70 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import FormLabel from '@mui/material/FormLabel';
+import { Button, Grid, FormHelperText } from '@mui/material';
 
 const OrderDetails = () => {
   const [item, setItem] = useState("normal");
-  const [vesselName, setVesselName] = useState("");
+  const [orderTitle, setOrderTitle] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch()
   const requisitionState = useSelector(selectRequisitionState);
   const confirmContent = COMMON_TEXT_CONFIG.CREATE_REQUISITION_URGENT_CONFIRM_TEXT;
 
-
+  const [orderTitleError, setOrderTitleError] = useState("");
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
-  const [selectedSparePartType, setSelectedSparePartType] = useState(null);
+  const [selectedSparePartType, setSelectedSparePartType] = useState<IOption>({});
+  const [selectedSparePartTypeError, setSelectedSparePartTypeError] = useState('');
 
   const [departmentListOptions, setDepartmentListOptions] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<IOption>({});
+  const [selectedDepartmentError, setSelectedDepartmentError] = useState('');
 
   const [accountCodeOptions, setAccountCodeOptions] = useState([]);
-  const [selectedAccountCode, setSelectedAccountCode] = useState(null);
+  const [selectedAccountCode, setSelectedAccountCode] = useState<IOption>({});
+  const [selectedAccountCodeError, setSelectedAccountCodeError] = useState('');
 
   const [urgentPriorityReasonOptions, setUrgentPriorityReasonOptions] = useState([]);
-  const [selectedUrgentPriorityReason, setSelectedUrgentPriorityReason] = useState(null);
+  const [selectedUrgentPriorityReason, setSelectedUrgentPriorityReason] = useState<IOption>({});
+  const [selectedUrgentPriorityReasonError, setSelectedUrgentPriorityReasonError] = useState('');
 
   const [fastTrackPriorityReasonOptions, setFastTrackPriorityReasonOptions] = useState([]);
-  const [selectedFastTrackPriorityReason, setSelectedFastTrackPriorityReason] = useState(null);
+  const [selectedFastTrackPriorityReason, setSelectedFastTrackPriorityReason] = useState<IOption>({});
+  const [selectedFastTrackPriorityReasonError, setSelectedFastTrackPriorityReasonError] = useState('');
 
   const [insuranceClaimOptions, setInsuranceClaimOptions] = useState([]);
-  const [selectedInsuranceClaim, setSelectedInsuranceClaim] = useState(null);
+  const [selectedInsuranceClaim, setSelectedInsuranceClaim] = useState<IOption>({});
+  const [selectedInsuranceClaimError, setSelectedInsuranceClaimError] = useState('');
 
   const [seasonalOptions, setSeasonalOptions] = useState([]);
-  const [selectedSeasonal, setSelectedSeasonal] = useState(null);
+  const [selectedSeasonal, setSelectedSeasonal] = useState<IOption>({});
+  const [selectedSeasonalError, setSelectedSeasonalError] = useState('');
 
   const [nationalityOptions, setNationalityOptions] = useState([]);
-  const [selectedNationality, setSelectedNationality] = useState(null);
+  const [selectedNationality, setSelectedNationality] = useState<IOption>({});
+  const [selectedNationalityError, setSelectedNationalityError] = useState('');
 
   const [rankOptions, setRankOptions] = useState([]);
-  const [selectedRank, setSelectedRank] = useState(null);
+  const [selectedRank, setSelectedRank] = useState<IOption>({});
+  const [selectedRankError, setSelectedRankError] = useState('');
 
   const [vesselAuxOptions, setVesselAuxOptions] = useState([]);
-  const [selectedVesselAux, setSelectedVesselAux] = useState(null);
+  const [selectedVesselAux, setSelectedVesselAux] = useState<IOption>({});
+  const [selectedVesselAuxError, setSelectedVesselAuxError] = useState('');
 
   const [general1Options, setGeneral1Options] = useState([]);
-  const [selectedGeneral1, setSelectedGeneral1] = useState(null);
+  const [selectedGeneral1, setSelectedGeneral1] = useState<IOption>({});
+  const [selectedGeneral1Error, setSelectedGeneral1Error] = useState('');
 
   const [general2Options, setGeneral2Options] = useState([]);
-  const [selectedGeneral2, setSelectedGeneral2] = useState(null);
+  const [selectedGeneral2, setSelectedGeneral2] = useState<IOption>({});
+  const [selectedGeneral2Error, setSelectedGeneral2Error] = useState('');
 
   const [projectsOptions, setProjectsOptions] = useState([]);
-  const [selectedProjects, setSelectedProjects] = useState(null);
+  const [selectedProjects, setSelectedProjects] = useState<IOption>({});
+  const [selectedProjectsError, setSelectedProjectsError] = useState('');
 
   const [isHazardousMaterial, setIsHazardousMaterial] = useState(false);
   const [isRequiredDryDock, setIsRequiredDryDock] = useState(false);
@@ -94,8 +108,19 @@ const OrderDetails = () => {
   const [auxForVessel, setAuxForVessel] = useState<IAuxForVessel>({});
 
   const [justification, setJustification] = useState('');
+  const [justificationError, setJustificationError] = useState('');
   const itemName = localStorage.getItem('itemName')
+  
+  // for error handling
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
+  useEffect(() => {
+    setIsFormSubmitted(false);
+  }, [selectedSparePartType, selectedDepartment, selectedAccountCode, 
+      selectedUrgentPriorityReason, selectedFastTrackPriorityReason, 
+      selectedInsuranceClaim, selectedSeasonal, selectedNationality, 
+      selectedRank, selectedVesselAux, selectedGeneral1, 
+      selectedGeneral2, selectedProjects, justification, orderTitle])
   //for dialog
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -362,7 +387,7 @@ const OrderDetails = () => {
   };
 
   const changeHandler = (e: any) => {
-    setVesselName(e.target.value.toLowerCase());
+    setOrderTitle(e.target.value.toLowerCase());
   };
 
   const updateIsHazardousMaterial = (event: any) => {
@@ -371,6 +396,128 @@ const OrderDetails = () => {
 
   const updateIsRequiredDryDock = (event: any) => {
     setIsRequiredDryDock(event.target.checked);
+  }
+
+  const validateData = (): boolean => {
+       let isValid = true;
+       setIsFormSubmitted(true);
+
+       if(!selectedAccountCode || !selectedAccountCode?.value || !selectedAccountCode.value.trim()) {
+          setSelectedAccountCodeError('Please Select Account Code')
+          isValid = false;
+       } else {
+          setSelectedAccountCodeError('')
+       }
+       if(!orderTitle || !orderTitle.trim()) {
+          setOrderTitleError('Please Enter Order Title')
+          isValid = false;
+       } else {
+          setOrderTitleError('')
+       }
+
+        if(!selectedProjects || !selectedProjects.value || !selectedProjects.value.trim()) {
+          setSelectedProjectsError('Please Select Projects')
+          isValid = false;
+        } else {
+          setSelectedProjectsError('');
+
+        }
+
+        if(!selectedSparePartType || !selectedSparePartType.value || !selectedSparePartType.value.trim()) {
+          setSelectedSparePartTypeError('Please Select Spare Part Type')
+          isValid = false;
+        } else {
+          setSelectedSparePartTypeError('')
+        }
+        
+        if(!selectedDepartment || !selectedDepartment.value || !selectedDepartment.value.trim()) {
+          setSelectedDepartmentError('Please Select Department')
+          isValid = false;
+        } else {
+          setSelectedDepartmentError('');
+        }
+
+        // for urgent priority
+        if(item === 'urgent') {
+          if(!selectedUrgentPriorityReason || !selectedUrgentPriorityReason.value || !selectedUrgentPriorityReason.value.trim()) {
+            setSelectedUrgentPriorityReasonError('Please Select Urgent Priority reason')
+            isValid = false;
+          } else {
+            setSelectedUrgentPriorityReasonError('');
+          }
+          if(!justification || !justification || !justification.trim()) {
+            setJustificationError('Please Select Justification')
+            isValid = false;
+          } else {
+            setJustificationError('');
+          }
+        }
+ 
+        // for fast track priority
+        if(item === 'fasttrack') {
+          if(!selectedFastTrackPriorityReason || !selectedFastTrackPriorityReason.value || !selectedFastTrackPriorityReason.value.trim()) {
+            setSelectedFastTrackPriorityReasonError('Please Select Urgent Priority reason')
+            isValid = false;
+          } else {
+            setSelectedUrgentPriorityReasonError('');
+          }
+        }
+
+        // for based on account visible field
+        if(auxForVessel) {
+          if(auxForVessel['ChdAuxClaims'] && (!selectedInsuranceClaim || !selectedInsuranceClaim.value || !selectedInsuranceClaim.value.trim())){
+            setSelectedInsuranceClaimError('Please Select Insurance Claim')
+            isValid = false;
+          } else {
+            setSelectedInsuranceClaimError('')
+          }
+
+          if(auxForVessel['ChdAuxSeasonal'] && (!selectedSeasonal || !selectedSeasonal.value || !selectedSeasonal.value.trim())){
+            setSelectedSeasonalError('Please Select Seasonal')
+            isValid = false;
+          } else {
+            setSelectedSeasonalError('')
+          }
+
+          if(auxForVessel['ChdAuxNationality'] && (!selectedNationality || !selectedNationality.value || !selectedNationality.value.trim())){
+            setSelectedNationalityError('Please Select Nationality')
+            isValid = false;
+          } else {
+            setSelectedNationalityError('')
+          }
+
+          if(auxForVessel['ChdAuxRank'] && (!selectedRank || !selectedRank.value || !selectedRank.value.trim())){
+            setSelectedRankError('Please Select Rank')
+            isValid = false;
+          } else {
+            setSelectedRankError('')
+          }
+          // right now we don't have data for vessel AUX So we temparory remove this validation
+          // if(auxForVessel.ChdAuxVessel && (!selectedVesselAux || !selectedVesselAux.value || !selectedVesselAux.value.trim())){
+          //   setSelectedVesselAuxError('Please Select Vessel Aux')
+          //   isValid = false;
+          // } else {
+          //   setSelectedVesselAuxError('')
+          // }
+
+          if(auxForVessel.ChdAuxGen1 && (!selectedGeneral1 || !selectedGeneral1.value || !selectedGeneral1.value.trim())){
+            setSelectedGeneral1Error('Please Select general 1')
+            isValid = false;
+          } else {
+            setSelectedGeneral1Error('')
+          }
+
+          if(auxForVessel.ChdAuxgen3 && (!selectedGeneral2 || !selectedGeneral2.value || !selectedGeneral2.value.trim())){
+            setSelectedGeneral2Error('Please Select General 3')
+            isValid = false;
+          } else {
+            setSelectedGeneral2Error('')
+          }
+
+        }
+
+
+       return isValid;
   }
 
   useEffect(() => {
@@ -383,6 +530,9 @@ const OrderDetails = () => {
   }, [item]);
 
   const handleNext = () => {
+    if(!validateData()) {
+      return;  
+    }
     dispatch(setOrderDetails({
       accountCode: selectedAccountCode,
       sparePartType: selectedSparePartType,
@@ -400,11 +550,16 @@ const OrderDetails = () => {
       justification: justification,
       isRequiredDryDock: isRequiredDryDock,
       isHazardousMaterial: isHazardousMaterial,
-      priority: item
+      priority: item,
+      orderTitle: orderTitle
     }));
     setTimeout(() => {
       router.push('/deliveryDetails');
     }, 100)
+  }
+
+  const handlePrevious = () => {
+    router.push('/createRequisitionItems');
   }
 
   return (
@@ -438,8 +593,9 @@ const OrderDetails = () => {
 
 
       <HorizontalLinearStepper />
-      <div className="flex justify-center">
+      <div className="flex justify-center margin-top-20-px">
         <Card variant="outlined" sx={{
+          backgroundColor: '#F5F5F5',
           width: {
             xs: '90%',
             sm: '65%',
@@ -453,8 +609,15 @@ const OrderDetails = () => {
                 options={accountCodeOptions}
                 value={selectedAccountCode}
                 placeholder={'Enter Account Code'}
-                label="Account Code"
+                label={
+                  <span>
+                    Account Code<span style={{ color: 'red' }}>*</span>
+                  </span>
+                }
                 onChange={setSelectedAccountCode} />
+                {(selectedAccountCodeError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedAccountCodeError}</FormHelperText>
+                }
             </FormControl>
 
             {auxForVessel && auxForVessel['ChdAuxClaims'] ? (
@@ -463,8 +626,15 @@ const OrderDetails = () => {
                   options={insuranceClaimOptions}
                   value={selectedInsuranceClaim}
                   placeholder={'Select Insurance Claim'}
-                  label="Insurance Claim"
+                  label={
+                    <span>
+                      Insurance Claim<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedInsuranceClaim} />
+                {(selectedInsuranceClaimError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedInsuranceClaimError}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -474,8 +644,15 @@ const OrderDetails = () => {
                   options={seasonalOptions}
                   value={selectedSeasonal}
                   placeholder={'Seasonal'}
-                  label="Seasonal"
+                   label={
+                    <span>
+                      Seasonal<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedSeasonal} />
+                {(selectedSeasonalError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedSeasonalError}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -485,8 +662,15 @@ const OrderDetails = () => {
                   options={nationalityOptions}
                   value={selectedNationality}
                   placeholder={'Nationality'}
-                  label="Nationality"
+                   label={
+                    <span>
+                      Nationality <span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedNationality} />
+                {(selectedNationalityError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedNationalityError}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -496,8 +680,15 @@ const OrderDetails = () => {
                   options={rankOptions}
                   value={selectedRank}
                   placeholder={'Rank'}
-                  label="Rank"
+                  label={
+                    <span>
+                      Rank<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedRank} />
+                {(selectedRankError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedRankError}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -509,6 +700,9 @@ const OrderDetails = () => {
                   placeholder={'Vessel Aux'}
                   label="Vessel Aux"
                   onChange={setSelectedVesselAux} />
+                {(selectedVesselAuxError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedVesselAuxError}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -518,8 +712,15 @@ const OrderDetails = () => {
                   options={general1Options}
                   value={selectedGeneral1}
                   placeholder={'General 1'}
-                  label="General 1"
+                  label={
+                    <span>
+                      General 1<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedGeneral1} />
+                {(selectedGeneral1Error && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedGeneral1Error}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -528,9 +729,16 @@ const OrderDetails = () => {
                 <SelectWithSearch
                   options={general2Options}
                   value={selectedGeneral2}
-                  placeholder={'General 2'}
-                  label="General 2"
+                  placeholder={'General 3'}
+                  label={
+                    <span>
+                      General 3<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedGeneral2} />
+                {(selectedGeneral2Error && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedGeneral2Error}</FormHelperText>
+                }
               </FormControl>
             ) : null}
 
@@ -541,17 +749,27 @@ const OrderDetails = () => {
                 id="input-field"
                 type="text"
                 placeholder="Order title"
-                value={vesselName}
+                value={orderTitle}
                 onChange={changeHandler}
               />
+              {(orderTitleError && isFormSubmitted) && 
+                <FormHelperText error={true}>{orderTitleError}</FormHelperText>
+              }
             </FormControl>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <SelectWithSearch
                 options={projectsOptions}
                 value={selectedProjects}
                 placeholder={'Projects'}
-                label="Projects"
+                label={
+                  <span>
+                    Projects<span style={{ color: 'red' }}>*</span>
+                  </span>
+                }
                 onChange={setSelectedProjects} />
+              {(selectedProjectsError && isFormSubmitted) && 
+                <FormHelperText error={true}>{selectedProjectsError}</FormHelperText>
+              }
             </FormControl>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <FormLabel component="legend">Priority</FormLabel>
@@ -560,10 +778,10 @@ const OrderDetails = () => {
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="row-radio-buttons-group"
               >
-                <FormControlLabel value={item} control={<Radio checked={item === 'normal'} onChange={changePriority} />} label={'normal'} />
-                <FormControlLabel value={item} control={<Radio checked={item === 'urgent'} onChange={changePriority} />} label={'urgent'} />
-                <FormControlLabel value={item} control={<Radio checked={item === 'fasttrack'} onChange={changePriority} />} label={'fasttrack'} />
-                <FormControlLabel value={item} control={<Radio checked={item === 'local'} onChange={changePriority} />} label={'local'} />
+                <FormControlLabel value={'normal'} control={<Radio checked={item === 'normal'} onChange={changePriority} />} label={'normal'} />
+                <FormControlLabel value={'urgent'} control={<Radio checked={item === 'urgent'} onChange={changePriority} />} label={'urgent'} />
+                <FormControlLabel value={'fasttrack'} control={<Radio checked={item === 'fasttrack'} onChange={changePriority} />} label={'fasttrack'} />
+                <FormControlLabel value={'local'} control={<Radio checked={item === 'local'} onChange={changePriority} />} label={'local'} />
               </RadioGroup>
             </FormControl>
             {isUrgent && (
@@ -573,8 +791,15 @@ const OrderDetails = () => {
                     options={urgentPriorityReasonOptions}
                     value={selectedUrgentPriorityReason}
                     placeholder={'Select Priority Reason'}
-                    label="Priority Reason"
+                    label={
+                      <span>
+                        Priority Reason<span style={{ color: 'red' }}>*</span>
+                      </span>
+                    }
                     onChange={setSelectedUrgentPriorityReason} />
+                  {(selectedUrgentPriorityReasonError && isFormSubmitted) && 
+                    <FormHelperText error={true}>{selectedUrgentPriorityReasonError}</FormHelperText>
+                  }
                 </FormControl>
                 <FormControl fullWidth sx={{ m: 1 }} variant="filled" className="notes">
                   <MultiLineTextBox
@@ -582,6 +807,9 @@ const OrderDetails = () => {
                     value={justification}
                     onChange={updateJustification}
                   />
+                  {(justificationError && isFormSubmitted) && 
+                    <FormHelperText error={true}>{justificationError}</FormHelperText>
+                  }
                 </FormControl>
               </div>
             )}
@@ -591,8 +819,15 @@ const OrderDetails = () => {
                   options={fastTrackPriorityReasonOptions}
                   value={selectedFastTrackPriorityReason}
                   placeholder={'Select Priority Reason'}
-                  label="Priority Reason"
+                  label={
+                    <span>
+                       Priority Reason<span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   onChange={setSelectedFastTrackPriorityReason} />
+                {(selectedFastTrackPriorityReasonError && isFormSubmitted) && 
+                  <FormHelperText error={true}>{selectedFastTrackPriorityReasonError}</FormHelperText>
+                }
               </FormControl>
             )}
 
@@ -601,16 +836,30 @@ const OrderDetails = () => {
                 options={sparePartTypeOptions}
                 value={selectedSparePartType}
                 placeholder={'Select Spare Part Type'}
-                label="Spare Part Type"
+                 label={
+                  <span>
+                     Spare Part Type<span style={{ color: 'red' }}>*</span>
+                  </span>
+                }
                 onChange={setSelectedSparePartType} />
+              {(selectedSparePartTypeError && isFormSubmitted) && 
+                <FormHelperText error={true}>{selectedSparePartTypeError}</FormHelperText>
+              }
             </FormControl>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <SelectWithSearch
                 options={departmentListOptions}
                 value={selectedDepartment}
                 placeholder={'Select Department'}
-                label="Department"
+                 label={
+                  <span>
+                    Department<span style={{ color: 'red' }}>*</span>
+                  </span>
+                }
                 onChange={setSelectedDepartment} />
+              {(selectedDepartmentError && isFormSubmitted) && 
+                <FormHelperText error={true}>{selectedDepartmentError}</FormHelperText>
+              }
             </FormControl>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <div className="flex">
@@ -627,10 +876,32 @@ const OrderDetails = () => {
           </CardContent>
         </Card>
       </div>
-      <div onClick={handleNext} className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-        <p className="text-[14px]">Next</p>
-        <AiOutlineArrowRight className="ml-1" />
-      </div>
+      <Grid container spacing={2} alignItems="center" justifyContent="center" className="margin-top-20-px">
+        <Grid item xs={12} sm={8} md={6}>
+          <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+            <Grid item xs={4} sm={3} md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handlePrevious}
+                fullWidth
+              >
+                Previous
+              </Button>
+            </Grid>
+            <Grid item xs={4} sm={3} md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                fullWidth
+              >
+                Next
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
 
     </Layout>
   );

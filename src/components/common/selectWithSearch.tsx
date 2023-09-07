@@ -17,11 +17,14 @@ export const  SelectWithSearch = (props: any) => {
       }
     );
   };
+  
+  // Check if the value is a blank object and set it to null
+  const sanitizedValue = value && Object.keys(value).length === 0 ? null : value;
 
 
   return (
     <Autocomplete
-      value={value}
+      value={sanitizedValue}
       onChange={(_, newValue) => onChange(newValue)}
       options={options}
       autoComplete
