@@ -54,7 +54,7 @@ const OrderSummary = () => {
           <div className=" w-8/12 mt-7 ml-36 relative">
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl font-semibold">
-                Create Requisition-{itemValue}
+                Create Requisition - {itemValue}
               </h1>
               <AiOutlineClose style={{ fontSize: "25px" }} />
             </div>

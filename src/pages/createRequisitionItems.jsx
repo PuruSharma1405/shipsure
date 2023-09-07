@@ -112,7 +112,7 @@ const CreateRequisitionSpares = () => {
   const searchComponents = async () => {
     try {
       const response = await axios.get(
-        `  http://192.168.201.232:3012/search-component?PageNumber=1&VesROBCondition=SYST00000004,SYST00000005&VES_ID=${vesselId}&ComponentName=${componentName}&SearchBycomponent=1&SearchConsumablesComponent=0&PageSize=100`,
+        `http://192.168.201.232:3012/search-component-paged?PageNumber=1&PageSize=100&VesId=${vesselId}&SearchText=${componentName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const CreateRequisitionSpares = () => {
         }
       );
       console.log("responsee", response);
-      setSearchComponent(response?.data?.result?.result?.recordset);
+      setSearchComponent(response?.data?.result?.recordset);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -182,7 +182,7 @@ const CreateRequisitionSpares = () => {
           <div className=" w-8/12 mt-7 ml-36 relative">
             <div className="flex flex-row justify-between">
               <h1 className="text-2xl font-semibold">
-                Create Requisition-{itemValue}
+                Create Requisition - {itemValue}
               </h1>
               <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
@@ -253,19 +253,24 @@ const CreateRequisitionSpares = () => {
                 <BsSearch className="ml-2 mr-3" />
               </div>
             </div>
-            <div className="flex flex-row items-center justify-end mt-7">
-              <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
-              <p
-                className="ml-2 text-1xl underline font-semibold cursor-pointer"
-                onClick={addToBasket}
-              >
-                Add To Order Basket
-              </p>
-            </div>
+            {
+              accordionDetails && (
+                <div className="flex flex-row items-center justify-end mt-7">
+                  <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
+                  <p
+                    className="ml-2 text-1xl underline font-semibold cursor-pointer"
+                    onClick={addToBasket}
+                  >
+                    Add To Order Basket
+                  </p>
+                </div>
+              )
+            }
+            
             <div className="mt-5">
               <p className="text-center text-[#7B8BA3] mb-7">
                 {componentName.length === 0 && (
-                  <div>Please Select a Component to view the {itemValue}</div>
+                  <div>Please select a Component to view the {itemValue?.toLowerCase()}</div>
                 )}
               </p>
             </div>
@@ -361,7 +366,7 @@ const CreateRequisitionSpares = () => {
                             {currData?.accordionData?.tableData?.VIV_Name}
                             </h2>
                           </div>
-                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty?currData?.accordionData+'pieces'?.tableData?.reqQty:'1 piece'} </p>
+                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty?currData?.accordionData+'pcs'?.tableData?.reqQty:'1 pc'} </p>
                         </div>
                         <div>
                           <div className="flex flex-row justify-around">

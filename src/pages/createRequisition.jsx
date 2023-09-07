@@ -37,7 +37,8 @@ import {
   RadioGroup,
 } from "@mui/material";
 const CreateRequisition = () => {
-  const [item, setItem] = useState("Consumables");
+
+  const [item, setItem] = useState('');
   const router = useRouter();
   const [vesselName, setVesselName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -82,7 +83,12 @@ const CreateRequisition = () => {
           },
         }
       );
-      setRadioItems(response?.data?.result?.recordset);
+      setRadioItems(response?.data?.result?.recordset)
+      const firstItem = response?.data?.result?.recordset ? response?.data?.result?.recordset[0].PatName: '';
+      
+      setItem(firstItem);
+      localStorage.setItem('itemName',firstItem);
+
     } catch (error) {
       console.error("Error:", error);
     }
@@ -90,7 +96,6 @@ const CreateRequisition = () => {
 
   useEffect(() => {
     fetchingItems();
-    localStorage.setItem("itemName", "Consumables");
   }, []);
 
   return (
