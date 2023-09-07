@@ -13,9 +13,9 @@
     display: flex;
     background-color: #EBE8DF;
     border: 1px solid #ddd;
-    width: 450px;
-    max-height: 400px;
-    overflow-y: scroll;
+    width: 425px;
+    max-height: 410px;
+    overflow-y: hidden;
   }
 
 

@@ -18,8 +18,10 @@ const steps = [
 
 export default function HorizontalLinearStepper({}) {
   const currentStep=localStorage.getItem(0)
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(2);
   const [skipped, setSkipped] = React.useState(new Set());
+
+  console.log('activeStep',activeStep);
 
   const isStepOptional = (step) => {
     return step === 1;

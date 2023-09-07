@@ -28,6 +28,12 @@ const CTAButton = ({ children, linkTo,vesselName }) => {
             color="primary"
             className="w-[500px] text-center rounded-full cta-button"
             style={buttonStyle}
+            sx={{"@media (max-width: 768px)": {
+              height: "270px",
+            },
+            "@media (max-width: 480px)": {
+              width: "120px",
+            }, }}
           >
             {children}
           </Button>

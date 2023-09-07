@@ -336,23 +336,23 @@ const CreateRequisitionSpares = () => {
                     )}
                     <h2 className="uppercase font-semibold ml-1 text-green-600">
                       {basketValues[0]?.accordionData?.accordionData?.VIV_Name ||
-                        "M/E TURBOCHARGER#2"}
+                        ""}
                     </h2>
                   </div>
                   <p className="font-bold">{basketValues?.length} item</p>
                 </div>
                 <div className="flex flex-row justify-around ml-3">
-                  <p>Maker</p>
+                  <p>{basketValues[0]?.accordionData?.accordionData?.Maker && Maker}</p>
                   <p>
                     {basketValues[0]?.accordionData?.accordionData?.Maker ||
-                      "ABB TURBO SYSTEM AG"}
+                      ""}
                   </p>
                 </div>
                 <div className="flex flex-row justify-around mt-3 relative left-2">
                   <p>Type</p>
                   <p>
                     {basketValues[0]?.accordionData?.accordionData?.SerialNo ||
-                      "HT 487167/HT 487168"}
+                      ""}
                   </p>
                 </div>
                 {showSection &&

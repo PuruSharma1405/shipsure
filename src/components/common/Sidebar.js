@@ -15,6 +15,8 @@ import {RiShipFill} from 'react-icons/ri'
 import {TfiAlert} from 'react-icons/tfi'
 import {BsBoxSeamFill,BsDroplet,BsTools} from 'react-icons/bs'
 import {FiSettings} from 'react-icons/fi'
+import VShip from '../../images/VShip.png'
+import Image from "next/image";
 const Sidebar = ({children}) => {
     const[isOpen ,setIsOpen] = useState(false);
     const toggle = () => setIsOpen (!isOpen);
@@ -68,10 +70,10 @@ const Sidebar = ({children}) => {
     
     return (
         <div className="container">
-           <div className="sidebar">
+           <div className="sidebar relative">
                <div className="top_section">
                    <h1 style={{display: isOpen ? "block" : "none"}} className="logo"></h1>
-                   <div style={{marginLeft:"0px"}} className="bars">
+                   <div style={{marginLeft:"30px"}} className="bars">
                        <FaBars onClick={toggle} className='menu-logo'/>
                    </div>
                </div>
@@ -84,6 +86,7 @@ const Sidebar = ({children}) => {
                        </Link>
                    ))
                   }
+                                  <Image src={VShip} alt="Search" height={80} width={80} className="top-search absolute bottom-10"/>
                   </div>
            </div>
            <main>{children}</main>
