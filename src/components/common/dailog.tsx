@@ -12,7 +12,7 @@ interface CommonDialogProps {
   title?: string;
   content?: React.ReactNode;
   icon?: React.ReactNode;c?: React.ReactNode;
-  actions?: Array<{ label: string; onClick: () => void; color?: 'primary' | 'secondary' }>;
+  actions?: Array<{ label: string; onClick: () => void; color?: "primary" | "secondary" }>;
 }
 
 const CommonDialog: React.FC<CommonDialogProps> = ({ open, onClose, title, content, actions, icon }) => {

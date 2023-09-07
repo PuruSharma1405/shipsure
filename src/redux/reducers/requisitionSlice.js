@@ -21,12 +21,13 @@ const initialState = {
   projects: '',
   justification: '',
   priority: '',
+  orderTitle: '',
   isHazardousMaterial: false,
   isRequiredDryDock: false,
   deliveryDate: '',
-  deliveryHomePort: '',
-  deliveryOtherPort: '',
-  selectedPosition: '',
+  deliveryHomePort: {},
+  deliveryOtherPort: {},
+  selectedPosition: {},
   note: '',
   deliveryLocation: '',
 };
@@ -70,12 +71,14 @@ export const requisitionSlice = createSlice({
       state.isHazardousMaterial = value.payload.isHazardousMaterial,
       state.isRequiredDryDock = value.payload.isRequiredDryDock
       state.priority = value.payload.priority
+      state.orderTitle = value.payload.orderTitle
     },
     setDeliveryDetails(state, value) {
+      debugger
       state.deliveryDate = value.payload.deliveryDate || null
-      state.deliveryHomePort = value.payload.deliveryHomePort?.value ? value.payload.deliveryHomePort.value : null
-      state.deliveryOtherPort = value.payload.deliveryOtherPort?.value ? value.payload.deliveryOtherPort.value : null
-      state.selectedPosition = value.payload.selectedPosition?.value ? value.payload.selectedPosition.value : null
+      state.deliveryHomePort = value.payload.deliveryHomePort ? value.payload.deliveryHomePort : null
+      state.deliveryOtherPort = value.payload.deliveryOtherPort ? value.payload.deliveryOtherPort : null
+      state.selectedPosition = value.payload.selectedPosition ? value.payload.selectedPosition : null
       state.note = value.payload.note || null
       state.deliveryLocation = value.payload.deliveryLocation || null
     }

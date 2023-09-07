@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { COMMON_TEXT_CONFIG } from "@/config/common";
 import Link from "next/link";
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-import { IAuxForVessel } from '@/interfaces/index';
+import { IAuxForVessel, IOption } from '@/interfaces/index';
 import Layout from '@/components/common/requisitionLayout';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -47,60 +47,59 @@ const OrderDetails = () => {
   const dispatch = useDispatch()
   const requisitionState = useSelector(selectRequisitionState);
   const confirmContent = COMMON_TEXT_CONFIG.CREATE_REQUISITION_URGENT_CONFIRM_TEXT;
-  
-  
+
   const [orderTitleError, setOrderTitleError] = useState("");
 
   const [sparePartTypeOptions, setSparePartTypeOptions] = useState([]);
-  const [selectedSparePartType, setSelectedSparePartType] = useState(null);
+  const [selectedSparePartType, setSelectedSparePartType] = useState<IOption>({});
   const [selectedSparePartTypeError, setSelectedSparePartTypeError] = useState('');
 
   const [departmentListOptions, setDepartmentListOptions] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<IOption>({});
   const [selectedDepartmentError, setSelectedDepartmentError] = useState('');
 
   const [accountCodeOptions, setAccountCodeOptions] = useState([]);
-  const [selectedAccountCode, setSelectedAccountCode] = useState(null);
+  const [selectedAccountCode, setSelectedAccountCode] = useState<IOption>({});
   const [selectedAccountCodeError, setSelectedAccountCodeError] = useState('');
 
   const [urgentPriorityReasonOptions, setUrgentPriorityReasonOptions] = useState([]);
-  const [selectedUrgentPriorityReason, setSelectedUrgentPriorityReason] = useState(null);
+  const [selectedUrgentPriorityReason, setSelectedUrgentPriorityReason] = useState<IOption>({});
   const [selectedUrgentPriorityReasonError, setSelectedUrgentPriorityReasonError] = useState('');
 
   const [fastTrackPriorityReasonOptions, setFastTrackPriorityReasonOptions] = useState([]);
-  const [selectedFastTrackPriorityReason, setSelectedFastTrackPriorityReason] = useState(null);
+  const [selectedFastTrackPriorityReason, setSelectedFastTrackPriorityReason] = useState<IOption>({});
   const [selectedFastTrackPriorityReasonError, setSelectedFastTrackPriorityReasonError] = useState('');
 
   const [insuranceClaimOptions, setInsuranceClaimOptions] = useState([]);
-  const [selectedInsuranceClaim, setSelectedInsuranceClaim] = useState(null);
+  const [selectedInsuranceClaim, setSelectedInsuranceClaim] = useState<IOption>({});
   const [selectedInsuranceClaimError, setSelectedInsuranceClaimError] = useState('');
 
   const [seasonalOptions, setSeasonalOptions] = useState([]);
-  const [selectedSeasonal, setSelectedSeasonal] = useState(null);
+  const [selectedSeasonal, setSelectedSeasonal] = useState<IOption>({});
   const [selectedSeasonalError, setSelectedSeasonalError] = useState('');
 
   const [nationalityOptions, setNationalityOptions] = useState([]);
-  const [selectedNationality, setSelectedNationality] = useState(null);
+  const [selectedNationality, setSelectedNationality] = useState<IOption>({});
   const [selectedNationalityError, setSelectedNationalityError] = useState('');
 
   const [rankOptions, setRankOptions] = useState([]);
-  const [selectedRank, setSelectedRank] = useState(null);
+  const [selectedRank, setSelectedRank] = useState<IOption>({});
   const [selectedRankError, setSelectedRankError] = useState('');
 
   const [vesselAuxOptions, setVesselAuxOptions] = useState([]);
-  const [selectedVesselAux, setSelectedVesselAux] = useState(null);
+  const [selectedVesselAux, setSelectedVesselAux] = useState<IOption>({});
   const [selectedVesselAuxError, setSelectedVesselAuxError] = useState('');
 
   const [general1Options, setGeneral1Options] = useState([]);
-  const [selectedGeneral1, setSelectedGeneral1] = useState(null);
+  const [selectedGeneral1, setSelectedGeneral1] = useState<IOption>({});
   const [selectedGeneral1Error, setSelectedGeneral1Error] = useState('');
 
   const [general2Options, setGeneral2Options] = useState([]);
-  const [selectedGeneral2, setSelectedGeneral2] = useState(null);
+  const [selectedGeneral2, setSelectedGeneral2] = useState<IOption>({});
   const [selectedGeneral2Error, setSelectedGeneral2Error] = useState('');
 
   const [projectsOptions, setProjectsOptions] = useState([]);
-  const [selectedProjects, setSelectedProjects] = useState(null);
+  const [selectedProjects, setSelectedProjects] = useState<IOption>({});
   const [selectedProjectsError, setSelectedProjectsError] = useState('');
 
   const [isHazardousMaterial, setIsHazardousMaterial] = useState(false);
@@ -551,7 +550,8 @@ const OrderDetails = () => {
       justification: justification,
       isRequiredDryDock: isRequiredDryDock,
       isHazardousMaterial: isHazardousMaterial,
-      priority: item
+      priority: item,
+      orderTitle: orderTitle
     }));
     setTimeout(() => {
       router.push('/deliveryDetails');
@@ -559,9 +559,7 @@ const OrderDetails = () => {
   }
 
   const handlePrevious = () => {
-    setTimeout(() => {
-      router.push('/createRequisitionItems');
-    }, 100)
+    router.push('/createRequisitionItems');
   }
 
   return (
