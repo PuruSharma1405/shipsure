@@ -296,7 +296,7 @@ const DeliveryDetails = () => {
           </CardContent>
         </Card>
       </div>
-      <Grid container spacing={2} alignItems="center" justifyContent="center" className="mt-20">
+      <Grid container spacing={2} alignItems="center" justifyContent="center" className="button-div">
         <Grid item xs={12} sm={8} md={6}>
           <Grid
             container
