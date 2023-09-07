@@ -339,7 +339,7 @@ const CreateRequisitionSpares = () => {
                         ""}
                     </h2>
                   </div>
-                  <p className="font-bold">{basketValues?.length} item</p>
+                  <p className="font-bold">{basketValues?.length?basketValues?.length:""} {basketValues?.length?"item":""}</p>
                 </div>
                 <div className="flex flex-row justify-around ml-3">
                   <p>{basketValues[0]?.accordionData?.accordionData?.Maker && Maker}</p>
@@ -349,7 +349,7 @@ const CreateRequisitionSpares = () => {
                   </p>
                 </div>
                 <div className="flex flex-row justify-around mt-3 relative left-2">
-                  <p>Type</p>
+                  <p>{basketValues[0]?.accordionData?.accordionData?.SerialNo && Type}</p>
                   <p>
                     {basketValues[0]?.accordionData?.accordionData?.SerialNo ||
                       ""}

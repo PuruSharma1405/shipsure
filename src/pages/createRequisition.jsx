@@ -26,6 +26,7 @@ import Image from "next/image";
 import VesselImage from "../images/VesselImage.png";
 import IconButton from "@mui/material/IconButton";
 import Search from "../images/Search.png";
+import './createRequisition.css'
 import {
   Container,
   Typography,
@@ -186,6 +187,7 @@ const CreateRequisition = () => {
                           fontSize:'16px',
                           color: "white",
                         }}
+                        className="custom-font create-requisition"
                       >
                         Create Requisition
                       </Typography>
@@ -307,12 +309,13 @@ const CreateRequisition = () => {
                           padding: "10px",
                         }}
                       >
-                        <AiOutlinePlus />
+                        <AiOutlinePlus style={{fontSize:'20px'}}/>
                         <Typography
                           variant="body1"
-                          sx={{ textTransform: "uppercase" }}
+                          className="custom-font"
+                          sx={{ textTransform: "uppercase",marginLeft:'10px' }}
                         >
-                          Create
+                          <span className="cta-button-size">Create</span>
                         </Typography>
                       </div>
                     </CTAButton>

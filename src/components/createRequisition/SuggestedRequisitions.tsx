@@ -40,19 +40,19 @@ const SuggestedRequisitions: React.FC = () => {
             <Grid item key={index} xs={12} sm={6} md={4} lg={2.4}>
               <Card elevation={3}>
                 <CardContent>
-                  <Typography variant="h6" fontWeight="bold" color="#208262" className='w-full flex flex-row items-center suggested-requisition-name'>
+                  <Typography variant="h6" fontWeight="bold" color="#208262" className='w-full flex flex-row items-center suggested-requisition-name custom-font'>
                     {currData?.requisitionName}
                       <Image src={SquareArrow} alt="Search" height={40} width={40} />
                   </Typography>
                   <Box mt={2} display="flex" flexDirection="column" gap={2}>
                     <Typography variant="subtitle1" color="#1b6697" style={{ display: 'flex'}} className='suggested-requisition-title'>
                       <MdOutlineDirectionsBoat className="relative suggested-requisition-title-icon" />
-                      <span className="ml-1 suggested-requisition-title-data">{currData?.title}</span>
+                      <span className="ml-1 suggested-requisition-title-data custom-font">{currData?.title}</span>
                     </Typography>
-                    <Typography variant="body1" color="#244845">{currData?.desc1}</Typography>
-                    <Typography variant="body1" color="#244845">{currData?.desc2}</Typography>
-                    <Typography variant="body1" color="#244845">{currData?.desc3}</Typography>
-                    <Typography variant="body1" color="#1E1E19" className='underline'>{currData?.addOn}</Typography>
+                    <Typography variant="body1" color="#244845" className='custom-font'>{currData?.desc1}</Typography>
+                    <Typography variant="body1" color="#244845" className='custom-font'>{currData?.desc2}</Typography>
+                    <Typography variant="body1" color="#244845" className='custom-font'>{currData?.desc3}</Typography>
+                    <Typography variant="body1" color="#1E1E19" className='underline custom-font'>{currData?.addOn}</Typography>
                   </Box>
                 </CardContent>
               </Card>
