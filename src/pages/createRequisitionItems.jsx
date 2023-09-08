@@ -253,7 +253,7 @@ const CreateRequisitionSpares = () => {
   return (
     <Layout>
           <div className="padding-2rem">
-              <HorizontalLinearStepper />
+              <HorizontalLinearStepper ref={myRef}/>
               <div
                 className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
                 style={{ borderRadius: "20px" }}
@@ -354,10 +354,9 @@ const CreateRequisitionSpares = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={nextStep}
                         fullWidth
                       >
-                        <Link href="/orderDetails"><p className="text-[14px]" onClick={nextStep}>Next</p></Link>
+                        <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>myRef.current.handleNext()}>Next</p></Link>
                         <span><AiOutlineArrowRight /></span>
                       </Button>
                     </Grid>
