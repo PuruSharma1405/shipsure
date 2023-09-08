@@ -34,11 +34,11 @@ import { setItemsDetails,setVesselDetails } from "../redux/reducers/requisitionS
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [componentName, setComponentName] = useState("");
+  const [componentId, setComponentId] = useState("");
   const [partName, setPartName] = useState("");
   const [makersRefNo, setMakersRefNo] = useState("");
   const itemName = useSelector((state) => state.requisition);
   const itemValue = localStorage.getItem("itemName");
-  const [selectedItems, setSelectedItems] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
   const [basketValues, setBasketValues] = useState([]);
   const [vesselBasicDetails, setVesselBasicDetails] = useState();
@@ -51,6 +51,7 @@ const CreateRequisitionSpares = () => {
   const[accordionDetails,setAccordionDetails]=useState();
   const[currentStep,setCurrentStep]=useState(0)
   const [reqQty, setReqQty] = useState(1);
+  const [expandSectionIndex, setExpandSectionIndex] = useState(null);
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
@@ -61,7 +62,8 @@ const CreateRequisitionSpares = () => {
   console.log("itemNameeeee", itemName);
 
   const fechingItem = (currItem) => {
-    setComponentName(currItem);
+    setComponentName(currItem?.ComponentName);
+    setComponentId(currItem?.ComponentId);
     setShowDropDown(false);
   };
 
@@ -76,12 +78,32 @@ const CreateRequisitionSpares = () => {
   };
 
   const addToBasketCallback = (accordionData) => {
-    setSelectedItems([...selectedItems, { accordionData }]);
   };
 
-  console.log("selectedComponent", selectedItems);
+  const showHideSection = (index) => {
+    if(expandSectionIndex === index) {
+      setExpandSectionIndex(null)  
+    }else {
+      setExpandSectionIndex(index);
+    }
+  };
+
+  const getTotalCost = (values = []) => {
+    let total = 0;
+
+    for (const value of values) {
+        for (const part of value.SpareParts) {
+            total += part.RequestQuantity * part.EstimatePrice;
+        }
+    }
+    return total ? total.toFixed(2) : 0 ;
+  }
+
+  
 
   const addToBasket = () => {
+    const cloneAccordionDetails = JSON.parse(JSON.stringify(accordionDetails));
+    const selectedItems =   cloneAccordionDetails.filter(comp => comp.SpareParts.filter(x=>x.isChecked).length> 0).map((c) => {  c.SpareParts = c.SpareParts.filter(x=>x.isChecked); c.showSection = false;  return c;})
     setBasketValues(selectedItems);
     dispatch(setItemsDetails(selectedItems))
   };
@@ -137,10 +159,57 @@ const CreateRequisitionSpares = () => {
     accordionValue()
   }
 
+  function groupByProperties(data, properties) {
+    const groups = new Map()
+  
+    for (const item of data) {
+      const key = properties.map(prop => item[prop]).join('-')
+  
+      if (!groups.has(key)) {
+        groups.set(key, 
+          { 
+            VIV_ID: item.VIV_ID,
+            PTR_ID: item.PTR_ID,
+            VES_ID: item.VES_ID,
+            PTR_NAME: item.PTR_NAME,
+            SerialNumber: item.SerialNumber,
+            MakerId: item.MakerId,
+            Maker: item.Maker,
+            DesignType: item.DesignType,
+            IsCriticalComponent: item.IsCriticalComponent,
+            ComponentNotes: item.ComponentNotes,
+            WarrantyEndDate: item.WarrantyEndDate,
+            VIV_NAME: item.VIV_NAME,
+            Par_Id: item.Par_Id,
+            VIV_MakersRef: item.VIV_MakersRef,
+            VIV_DrawingPos: item.VIV_DrawingPos,
+            MUN_ID: item.MUN_ID,
+            VIV_Critical: item.MUN_ID,
+            VIV_ROB: item.VIV_ROB,
+            VIV_MinStock: item.VIV_MinStock,
+            ComponentType: item.ComponentType,
+            VIV_DangerousGoods: item.VIV_DangerousGoods,
+            Viv_CertificateRequired: item.Viv_CertificateRequired,
+            VIV_Comment: item.VIV_Comment,
+            PendingOrders: item.PendingOrders,
+            EstimatePrice: item.EstimatePrice,
+            IsMarketPlacePart: item.IsMarketPlacePart,
+            IsMarketPlaceComponent: item.IsMarketPlaceComponent,
+            RequestQuantity: 0,
+            SpareParts: [] 
+          })
+      }
+      groups.get(key).SpareParts.push(item)
+    }
+  
+    return [...groups.values()]
+  }
+  
+
   const accordionValue = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.201.232:3012/search-component?VES_ID=${vesselId}&SearchConsumablesComponent=1&PageNumber=1&PageSize=100&ComponentName=${componentName}`,
+        `http://192.168.201.232:3012/parts-vessel-component?VES_ID=${vesselId}&PTR_ID=${componentId}&COY_ID=${coyId}&OrderNo=&PartName=${partName}&MakerRerference=${makersRefNo}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -148,7 +217,16 @@ const CreateRequisitionSpares = () => {
         }
       );
       console.log('responseee',response);
-      setAccordionDetails(response?.data?.result?.result?.recordset)
+
+      if(response?.data?.result?.recordset) {
+        const grouped = groupByProperties(response?.data?.result?.recordset, 
+          ['PTR_ID', 'VES_ID', 'PTR_NAME','SerialNumber','MakerId','Maker','DesignType','IsCriticalComponent','ComponentNotes']);
+        setAccordionDetails(grouped);
+      } else {
+        setAccordionDetails([]);
+      }
+
+      
     } catch (error) {
       console.error("Error:", error);
     }
@@ -307,7 +385,7 @@ const CreateRequisitionSpares = () => {
                       Order Basket
                     </h2>
                   </div>
-                  <p className="font-bold">$0.00</p>
+                  <p className="font-bold">$ {getTotalCost(basketValues)}</p>
                 </div>
                 <div className="flex flex-row justify-between ml-10">
                   <p className="font-semibold">{basketValues?.length} item</p>
@@ -321,66 +399,133 @@ const CreateRequisitionSpares = () => {
                     margin: "0 auto",
                   }}
                 ></div>
-                <div className="flex flex-row  justify-between items-center m-5">
-                  <div className="flex flex-row ">
-                    {showSection ? (
-                      <AiOutlineDown
-                        style={{ fontSize: "25px", color: "green" }}
-                        onClick={() => setShowSection(!showSection)}
-                      />
-                    ) : (
-                      <AiOutlineRight
-                        style={{ fontSize: "25px", color: "green" }}
-                        onClick={() => setShowSection(!showSection)}
-                      />
-                    )}
-                    <h2 className="uppercase font-semibold ml-1 text-green-600">
-                      {basketValues[0]?.accordionData?.accordionData?.VIV_Name ||
-                        "M/E TURBOCHARGER#2"}
-                    </h2>
-                  </div>
-                  <p className="font-bold">{basketValues?.length} item</p>
-                </div>
-                <div className="flex flex-row justify-around ml-3">
-                  <p>Maker</p>
-                  <p>
-                    {basketValues[0]?.accordionData?.accordionData?.Maker ||
-                      "ABB TURBO SYSTEM AG"}
-                  </p>
-                </div>
-                <div className="flex flex-row justify-around mt-3 relative left-2">
-                  <p>Type</p>
-                  <p>
-                    {basketValues[0]?.accordionData?.accordionData?.SerialNo ||
-                      "HT 487167/HT 487168"}
-                  </p>
-                </div>
-                {showSection &&
-                  basketValues?.map((currData,index) => {
-                    console.log('currDataa',currData);
-                    return (
-                      <div key={index} className="flex flex-col" style={{borderBottom:'1px solid grey'}}>
-                        <div className="flex flex-row  justify-between items-center m-5 relative left-3">
-                          <div className="flex flex-row ">
-                            <h2 className="uppercase font-semibold" style={{width:'70%'}}>
-                            {currData?.accordionData?.tableData?.VIV_Name}
-                            </h2>
-                          </div>
-                          <p className="font-bold relative right-16">{currData?.accordionData?.tableData?.reqQty?currData?.accordionData+'pcs'?.tableData?.reqQty:'1 pc'} </p>
-                        </div>
-                        <div>
-                          <div className="flex flex-row justify-around">
-                            <p>Maker&apos;s Ref</p>
-                            <p>Drawing Pos</p>
-                          </div>
-                          <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
-                            <p className="relative mb-1 left-3">{currData?.accordionData?.tableData?.VIV_MakersRef}</p>
-                            <p>{currData?.accordionData?.tableData?.VIV_DrawingPos?currData?.accordionData?.tableData?.VIV_DrawingPos:'-'}</p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+{basketValues.map((value,index) =>
+
+           <div>
+
+             <div className="flex flex-row  justify-between items-center m-5">
+
+               <div className="flex flex-row ">
+
+                 {expandSectionIndex === index ? (
+
+                   <AiOutlineDown
+
+                     style={{ fontSize: "25px", color: "green" }}
+
+                     onClick={() => showHideSection(index)}
+
+                   />
+
+                 ) : (
+
+                   <AiOutlineRight
+
+                     style={{ fontSize: "25px", color: "green" }}
+
+                     onClick={() => showHideSection(index)}
+
+                   />
+
+                 )}
+
+                 <h2 className="uppercase font-semibold ml-1 text-green-600">
+
+                   {value?.VIV_NAME ||
+
+                     ""}
+
+                 </h2>
+
+               </div>
+
+               <p className="font-bold">{value?.SpareParts?.length} item</p>
+
+             </div>
+
+             <div className="flex flex-row justify-around ml-3">
+
+               <p>{value?.Maker && <p>Maker</p>}</p>
+
+               <p>
+
+                 {value?.Maker ||
+
+                   ""}
+
+               </p>
+
+             </div>
+
+             <div className="flex flex-row justify-around mt-3 relative left-2">
+
+               <p>{value?.SerialNumber && <p>SerialNo</p>}</p>
+
+               <p>
+
+                 {value?.SerialNumber ||
+
+                   ""}
+
+               </p>
+
+             </div>
+
+             {expandSectionIndex === index &&
+
+value?.SpareParts?.map((currData, index) => {
+
+                 console.log('currDataa', currData);
+
+                 return (
+
+                   <div key={index} className="flex flex-col" style={{ borderBottom: '1px solid grey' }}>
+
+                     <div className="flex flex-row  justify-between items-center m-5 relative left-3">
+
+                       <div className="flex flex-row ">
+
+                         <h2 className="uppercase font-semibold" style={{ width: '70%' }}>
+
+                           {currData?.VIV_NAME}
+
+                         </h2>
+
+                       </div>
+
+                       <p className="font-bold relative right-16">{(currData?.RequestQuantity ? currData?.RequestQuantity : 0)+ ' pcs'} </p>
+
+                     </div>
+
+                     <div>
+
+                       <div className="flex flex-row justify-around">
+
+                         <p>Maker&apos;s Ref</p>
+
+                         <p>Drawing Pos</p>
+
+                       </div>
+
+                       <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
+
+                         <p className="relative mb-1 left-3">{currData?.VIV_MakersRef}</p>
+
+                         <p>{currData?.VIV_DrawingPos ? currData?.VIV_DrawingPos : '-'}</p>
+
+                       </div>
+
+                     </div>
+
+                   </div>
+
+                 );
+
+               })}
+
+           </div>
+
+         )}
               </div>
             </div>
           </div>
