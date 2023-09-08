@@ -41,7 +41,7 @@ const SuggestedRequisitions: React.FC = () => {
               <Card elevation={3}>
                 <CardContent>
                   <Typography variant="h6" fontWeight="bold" color="#208262" className='w-full flex flex-row items-center suggested-requisition-name custom-font'>
-                    {currData?.requisitionName}
+                    <span style={{fontSize:'18px'}}>{currData?.requisitionName}</span>
                       <Image src={SquareArrow} alt="Search" height={40} width={40} />
                   </Typography>
                   <Box mt={2} display="flex" flexDirection="column" gap={2}>
