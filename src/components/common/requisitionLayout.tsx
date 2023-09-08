@@ -4,8 +4,13 @@ import React, { useState, useEffect } from "react";
 import RequisitionDataContainer from "@/components/createRequisition/RequisitionDataContainer";
 import {
     AiOutlineShoppingCart,
-    AiOutlineClose
+    AiOutlineClose,
+    AiOutlineInfoCircle,
+    AiOutlineSearch
 } from "react-icons/ai";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { CgMenuGridO } from "react-icons/cg";
+import ProfileDropDown from "../createRequisition/ProfileDropDown";
 import Link from "next/link";
 import Grid from '@mui/material/Grid';
 import { useSelector } from "react-redux";
@@ -30,17 +35,34 @@ const Layout = ({ children }: DashboardLayoutProps) => {
 
     return (
         <>
-            <Grid container spacing={2} className='width-97 height-100 requisition-layout'>
+            <Grid container spacing={2} className='layout-width height-100 w-[96vw] requisition-layout overflow-hidden'>
+                {/* <Grid item sm={12} md={12} lg={12} className={``}>
+                    <Grid container spacing={2}>
+                        <Grid item sm={12} md={12} lg={9}>
+                            <Typography variant="h5" className="font-bold mt-3">
+                                Procurement
+                            </Typography>
+                        </Grid>
+                        <Grid item sm={12} md={12} lg={3} className="bg-grey shadow-lg">
+                            <div className="search-icon mt-3 gap-3 flex items-center">
+                                <AiOutlineSearch style={{ fontSize: "25px" }} />
+                                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
+                                <CgMenuGridO style={{ fontSize: "25px" }} />
+                                <ProfileDropDown />
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid> */}
                 <Grid item sm={9} md={9} lg={9} className={`ml-${window.innerWidth >= 1280 ? 10 : 2}  main-grid`}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Typography variant="h4" className="font-bold mt-3">
+                            <Typography variant="h5" className="font-bold mt-3">
                                 Procurement
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <div className={`ml-${window.innerWidth >= 1280 ? 5 : 2} w-full flex flex-row justify-between pr-5`}>
-                                <Typography variant="h5" className="font-semibold">
+                                <Typography variant="h4" className="font-semibold">
                                     Create Requisition - {itemName}
                                 </Typography>
                                 <Link href="/createRequisition">
@@ -55,6 +77,12 @@ const Layout = ({ children }: DashboardLayoutProps) => {
                 </Grid>
                 <Grid item sm={9} md={3} lg={3} className="bg-grey">
                     <aside>
+                            <div className="search-icon mt-3 gap-3 flex items-center">
+                                <AiOutlineSearch style={{ fontSize: "25px" }} />
+                                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
+                                <CgMenuGridO style={{ fontSize: "25px" }} />
+                                <ProfileDropDown />
+                            </div>
                         <RequisitionDataContainer basketValues="" vesselBasicDetails="" />
                         <div
                             className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  min-w-[350px] h-[100px]"

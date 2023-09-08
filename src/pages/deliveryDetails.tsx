@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import {
   AiOutlineSearch,
-  AiOutlineClose,
+  AiOutlineArrowRight,
+  AiOutlineArrowLeft,
 } from "react-icons/ai";
 import { CgMenuGridO } from "react-icons/cg";
 import ProfileDropDown from "@/components/createRequisition/ProfileDropDown";
@@ -197,12 +198,12 @@ const DeliveryDetails = () => {
         <div className="text-2xl font-bold mt-3">
           {/* <h2>Procurement</h2> */}
         </div>
-        <div className="search-icon mt-3 gap-3 flex items-center">
+        {/* <div className="search-icon mt-3 gap-3 flex items-center">
           <AiOutlineSearch style={{ fontSize: "25px" }} />
           <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
           <CgMenuGridO style={{ fontSize: "25px" }} />
           <ProfileDropDown />
-        </div>
+        </div> */}
       </div>
       {/* <div className="flex flex-row justify-between">
         <h1 className="text-2xl font-semibold">
@@ -307,10 +308,11 @@ const DeliveryDetails = () => {
             <Grid item xs={10} sm={4} md={2}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={handlePrevious}
                 fullWidth
               >
+                <span><AiOutlineArrowLeft /></span>
                 Previous
               </Button>
             </Grid>
@@ -322,6 +324,7 @@ const DeliveryDetails = () => {
                 fullWidth
               >
                 Next
+                <span><AiOutlineArrowRight /></span>
               </Button>
             </Grid>
           </Grid>
