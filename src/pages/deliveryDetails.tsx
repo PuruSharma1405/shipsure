@@ -195,7 +195,7 @@ const DeliveryDetails = () => {
     <Layout>
       <div className="flex justify-between w-10/12 items-center mx-auto">
         <div className="text-2xl font-bold mt-3">
-          <h2>Procurement</h2>
+          {/* <h2>Procurement</h2> */}
         </div>
         <div className="search-icon mt-3 gap-3 flex items-center">
           <AiOutlineSearch style={{ fontSize: "25px" }} />
@@ -204,12 +204,12 @@ const DeliveryDetails = () => {
           <ProfileDropDown />
         </div>
       </div>
-      <div className="flex flex-row justify-between">
+      {/* <div className="flex flex-row justify-between">
         <h1 className="text-2xl font-semibold">
           Create Requisition - {itemName}
         </h1>
         <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
-      </div>
+      </div> */}
 
       <HorizontalLinearStepper />
       <div className="flex justify-center margin-top-20-px">
@@ -225,6 +225,9 @@ const DeliveryDetails = () => {
           <CardContent sx={{ padding: '2em' }}>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <CustomDatePicker label="select Date" value={selectedDate} onChange={handleDateChange} />
+              {(selectedDateError && isFormSubmitted) &&
+                  <FormHelperText error={true}>{selectedDateError}</FormHelperText>
+              }
             </FormControl>
             <FormControl fullWidth sx={{ m: 1 }} variant="filled">
               <RadioGroup
@@ -293,10 +296,15 @@ const DeliveryDetails = () => {
           </CardContent>
         </Card>
       </div>
-      <Grid container spacing={2} alignItems="center" justifyContent="center" className="margin-top-20-px">
+      <Grid container spacing={2} alignItems="center" justifyContent="center" className="button-div">
         <Grid item xs={12} sm={8} md={6}>
-          <Grid container spacing={2} alignItems="center" justifyContent="space-between">
-            <Grid item xs={4} sm={3} md={2}>
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Grid item xs={10} sm={4} md={2}>
               <Button
                 variant="contained"
                 color="primary"
@@ -306,7 +314,7 @@ const DeliveryDetails = () => {
                 Previous
               </Button>
             </Grid>
-            <Grid item xs={4} sm={3} md={2}>
+            <Grid item xs={10} sm={4} md={2}>
               <Button
                 variant="contained"
                 color="primary"

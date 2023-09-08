@@ -29,7 +29,7 @@ import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepp
 import axios from "axios";
 import Link from "next/link";
 import { useDispatch } from 'react-redux';
-import { setItemsDetails,setVesselDetails } from "../redux/reducers/requisitionSlice";
+import { setItemsDetails, setVesselDetails } from "../redux/reducers/requisitionSlice";
 
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -48,8 +48,8 @@ const CreateRequisitionSpares = () => {
   const token = JSON.parse(localStorage.getItem("token"))?.access_token;
   const [showSection, setShowSection] = useState(false);
   const [showAccordion, setShowAccordion] = useState(false);
-  const[accordionDetails,setAccordionDetails]=useState();
-  const[currentStep,setCurrentStep]=useState(0)
+  const [accordionDetails, setAccordionDetails] = useState();
+  const [currentStep, setCurrentStep] = useState(0)
   const [reqQty, setReqQty] = useState(1);
   const [expandSectionIndex, setExpandSectionIndex] = useState(null);
   const changeHandler = (e) => {
@@ -81,9 +81,9 @@ const CreateRequisitionSpares = () => {
   };
 
   const showHideSection = (index) => {
-    if(expandSectionIndex === index) {
-      setExpandSectionIndex(null)  
-    }else {
+    if (expandSectionIndex === index) {
+      setExpandSectionIndex(null)
+    } else {
       setExpandSectionIndex(index);
     }
   };
@@ -92,18 +92,18 @@ const CreateRequisitionSpares = () => {
     let total = 0;
 
     for (const value of values) {
-        for (const part of value.SpareParts) {
-            total += part.RequestQuantity * part.EstimatePrice;
-        }
+      for (const part of value.SpareParts) {
+        total += (part.RequestQuantity ? part.RequestQuantity : 0 )* part.EstimatePrice;
+      }
     }
-    return total ? total.toFixed(2) : 0 ;
+    return total ? total.toFixed(2) : 0;
   }
 
-  
+
 
   const addToBasket = () => {
     const cloneAccordionDetails = JSON.parse(JSON.stringify(accordionDetails));
-    const selectedItems =   cloneAccordionDetails.filter(comp => comp.SpareParts.filter(x=>x.isChecked).length> 0).map((c) => {  c.SpareParts = c.SpareParts.filter(x=>x.isChecked); c.showSection = false;  return c;})
+    const selectedItems = cloneAccordionDetails.filter(comp => comp.SpareParts.filter(x => x.isChecked).length > 0).map((c) => { c.SpareParts = c.SpareParts.filter(x => x.isChecked); c.showSection = false; return c; })
     setBasketValues(selectedItems);
     dispatch(setItemsDetails(selectedItems))
   };
@@ -121,7 +121,7 @@ const CreateRequisitionSpares = () => {
         }
       );
       setVesselBasicDetails(response?.data?.result?.recordset[0]);
-    dispatch(setVesselDetails(response?.data?.result?.recordset[0]))
+      dispatch(setVesselDetails(response?.data?.result?.recordset[0]))
     } catch (error) {
       console.error("Error:", error);
     }
@@ -152,22 +152,22 @@ const CreateRequisitionSpares = () => {
     searchComponents();
   }, [componentName]);
 
-  const searchAccordion=()=>{
-    if(componentName.length>0){
-    setShowAccordion(true)
+  const searchAccordion = () => {
+    if (componentName.length > 0) {
+      setShowAccordion(true)
     }
     accordionValue()
   }
 
   function groupByProperties(data, properties) {
     const groups = new Map()
-  
+
     for (const item of data) {
       const key = properties.map(prop => item[prop]).join('-')
-  
+
       if (!groups.has(key)) {
-        groups.set(key, 
-          { 
+        groups.set(key,
+          {
             VIV_ID: item.VIV_ID,
             PTR_ID: item.PTR_ID,
             VES_ID: item.VES_ID,
@@ -196,15 +196,15 @@ const CreateRequisitionSpares = () => {
             IsMarketPlacePart: item.IsMarketPlacePart,
             IsMarketPlaceComponent: item.IsMarketPlaceComponent,
             RequestQuantity: 0,
-            SpareParts: [] 
+            SpareParts: []
           })
       }
       groups.get(key).SpareParts.push(item)
     }
-  
+
     return [...groups.values()]
   }
-  
+
 
   const accordionValue = async () => {
     try {
@@ -216,31 +216,31 @@ const CreateRequisitionSpares = () => {
           },
         }
       );
-      console.log('responseee',response);
+      console.log('responseee', response);
 
-      if(response?.data?.result?.recordset) {
-        const grouped = groupByProperties(response?.data?.result?.recordset, 
-          ['PTR_ID', 'VES_ID', 'PTR_NAME','SerialNumber','MakerId','Maker','DesignType','IsCriticalComponent','ComponentNotes']);
+      if (response?.data?.result?.recordset) {
+        const grouped = groupByProperties(response?.data?.result?.recordset,
+          ['PTR_ID', 'VES_ID', 'PTR_NAME', 'SerialNumber', 'MakerId', 'Maker', 'DesignType', 'IsCriticalComponent', 'ComponentNotes']);
         setAccordionDetails(grouped);
       } else {
         setAccordionDetails([]);
       }
 
-      
+
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  console.log('',currentStep);
+  console.log('', currentStep);
 
-  const nextStep=()=>{
+  const nextStep = () => {
     setCurrentStep(1)
   }
 
-  useEffect(()=>{
-    localStorage.setItem('currentStep',currentStep)
-  },[currentStep])
+  useEffect(() => {
+    localStorage.setItem('currentStep', currentStep)
+  }, [currentStep])
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -264,7 +264,7 @@ const CreateRequisitionSpares = () => {
               </h1>
               <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
-            <HorizontalLinearStepper/>
+            <HorizontalLinearStepper />
             <div
               className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
               style={{ borderRadius: "20px" }}
@@ -281,7 +281,7 @@ const CreateRequisitionSpares = () => {
                     value={componentName}
                     onChange={changeHandler}
                   />
-                  <BsSearch onClick={searchAccordion} className="cursor-pointer"/>
+                  <BsSearch onClick={searchAccordion} className="cursor-pointer" />
                 </div>
                 <div className="border border-[#052E2B] w-[310px] mt-2"></div>
                 {componentName.length > 0 && showDropDown && (
@@ -344,7 +344,7 @@ const CreateRequisitionSpares = () => {
                 </div>
               )
             }
-            
+
             <div className="mt-5">
               <p className="text-center text-[#7B8BA3] mb-7">
                 {componentName.length === 0 && (
@@ -352,7 +352,7 @@ const CreateRequisitionSpares = () => {
                 )}
               </p>
             </div>
-            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails}/>}
+            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails} />}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
               <Link href="/orderDetails"><p className="text-[14px]" onClick={nextStep}>Next</p></Link>
               <AiOutlineArrowRight className="ml-1" />
@@ -399,133 +399,146 @@ const CreateRequisitionSpares = () => {
                     margin: "0 auto",
                   }}
                 ></div>
-{basketValues.map((value,index) =>
+                {basketValues.map((value, index) =>
 
-           <div>
+                  <div>
 
-             <div className="flex flex-row  justify-between items-center m-5">
+                    <div className="flex flex-row  justify-between items-center m-5">
 
-               <div className="flex flex-row ">
+                      <div className="flex flex-row ">
 
-                 {expandSectionIndex === index ? (
+                        {expandSectionIndex === index ? (
 
-                   <AiOutlineDown
+                          <AiOutlineDown
 
-                     style={{ fontSize: "25px", color: "green" }}
+                            style={{ fontSize: "25px", color: "green" }}
 
-                     onClick={() => showHideSection(index)}
+                            onClick={() => showHideSection(index)}
 
-                   />
+                          />
 
-                 ) : (
+                        ) : (
 
-                   <AiOutlineRight
+                          <AiOutlineRight
 
-                     style={{ fontSize: "25px", color: "green" }}
+                            style={{ fontSize: "25px", color: "green" }}
 
-                     onClick={() => showHideSection(index)}
+                            onClick={() => showHideSection(index)}
 
-                   />
+                          />
 
-                 )}
+                        )}
 
-                 <h2 className="uppercase font-semibold ml-1 text-green-600">
+                        <h2 className="uppercase font-semibold ml-1 text-green-600">
 
-                   {value?.VIV_NAME ||
+                          {value?.VIV_NAME ||
 
-                     ""}
+                            ""}
 
-                 </h2>
+                        </h2>
 
-               </div>
+                      </div>
 
-               <p className="font-bold">{value?.SpareParts?.length} item</p>
+                      <p className="font-bold">{value?.SpareParts?.length} item</p>
 
-             </div>
+                    </div>
 
-             <div className="flex flex-row justify-around ml-3">
+                    <div className="flex flex-row justify-around ml-3">
 
-               <p>{value?.Maker && <p>Maker</p>}</p>
+                      <p>{value?.Maker && <p>Maker</p>}</p>
 
-               <p>
+                      <p>
 
-                 {value?.Maker ||
+                        {value?.Maker ||
 
-                   ""}
+                          ""}
 
-               </p>
+                      </p>
 
-             </div>
+                    </div>
 
-             <div className="flex flex-row justify-around mt-3 relative left-2">
+                    <div className="flex flex-row justify-around mt-3 relative left-2">
 
-               <p>{value?.SerialNumber && <p>SerialNo</p>}</p>
+                      <p>{value?.SerialNumber && <p>SerialNo</p>}</p>
 
-               <p>
+                      <p>
 
-                 {value?.SerialNumber ||
+                        {value?.SerialNumber ||
 
-                   ""}
+                          ""}
 
-               </p>
+                      </p>
 
-             </div>
+                    </div>
+                    <div className="flex flex-row justify-around mt-3 relative left-2">
 
-             {expandSectionIndex === index &&
+                      <p>{value?.Type && <p>Type</p>}</p>
 
-value?.SpareParts?.map((currData, index) => {
+                      <p>
 
-                 console.log('currDataa', currData);
+                        {value?.Type ||
 
-                 return (
+                          ""}
 
-                   <div key={index} className="flex flex-col" style={{ borderBottom: '1px solid grey' }}>
+                      </p>
 
-                     <div className="flex flex-row  justify-between items-center m-5 relative left-3">
+                    </div>
 
-                       <div className="flex flex-row ">
+                    {expandSectionIndex === index &&
 
-                         <h2 className="uppercase font-semibold" style={{ width: '70%' }}>
+                      value?.SpareParts?.map((currData, index) => {
 
-                           {currData?.VIV_NAME}
+                        console.log('currDataa', currData);
 
-                         </h2>
+                        return (
 
-                       </div>
+                          <div key={index} className="flex flex-col" style={{ borderBottom: '1px solid grey' }}>
 
-                       <p className="font-bold relative right-16">{(currData?.RequestQuantity ? currData?.RequestQuantity : 0)+ ' pcs'} </p>
+                            <div className="flex flex-row  justify-between items-center m-5 relative left-3">
 
-                     </div>
+                              <div className="flex flex-row ">
 
-                     <div>
+                                <h2 className="uppercase font-semibold" style={{ width: '70%' }}>
 
-                       <div className="flex flex-row justify-around">
+                                  {currData?.VIV_NAME}
 
-                         <p>Maker&apos;s Ref</p>
+                                </h2>
 
-                         <p>Drawing Pos</p>
+                              </div>
 
-                       </div>
+                              <p className="font-bold relative right-16">{(currData?.RequestQuantity ? currData?.RequestQuantity : 0) + ' pcs'} </p>
 
-                       <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
+                            </div>
 
-                         <p className="relative mb-1 left-3">{currData?.VIV_MakersRef}</p>
+                            <div>
 
-                         <p>{currData?.VIV_DrawingPos ? currData?.VIV_DrawingPos : '-'}</p>
+                              <div className="flex flex-row justify-around">
 
-                       </div>
+                                <p>Maker&apos;s Ref</p>
 
-                     </div>
+                                <p>Drawing Pos</p>
 
-                   </div>
+                              </div>
 
-                 );
+                              <div className="flex flex-row justify-around mt-5 font-semibold items-center relative right-5">
 
-               })}
+                                <p className="relative mb-1 left-3">{currData?.VIV_MakersRef}</p>
 
-           </div>
+                                <p>{currData?.VIV_DrawingPos ? currData?.VIV_DrawingPos : '-'}</p>
 
-         )}
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        );
+
+                      })}
+
+                  </div>
+
+                )}
               </div>
             </div>
           </div>

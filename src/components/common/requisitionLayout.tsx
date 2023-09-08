@@ -1,22 +1,54 @@
 // components/Layout.tsx
 
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import RequisitionDataContainer from "@/components/createRequisition/RequisitionDataContainer";
 import {
     AiOutlineShoppingCart,
+    AiOutlineClose
 } from "react-icons/ai";
+import Link from "next/link";
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { useSelector } from "react-redux";
+import { selectRequisitionState } from '@/redux/reducers/requisitionSlice';
+import Typography from '@mui/material/Typography';
+
 type DashboardLayoutProps = {
     children: React.ReactNode,
 };
 
 
 const Layout = ({ children }: DashboardLayoutProps) => {
+    const [itemName, setItemName] = useState("");
+    const requisitionState = useSelector(selectRequisitionState);
+
+    useEffect(() => {
+        if (requisitionState.itemName) {
+            setItemName(requisitionState.itemName);
+        }
+    }, []);
+
+
     return (
         <>
-            <Grid container spacing={2} className='width-97 height-100 '>
-                <Grid item sm={9} md={9} lg={9} className='main-grid'>
+            <Grid container spacing={2} className='width-97 height-100 requisition-layout'>
+                <Grid item sm={9} md={9} lg={9} className={`ml-${window.innerWidth >= 1280 ? 10 : 2}  main-grid`}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Typography variant="h4" className="font-bold mt-3">
+                                Procurement
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div className={`ml-${window.innerWidth >= 1280 ? 5 : 2} w-full flex flex-row justify-between pr-5`}>
+                                <Typography variant="h5" className="font-semibold">
+                                    Create Requisition - {itemName}
+                                </Typography>
+                                <Link href="/createRequisition">
+                                    <AiOutlineClose style={{ fontSize: "25px" }} />
+                                </Link>
+                            </div>
+                        </Grid>
+                    </Grid>
                     <main>
                         {children}
                     </main>

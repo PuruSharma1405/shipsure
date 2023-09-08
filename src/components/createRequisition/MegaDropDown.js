@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import Image from "next/image";
 import RequisitionBasket from '../../images/RequisitionBasket.png';
 import RequisitionSpares from "../../images/RequisitionSpares.png";
-import HoverToolTip from '../common/Tooltip';
+import ToolTip from '../../components/common/Tooltip'
 const MegaDropDown = ({
   showDropdown,
   setShowDropdown,
@@ -113,7 +113,6 @@ const MegaDropDown = ({
                       </div>
                       <div>
                         <Image src={RequisitionBasket} alt="Search" height={35} width={35} className='requisitionBasket'/>
-                        {/* <HoverToolTip tooltipContent="Tooltip for Basket" /> */}
                       </div>
                       <div>
                         <Image src={RequisitionSpares} alt="Search" height={20} width={20} className='requisitionTool'/>
