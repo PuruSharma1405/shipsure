@@ -30,8 +30,8 @@ export const RightPanelSection = () => {
 
 
     return (
-        <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
-            <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
+        <div className="bg-[#E8ECED] ml-[50px] h-[100vh]">
+            <div className="flex flex-row flex-wrap mt-[60px]">
                 <RequisitionDataContainer
                     basketValues={requisitionState?.itemsDetails}
                     vesselBasicDetails={requisitionState?.vesselDetails}

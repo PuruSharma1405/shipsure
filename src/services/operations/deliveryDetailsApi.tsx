@@ -73,7 +73,7 @@ export async function getPositionList(token: string, params: IPagination | any):
 export async function getSparePartList(token: string, params: IPagination | any): Promise<any> {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await apiConnector("GET", SPARE_PART_DETAILS_API + '?OrderType=Materials,Spares,Services,Consumables', null, {
+      const response = await apiConnector("GET", SPARE_PART_DETAILS_API, null, {
         Authorization: `Bearer ${token}`,
       }, params);
 

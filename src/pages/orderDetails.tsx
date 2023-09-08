@@ -174,11 +174,14 @@ const OrderDetails = () => {
       const token = await getToken();
 
       const promises = [
-        getSparePartList(token, {}),
+        getSparePartList(token, {
+          OrderType: requisitionState.itemName
+        }),
         getDepartmentList(token, {}),
         getAccountCode(token, {
           VesId: requisitionState.vesId,
           CoyId: requisitionState.coyId,
+          ChdPo: 1,
         }),
         getPurchAttributCode(token, {
           LookupCode: 'UrgentPriorityReason',
