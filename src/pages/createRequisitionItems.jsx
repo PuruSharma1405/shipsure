@@ -31,6 +31,8 @@ import Link from "next/link";
 import { useDispatch } from 'react-redux';
 import { setItemsDetails, setVesselDetails } from "../redux/reducers/requisitionSlice";
 import { RightPanelSection } from '../components/common/order-basket'
+import Layout from '@/components/common/requisitionLayout';
+import { Button, Grid, FormHelperText } from '@mui/material';
 
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -249,125 +251,121 @@ const CreateRequisitionSpares = () => {
   },[myRef])
 
   return (
-    <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
-      <div className="mx-auto">
-        <div className="flex justify-between w-11/12 items-center mx-auto">
-          <div className="text-2xl font-bold mt-3">
-            <h2>Procurement</h2>
-          </div>
-          <div className="search-icon mt-3 gap-3 flex items-center">
-            <AiOutlineSearch style={{ fontSize: "25px" }} />
-            <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
-            <CgMenuGridO style={{ fontSize: "25px" }} />
-            <ProfileDropDown />
-          </div>
-        </div>
-        <div className="h-full w-full flex flex-row">
-          <div className=" w-8/12 mt-7 ml-36 relative">
-            <div className="flex flex-row justify-between">
-              <h1 className="text-2xl font-semibold">
-                Create Requisition - {itemValue}
-              </h1>
-              <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
-            </div>
-            <HorizontalLinearStepper nextStepToOrderDetails={nextStepToOrderDetails} ref={myRef}/>
-            <div
-              className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
-              style={{ borderRadius: "20px" }}
-            >
-              <div className="flex flex-col mt-5">
-                <p className="ml-2">
-                  Component <sup className="text-red-500">*</sup>
-                </p>
-                <div className="flex flex-row items-center">
-                  <input
-                    type="text"
-                    placeholder="Search Component"
-                    className="outline-none bg-transparent ml-2 mt-2"
-                    value={componentName}
-                    onChange={changeHandler}
-                  />
-                  <BsSearch onClick={searchAccordion} className="cursor-pointer" />
-                </div>
-                <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                {componentName.length > 0 && showDropDown && (
-                  <DropDown
-                    fetchingItem={fechingItem}
-                    showDropDown={showDropDown}
-                    setShowDropDown={setShowDropDown}
-                    componentName={componentName}
-                    searchComponent={searchComponent}
-                    setSearchComponent={setSearchComponent}
-                  />
-                )}
-              </div>
-              <div className="flex flex-col mt-5">
-                <p className="ml-2">Part Name</p>
-                <div className="flex flex-row ">
-                  <input
-                    type="text"
-                    placeholder="Enter Part Name"
-                    className="outline-none bg-transparent ml-2 mt-2"
-                    value={partName}
-                    onChange={partNameChangeHandler}
-                  />
-                </div>
-                <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                {/* {partName.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
-              </div>
-              <div className="flex flex-col mt-5">
-                <p className="ml-2">Maker&apos;s Ref No.</p>
-                <div className="flex flex-row ">
-                  <input
-                    type="text"
-                    placeholder="Enter Maker's Ref No. "
-                    className="outline-none bg-transparent ml-2 mt-2"
-                    value={makersRefNo}
-                    onChange={makersRefNoChangeHandler}
-                  />
-                </div>
-                <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                {/* {makersRefNo.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
-              </div>
+    <Layout>
+          <div className="padding-2rem">
+              <HorizontalLinearStepper />
               <div
-                className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
-                style={{ border: "1px solid black" }}
+                className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
+                style={{ borderRadius: "20px" }}
               >
-                <p className="uppercase text-1xl ml-3 cursor-pointer" onClick={searchAccordion}>Search</p>
-                <BsSearch className="ml-2 mr-3" />
-              </div>
-            </div>
-            {
-              accordionDetails && (
-                <div className="flex flex-row items-center justify-end mt-7">
-                  <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
-                  <p
-                    className="ml-2 text-1xl underline font-semibold cursor-pointer"
-                    onClick={addToBasket}
-                  >
-                    Add To Order Basket
+                <div className="flex flex-col mt-5">
+                  <p className="ml-2">
+                    Component <sup className="text-red-500">*</sup>
                   </p>
+                  <div className="flex flex-row items-center">
+                    <input
+                      type="text"
+                      placeholder="Search Component"
+                      className="outline-none bg-transparent ml-2 mt-2"
+                      value={componentName}
+                      onChange={changeHandler}
+                    />
+                    <BsSearch onClick={searchAccordion} className="cursor-pointer" />
+                  </div>
+                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+                  {componentName.length > 0 && showDropDown && (
+                    <DropDown
+                      fetchingItem={fechingItem}
+                      showDropDown={showDropDown}
+                      setShowDropDown={setShowDropDown}
+                      componentName={componentName}
+                      searchComponent={searchComponent}
+                      setSearchComponent={setSearchComponent}
+                    />
+                  )}
                 </div>
-              )
-            }
+                <div className="flex flex-col mt-5">
+                  <p className="ml-2">Part Name</p>
+                  <div className="flex flex-row ">
+                    <input
+                      type="text"
+                      placeholder="Enter Part Name"
+                      className="outline-none bg-transparent ml-2 mt-2"
+                      value={partName}
+                      onChange={partNameChangeHandler}
+                    />
+                  </div>
+                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+                  {/* {partName.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
+                </div>
+                <div className="flex flex-col mt-5">
+                  <p className="ml-2">Maker&apos;s Ref No.</p>
+                  <div className="flex flex-row ">
+                    <input
+                      type="text"
+                      placeholder="Enter Maker's Ref No. "
+                      className="outline-none bg-transparent ml-2 mt-2"
+                      value={makersRefNo}
+                      onChange={makersRefNoChangeHandler}
+                    />
+                  </div>
+                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+                  {/* {makersRefNo.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
+                </div>
+                <div
+                  className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
+                  style={{ border: "1px solid black" }}
+                >
+                  <p className="uppercase text-1xl ml-3 cursor-pointer" onClick={searchAccordion}>Search</p>
+                  <BsSearch className="ml-2 mr-3" />
+                </div>
+              </div>
+              {
+                accordionDetails && (
+                  <div className="flex flex-row items-center justify-end mt-7">
+                    <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
+                    <p
+                      className="ml-2 text-1xl underline font-semibold cursor-pointer"
+                      onClick={addToBasket}
+                    >
+                      Add To Order Basket
+                    </p>
+                  </div>
+                )
+              }
 
-            <div className="mt-5">
-              <p className="text-center text-[#7B8BA3] mb-7">
-                {componentName.length === 0 && (
-                  <div>Please select a Component to view the {itemValue?.toLowerCase()}</div>
-                )}
-              </p>
-            </div>
-            {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails} />}
-            <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-              <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>myRef.current.handleNext()}>Next</p></Link>
-              <AiOutlineArrowRight className="ml-1" />
-            </div>
+              <div className="mt-5">
+                <p className="text-center text-[#7B8BA3] mb-7">
+                  {componentName.length === 0 && (
+                    <div>Please select a Component to view the {itemValue?.toLowerCase()}</div>
+                  )}
+                </p>
+              </div>
+              {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails} />}
+            <Grid container spacing={2} alignItems="center" justifyContent="center" className="button-div">
+                <Grid item xs={12} sm={8} md={6}>
+                  <Grid
+                    container
+                    spacing={2}
+                    alignItems="center"
+                    justifyContent="end"
+                  >
+                    <Grid item xs={10} sm={4} md={2}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={nextStep}
+                        fullWidth
+                      >
+                        <Link href="/orderDetails"><p className="text-[14px]" onClick={nextStep}>Next</p></Link>
+                        <span><AiOutlineArrowRight /></span>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
           </div>
-          <RightPanelSection></RightPanelSection>
-        </div>
-      </div>
-    </div>
+    </Layout>
   );
 };
 

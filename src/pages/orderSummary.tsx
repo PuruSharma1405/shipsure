@@ -28,7 +28,9 @@ import { useAlertService } from "@/hooks/useAlertService";
 import { ALERT_CONFIG } from "@/config/AlertConfig";
 import { useRouter } from "next/router";
 import { RightPanelSection } from "@/components/common/order-basket";
-
+import Layout from '@/components/common/requisitionLayout';
+import { Button, Grid, FormHelperText } from '@mui/material';
+import Link from "next/link";
 
 
 const OrderSummary = () => {
@@ -201,259 +203,259 @@ const OrderSummary = () => {
   }
 
   return (
-    <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
-      <div className="mx-auto">
-        <div className="flex justify-between w-11/12 items-center mx-auto">
-          <div className="text-2xl font-bold mt-3">
-            <h2>Procurement</h2>
+    <Layout>
+      <div className="padding-2rem">
+        <HorizontalLinearStepper />
+        <div
+          className="bg-[#F2EEEB] pl-20 pt-5 pb-16 mt-10 mb-20"
+          style={{ borderRadius: "20px" }}
+        >
+          <div className="flex flex-col mt-5">
+            <p className="ml-2" style={{ fontWeight: "600" }}>
+              Order Details
+            </p>
           </div>
-          <div className="search-icon mt-3 gap-3 flex items-center">
-            <AiOutlineSearch style={{ fontSize: "25px" }} />
-            <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
-            <CgMenuGridO style={{ fontSize: "25px" }} />
-            <ProfileDropDown />
-          </div>
-        </div>
-        <div className="h-full w-full flex flex-row">
-          <div className=" w-8/12 mt-7 ml-36 relative">
-            <div className="flex flex-row justify-between">
-              <h1 className="text-2xl font-semibold">
-                Create Requisition-{requisitionState?.itemName}
-              </h1>
-              <AiOutlineClose style={{ fontSize: "25px" }} />
-            </div>
-            <HorizontalLinearStepper />
-            <div
-              className="bg-[#F2EEEB] pl-20 pt-5 pb-16 mt-10 mb-20"
-              style={{ borderRadius: "20px" }}
+          <div className="flex flex-col mt-5">
+            <p
+              className="ml-2"
+              style={{ color: "#04487F", fontWeight: "500" }}
             >
-              <div className="flex flex-col mt-5">
-                <p className="ml-2" style={{ fontWeight: "600" }}>
-                  Order Details
-                </p>
+              {vesselName}
+            </p>
+          </div>
+          <div className="flex flex-row justify-left w-full relative">
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Account Code
+              </p>
+              <div className="flex flex-row items-center">
+                <p className="ml-2">{accCode}</p>
               </div>
-              <div className="flex flex-col mt-5">
-                <p
-                  className="ml-2"
-                  style={{ color: "#04487F", fontWeight: "500" }}
-                >
-                  {vesselName}
-                </p>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Project
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">{projectName}</p>
               </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Spare Part Type
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">{sparePart}</p>
+              </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Priority
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">{requisitionState?.priority}</p>
+              </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+          </div>
+
+          {
+            (requisitionState.vesselAux !== null) && (
               <div className="flex flex-row justify-left w-full relative">
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Account Code
+                    Insurance Claim
                   </p>
                   <div className="flex flex-row items-center">
-                    <p className="ml-2">{accCode}</p>
+                    <p className="ml-2">{requisitionState.insuranceClaim}</p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Project
+                    Crew Rank
                   </p>
                   <div className="flex flex-row ">
-                    <p className="ml-2">{projectName}</p>
+                    <p className="ml-2">{requisitionState?.rank}</p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Spare Part Type
+                    Vessel Aux
                   </p>
                   <div className="flex flex-row ">
-                    <p className="ml-2">{sparePart}</p>
+                    <p className="ml-2">{requisitionState?.vesselAux}</p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Priority
+                    Seasonal
                   </p>
                   <div className="flex flex-row ">
-                    <p className="ml-2">{requisitionState?.priority}</p>
+                    <p className="ml-2">{requisitionState?.seasonal}</p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
               </div>
 
-              {
-                (requisitionState.vesselAux !== null) && (
-                  <div className="flex flex-row justify-left w-full relative">
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Insurance Claim
-                      </p>
-                      <div className="flex flex-row items-center">
-                        <p className="ml-2">{requisitionState.insuranceClaim}</p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Crew Rank
-                      </p>
-                      <div className="flex flex-row ">
-                        <p className="ml-2">{requisitionState?.rank}</p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Vessel Aux
-                      </p>
-                      <div className="flex flex-row ">
-                        <p className="ml-2">{requisitionState?.vesselAux}</p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Seasonal
-                      </p>
-                      <div className="flex flex-row ">
-                        <p className="ml-2">{requisitionState?.seasonal}</p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                  </div>
+            )
+          }
 
-                )
-              }
-
-              {
-                requisitionState?.priority === "urgent" || requisitionState?.priority === "fasttrack" &&
-                (
-                  <div className="flex flex-row justify-left w-full mt-1 relative">
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Priority Reason
-                      </p>
-                      <div className="flex flex-row items-center">
-                        <p className="ml-2">{requisitionState?.urgentPriorityReason ? requisitionState?.urgentPriorityReason : requisitionState?.fastTrackPriorityReason}</p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                    <div className="flex flex-col mt-5">
-                      <p style={{ color: "#697E85" }} className="ml-2">
-                        Justification
-                      </p>
-                      <div className="flex flex-row ">
-                        <p className="ml-2">
-                          {requisitionState?.justification ? requisitionState?.justification : '-'}
-                        </p>
-                      </div>
-                      <div className="w-[310px] mt-2"></div>
-                    </div>
-                  </div>
-                )
-              }
-
+          {
+            requisitionState?.priority === "urgent" || requisitionState?.priority === "fasttrack" &&
+            (
               <div className="flex flex-row justify-left w-full mt-1 relative">
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Department
+                    Priority Reason
                   </p>
                   <div className="flex flex-row items-center">
-                    <p className="ml-2">{deptName ? deptName : "-"}</p>
+                    <p className="ml-2">{requisitionState?.urgentPriorityReason ? requisitionState?.urgentPriorityReason : requisitionState?.fastTrackPriorityReason}</p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
                 <div className="flex flex-col mt-5">
                   <p style={{ color: "#697E85" }} className="ml-2">
-                    Hazaourdous Material Requested
+                    Justification
                   </p>
                   <div className="flex flex-row ">
                     <p className="ml-2">
-                      {requisitionState?.isHazardousMaterial ? "Yes" : "No"}
-                    </p>
-                  </div>
-                  <div className="w-[310px] mt-2"></div>
-                </div>
-                <div className="flex flex-col mt-5">
-                  <p style={{ color: "#697E85" }} className="ml-2">
-                    Required For Dry Dock
-                  </p>
-                  <div className="flex flex-row ">
-                    <p className="ml-2">
-                      {requisitionState?.isRequiredDryDock ? "Yes" : "No"}
+                      {requisitionState?.justification ? requisitionState?.justification : '-'}
                     </p>
                   </div>
                   <div className="w-[310px] mt-2"></div>
                 </div>
               </div>
+            )
+          }
+
+          <div className="flex flex-row justify-left w-full mt-1 relative">
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Department
+              </p>
+              <div className="flex flex-row items-center">
+                <p className="ml-2">{deptName ? deptName : "-"}</p>
+              </div>
               <div className="w-[310px] mt-2"></div>
-              <div className="w-[310px] mt-2"></div>
-              <div className="flex flex-col mt-5">
-                <p className="ml-2" style={{ fontWeight: "600" }}>
-                  Delivery Details
+            </div>
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Hazaourdous Material Requested
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">
+                  {requisitionState?.isHazardousMaterial ? "Yes" : "No"}
                 </p>
               </div>
-
-              <div className="flex flex-row justify-left w-full mt-1 relative">
-                <div className="flex flex-col mt-5">
-                  <p style={{ color: "#697E85" }} className="ml-2">
-                    Requested Delivery Date
-                  </p>
-                  <div className="flex flex-row items-center">
-                    <p className="ml-2">
-                      {requisitionState.deliveryDate
-                        ? formatDate(requisitionState.deliveryDate)
-                        : ""}
-                    </p>
-                  </div>
-                  <div className="w-[310px] mt-2"></div>
-                </div>
-                <div className="flex flex-col mt-5">
-                  <p style={{ color: "#697E85" }} className="ml-2">
-                    Requested Delivery Port
-                  </p>
-                  <div className="flex flex-row ">
-                    <p className="ml-2">
-                      {requisitionState?.deliveryHomePort?.label
-                        ? requisitionState?.deliveryHomePort.label
-                        : requisitionState?.deliveryOtherPort.label
-                          ? requisitionState?.deliveryOtherPort.label
-                          : requisitionState?.selectedPosition.label}
-                    </p>
-                  </div>
-                  <div className="w-[310px] mt-2"></div>
-                </div>
-              </div>
-              <div className="mt-9">
-                <div className="flex flex-col mt-5 mr-20">
-                  <p style={{ color: "#697E85" }} className="ml-2">
-                    Notes
-                  </p>
-                  <div className="flex flex-row items-center">
-                    <textarea
-                      placeholder=""
-                      className="bg-transparent h-32 w-full  border border-black focus:outline-none"
-                      value={
-                        requisitionState?.note ? requisitionState.note : note
-                      }
-                      disabled
-                    />
-                  </div>
-                  <div className="w-[310px] mt-2"></div>
-                </div>
-              </div>
+              <div className="w-[310px] mt-2"></div>
             </div>
-            <OrderSummaryAccordion />
-            <div
-              onClick={handleClick}
-              className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200"
-            >
-              <p className="text-[14px]">Finish</p>
-              <AiOutlineArrowRight className="ml-1" />
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Required For Dry Dock
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">
+                  {requisitionState?.isRequiredDryDock ? "Yes" : "No"}
+                </p>
+              </div>
+              <div className="w-[310px] mt-2"></div>
             </div>
           </div>
-          <RightPanelSection></RightPanelSection>
+          <div className="w-[310px] mt-2"></div>
+          <div className="w-[310px] mt-2"></div>
+          <div className="flex flex-col mt-5">
+            <p className="ml-2" style={{ fontWeight: "600" }}>
+              Delivery Details
+            </p>
+          </div>
+
+          <div className="flex flex-row justify-left w-full mt-1 relative">
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Requested Delivery Date
+              </p>
+              <div className="flex flex-row items-center">
+                <p className="ml-2">
+                  {requisitionState.deliveryDate
+                    ? formatDate(requisitionState.deliveryDate)
+                    : ""}
+                </p>
+              </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+            <div className="flex flex-col mt-5">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Requested Delivery Port
+              </p>
+              <div className="flex flex-row ">
+                <p className="ml-2">
+                  {requisitionState?.deliveryHomePort?.label
+                    ? requisitionState?.deliveryHomePort.label
+                    : requisitionState?.deliveryOtherPort.label
+                      ? requisitionState?.deliveryOtherPort.label
+                      : requisitionState?.selectedPosition.label}
+                </p>
+              </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+          </div>
+          <div className="mt-9">
+            <div className="flex flex-col mt-5 mr-20">
+              <p style={{ color: "#697E85" }} className="ml-2">
+                Notes
+              </p>
+              <div className="flex flex-row items-center">
+                <textarea
+                  placeholder=""
+                  className="bg-transparent h-32 w-full  border border-black focus:outline-none"
+                  value={
+                    requisitionState?.note ? requisitionState.note : note
+                  }
+                  disabled
+                />
+              </div>
+              <div className="w-[310px] mt-2"></div>
+            </div>
+          </div>
         </div>
+        <OrderSummaryAccordion />
+        <Grid container spacing={2} alignItems="center" justifyContent="center" className="button-div">
+          <Grid item xs={12} sm={8} md={6}>
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
+              justifyContent="end"
+            >
+              <Grid item xs={10} sm={4} md={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleClick}
+                  fullWidth
+                >
+                  <Link href="/orderDetails"><p className="text-[14px]" onClick={handleClick}>Finish</p></Link>
+                  <span><AiOutlineArrowRight /></span>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        {/* <div
+          onClick={handleClick}
+          className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200"
+        >
+          <p className="text-[14px]">Finish</p>
+          <AiOutlineArrowRight className="ml-1" />
+        </div> */}
       </div>
-    </div>
+    </Layout>
   );
 };
 

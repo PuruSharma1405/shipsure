@@ -3,7 +3,7 @@ import { endpoints } from "../apis";
 
 const { OTHER_PORT_LIST, POSITION_LIST, HOME_PORT_LIST, SPARE_PART_DETAILS_API, GET_DEPARTMENTS, GET_ACCOUNT_CODE, 
   GET_PURCH_ATTRIBUT_LOOKUP_CODE, INSURANCE_CLAIM_COYID, GET_AUX_LIST, GET_NATIONALITY_LIST, GET_CREW_RANK_LIST, GET_VESSEL_AUX_LIST, 
-  GET_PROJECTS_LIST, GET_AUX_FOR_VESSEL } = endpoints;
+  GET_PROJECTS_LIST, GET_AUX_FOR_VESSEL, VESSEL_ITEMS } = endpoints;
 
 export interface IPagination {
   PageNumber?: number;
@@ -274,6 +274,26 @@ export async function getAuxForVessel(token: string, params: IPagination | any):
   return new Promise(async (resolve, reject) => {
     try {
       const response = await apiConnector("GET", GET_AUX_FOR_VESSEL , null, {
+        Authorization: `Bearer ${token}`,
+      }, params);
+
+      console.log('response', response);
+
+      if (response.statusText !== 'OK') {
+        throw new Error(response.data.message);
+      }
+
+      resolve(response.data)
+    } catch (error) {
+      reject(error);
+    }
+  })
+}
+
+export async function getPriorityList(token: string, params: IPagination | any): Promise<any> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await apiConnector("GET", VESSEL_ITEMS , null, {
         Authorization: `Bearer ${token}`,
       }, params);
 

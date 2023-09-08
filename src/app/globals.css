@@ -299,3 +299,7 @@ body {
   justify-content: end;
   margin-right: 1vw;
 }
+
+.padding-2rem {
+  padding: 2rem;
+}

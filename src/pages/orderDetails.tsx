@@ -17,7 +17,8 @@ import { SelectWithSearch } from '@/components/common/selectWithSearch';
 import { getToken } from '@/services/localstorageService';
 import {
   getDepartmentList, getSparePartList, getAccountCode, getPurchAttributCode, getInsuranceClaimCoyid,
-  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList, getAuxForVessel
+  getAuxList, getNationalityList, getCrewRankList, getVesselAUXList, getProjectsList, getAuxForVessel,
+  getPriorityList
 } from '@/services/operations/deliveryDetailsApi';
 import FormControl from '@mui/material/FormControl';
 import { MultiLineTextBox } from '@/components/common/multiLineTextBox';
@@ -109,6 +110,7 @@ const OrderDetails = () => {
   const [auxForVessel, setAuxForVessel] = useState<IAuxForVessel>({});
 
   const [justification, setJustification] = useState('');
+  const [priorityOptions, setPriorityOptions] = useState([]);
   const [justificationError, setJustificationError] = useState('');
   const itemName = localStorage.getItem('itemName')
 
@@ -207,6 +209,9 @@ const OrderDetails = () => {
         getProjectsList(token, {
           VesId: requisitionState.vesId,
         }),
+        getPurchAttributCode(token, {
+          LookupCode: 'VesselOrderPriority'
+        }),
       ];
 
       Promise.all(promises).then(([
@@ -223,7 +228,9 @@ const OrderDetails = () => {
         general1List,
         general2List,
         projects,
+        priorityListRes,
         ...all]: any[]) => {
+          
         const { recordset: sparePartRecordset } = sparePartListRes.result;
         if (sparePartRecordset) {
           const sparePartOptions = sparePartRecordset.map((el: any) => {
@@ -366,6 +373,12 @@ const OrderDetails = () => {
           });
           setProjectsOptions(projectsOptions);
         }
+
+        const priorityListResult = priorityListRes.result;
+        if (priorityListResult.recordset) {
+          const priorityList = priorityListResult.recordset;
+          setPriorityOptions(priorityList);
+        }
       }).catch((error) => {
         console.log('something went wrong', error.message);
       })
@@ -442,7 +455,7 @@ const OrderDetails = () => {
     }
 
     // for urgent priority
-    if (item === 'urgent') {
+    if (item === 'Urgent') {
       if (!selectedUrgentPriorityReason || !selectedUrgentPriorityReason.value || !selectedUrgentPriorityReason.value.trim()) {
         setSelectedUrgentPriorityReasonError('Please Select Urgent Priority reason')
         isValid = false;
@@ -458,7 +471,7 @@ const OrderDetails = () => {
     }
 
     // for fast track priority
-    if (item === 'fasttrack') {
+    if (item === 'Fast Track') {
       if (!selectedFastTrackPriorityReason || !selectedFastTrackPriorityReason.value || !selectedFastTrackPriorityReason.value.trim()) {
         setSelectedFastTrackPriorityReasonError('Please Select Urgent Priority reason')
         isValid = false;
@@ -525,7 +538,7 @@ const OrderDetails = () => {
   }
 
   useEffect(() => {
-    if (item === "urgent") {
+    if (item === "Urgent") {
       handleOpenDialog()
       setIsUrgent(true)
     } else {
@@ -782,10 +795,14 @@ const OrderDetails = () => {
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="row-radio-buttons-group"
               >
-                <FormControlLabel value={'normal'} control={<Radio checked={item === 'normal'} onChange={changePriority} />} label={'normal'} />
-                <FormControlLabel value={'urgent'} control={<Radio checked={item === 'urgent'} onChange={changePriority} />} label={'urgent'} />
+                {priorityOptions && Array.isArray(priorityOptions) && priorityOptions.map((option: any, index) => {
+                  return (
+                    <FormControlLabel key={index} value={option.PatName} control={<Radio checked={item === option.PatName} onChange={changePriority} />} label={option.PatName} />
+                  )
+                })}
+                {/* <FormControlLabel value={'urgent'} control={<Radio checked={item === 'urgent'} onChange={changePriority} />} label={'urgent'} />
                 <FormControlLabel value={'fasttrack'} control={<Radio checked={item === 'fasttrack'} onChange={changePriority} />} label={'fasttrack'} />
-                <FormControlLabel value={'local'} control={<Radio checked={item === 'local'} onChange={changePriority} />} label={'local'} />
+                <FormControlLabel value={'local'} control={<Radio checked={item === 'local'} onChange={changePriority} />} label={'local'} /> */}
               </RadioGroup>
             </FormControl>
             {isUrgent && (
