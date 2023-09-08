@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { selectRequisitionState } from "@/redux/reducers/requisitionSlice";
 
 
-export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
+export const OrderSummaryAccordion = () => {
   const [expanded, setExpanded] = useState(false);
   const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
   const [accordionIndexValue, setAccordionIndexValue] = useState();
@@ -143,7 +143,7 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
       tableData: updatedTableData[index],
     };
 
-    addToBasketCallback(selectedData);
+    // addToBasketCallback(selectedData);
   };
 
   const [reqQtyValues, setReqQtyValues] = useState(mockTableData.map(() => ""));
@@ -168,7 +168,7 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
             id={`panel${index}bh-header`}
           >
             <Typography sx={{ width: "25%", flexShrink: 0 }}>
-              {item.name}
+              {item.VIV_NAME}
             </Typography>
             <Typography sx={{ width: "25%", color: "text.secondary" }}>
               Maker
@@ -178,7 +178,7 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
             <Typography sx={{ width: "25%", color: "text.secondary" }}>
               Serial
               <br />
-              <span className="mt-1 font-semibold">{item.Serial}</span>
+              <span className="mt-1 font-semibold">{item.SerialNo}</span>
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
               Type
@@ -209,10 +209,8 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
                 </tr>
               </thead>
               <tbody>
-                {mockTableData.map((rowData, rowIndex) => {
-                  const item = accordionData.find(
-                    (accordionItem) => accordionItem.id === rowData.id
-                  );
+                {item?.SpareParts?.map((rowData, rowIndex) => {
+                
                   return (
                     <tr
                       key={rowIndex}
@@ -222,24 +220,26 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
                         <LuFileSpreadsheet />
                       </td>
                       <td style={{ width: "20%", padding: "9px" }}>
-                        {rowData.partName}
+                        {rowData.VIV_NAME}
                       </td>
-                      <td style={{ width: "15%" }}>{rowData.makerRef}</td>
-                      <td style={{ width: "15%" }}>{rowData.drawingPos}</td>
-                      <td style={{ width: "10%" }}>{rowData.uom}</td>
-                      <td style={{ width: "10%" }}>{rowData.rob}</td>
-                      <td style={{ width: "10%" }}>{rowData.pendingOrders}</td>
+                      <td style={{ width: "15%" }}>{rowData.VIV_MakersRef}</td>
+                      <td style={{ width: "15%" }}>{rowData?.VIV_DrawingPos?rowData?.VIV_DrawingPos:'-'}</td>
+                      <td style={{ width: "10%" }}>{rowData.MUN_ID}</td>
+                      <td style={{ width: "10%" }}>{rowData.VIV_ROB}</td>
+                      <td style={{ width: "10%" }}>{rowData.PendingOrders}</td>
                       <td style={{ width: "9%" }}>
-                        <input
-                          type="number"
-                          value={rowData.reqQty > 0 ? rowData.reqQty : 0}
-                          onChange={(e) =>
-                            handleReqQtyChange(rowIndex, e.target.value)
-                          }
+                      {rowData.RequestQuantity > 0 ? rowData.RequestQuantity : 0}
+                        {/* <input
+                          type="text"
+                          value={rowData.RequestQuantity > 0 ? rowData.RequestQuantity : 0}
+                          onChange={(e) =>{
+                           return rowData.RequestQuantity = e.target.value
+                            // dispatchEvent([].concat(accordionDetails))
+                           } }
                           style={{ width: "50%" }}
-                        />
+                        /> */}
                       </td>
-                      <td style={{ width: "15 %" }}>{rowData.lastPurchase}</td>
+                      <td style={{ width: "15 %" }}>{rowData.EstimatePrice}</td>
                     </tr>
                   );
                 })}
