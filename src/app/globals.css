@@ -273,3 +273,29 @@ body {
 .button-div{
   margin-top: 2vh !important;
 }
+
+/* Styles for desktop UI (greater than 768px) */
+@media (min-width: 891px) {
+  .button-div {
+    position: absolute;
+    bottom: 20px;
+    left: 40%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Styles for mobile UI (less than 768px) */
+@media (max-width: 891px) {
+  .button-div {
+    margin-top: 2vh;
+  }
+}
+
+.layout-width {
+  width: calc(100vw - 85px) !important;
+}
+.search-icon{
+  margin-bottom: 2vh;
+  justify-content: end;
+  margin-right: 1vw;
+}
