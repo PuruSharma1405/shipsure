@@ -27,7 +27,7 @@ const AlertProvider= () => {
 
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(false)} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
         <MuiAlert elevation={6} variant="filled" onClose={() => setOpen(false)} severity={severity}>
           {message}
         </MuiAlert>

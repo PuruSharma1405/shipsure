@@ -72,14 +72,16 @@ const OrderSummary = () => {
     const equipDetails = [];
     requisitionState.itemsDetails
     for (const iterator of requisitionState.itemsDetails) {
-      equipDetails.push({
-          VIV_ID: iterator.VIV_ID,
-          ROD_QuantityRequested: iterator.RequestQuantity,
-          ROD_QuantityEnquired: iterator.RequestQuantity,
-          PTR_ID: iterator.PTR_ID,
-          ACC_ID: iterator.AccountCode,
-        }
-      )
+      for (const sparePart of iterator.SpareParts) {
+        equipDetails.push({
+            VIV_ID: sparePart.VIV_ID,
+            ROD_QuantityRequested: sparePart.RequestQuantity,
+            ROD_QuantityEnquired: sparePart.RequestQuantity,
+            PTR_ID: sparePart.PTR_ID,
+            ACC_ID: requisitionState.accountCode,
+          }
+        )
+      }
     }
 
     const formData = {
@@ -122,15 +124,7 @@ const OrderSummary = () => {
       OrdAuxvessel: requisitionState.vesselAux,
       CatalogueSource: null,
       CatalogueSourceId: null,
-      OrderLinesXML: [
-        {
-          VIV_ID: "FQUE00002110",
-          ROD_QuantityRequested: reqQty,
-          ROD_QuantityEnquired: reqQty,
-          PTR_ID: "FRCC00000099",
-          ACC_ID: requisitionState.accountCode,
-        },
-      ],
+      OrderLinesXML: equipDetails,
     };
     console.log(formData)
 
@@ -158,7 +152,9 @@ const OrderSummary = () => {
   console.log(requisitionState)
 
   async function fetchData() {
-    const sparePartListRes = await getSparePartList(token, {});
+    const sparePartListRes = await getSparePartList(token, {
+      OrderType: requisitionState.itemName
+    });
     const { recordset } = sparePartListRes.result;
     if (recordset) {
       const sparePartName = recordset.filter(
@@ -168,7 +164,7 @@ const OrderSummary = () => {
     }
 
     const accountCodeRes = await getAccountCode(token, {
-      // ChdPo: 1,
+      ChdPo: 1,
       VesId: requisitionState.vesId,
       CoyId: requisitionState.coyId,
     });
