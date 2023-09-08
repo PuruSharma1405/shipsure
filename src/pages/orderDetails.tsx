@@ -138,7 +138,7 @@ const OrderDetails = () => {
     setIsDialogOpen(true);
   };
 
-  const dialogActions = [
+  const dialogActions:Array<{ label: string; onClick: () => void; color?: "primary" | "secondary" }> = [
     {
       label: 'Cancel',
       onClick: handleDialogCancel,
