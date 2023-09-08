@@ -24,7 +24,7 @@ interface SuggestedRequisition {
 }
 
 const SuggestedRequisitions: React.FC = () => {
-  const [suggestedRequisitions, setSuggestedRequisitions] = useState<SuggestedRequisition>(
+  const [suggestedRequisitions, setSuggestedRequisitions] = useState<any>(
     suggestedRequisitionsData
   );
 
@@ -36,7 +36,7 @@ const SuggestedRequisitions: React.FC = () => {
           Suggested Requisitions
         </Typography>
         <Grid container spacing={3} style={{marginTop:'5px'}}>
-          {suggestedRequisitions?.map((currData, index) => (
+          {suggestedRequisitions?.map((currData:any, index:any) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={2.4}>
               <Card elevation={3}>
                 <CardContent>
