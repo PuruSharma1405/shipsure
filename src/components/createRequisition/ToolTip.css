@@ -1,0 +1,60 @@
+.rich-tooltip {
+    align-items: flex-start;
+    background-color: #e9f2f6;
+    border-radius: 12px;
+    display: inline-flex;
+    flex-direction: column;
+   margin:50px;
+    position: relative;
+  }
+  
+  .rich-tooltip .content {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+  }
+  
+  .rich-tooltip .frame {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+  
+  .rich-tooltip .div {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 12px;
+    position: relative;
+  }
+  
+  .rich-tooltip .label-text {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    position: relative;
+  }
+  
+  .rich-tooltip .text-wrapper {
+    margin-top: -1px;
+    position: relative;
+    width: 62px;
+  }
+  
+  .rich-tooltip .input-text {
+    font-family: "Inter";
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+  }
+  

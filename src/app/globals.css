@@ -23,6 +23,14 @@
 }
 
 
+.disabled{
+  border: 1px solid #999999!important;
+background-color: #C9C9C9!important;
+color: #666666!important;
+cursor: not-allowed!important;
+}
+
+
 input[type='radio'] {
   accent-color: green;
 }

@@ -119,8 +119,6 @@ const steps = [
             </Step>
           );
         })}
-        <p onClick={handleBack}>Previous</p>
-        <p onClick={handleNext}>Next</p>
       </Stepper>
       {activeStep === steps.length ? (
         <React.Fragment>

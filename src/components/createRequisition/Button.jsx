@@ -2,11 +2,6 @@ import Link from 'next/link';
 import Button from '@mui/material/Button';
 import React, { ReactNode } from 'react';
 
-// interface ButtonProps {
-//   children: ReactNode;
-//   linkTo: string;
-// }
-
 const CTAButton = ({ children, linkTo,vesselName }) => {
   const buttonStyle = {
     backgroundColor: '#68DA6A', 
@@ -14,7 +9,6 @@ const CTAButton = ({ children, linkTo,vesselName }) => {
     color:'black',
     fontWeight:'700',
     height:'47px',
-    cursor: vesselName?.length === 0 ? 'not-allowed' : 'pointer',
     '&:hover': {
       transform: 'scale(0.95)',
       fontWeight: '700',
@@ -26,7 +20,7 @@ const CTAButton = ({ children, linkTo,vesselName }) => {
       <Button
             variant="contained"
             color="primary"
-            className="w-[500px] text-center rounded-full cta-button custom-font"
+            className={`w-[500px] text-center rounded-full cta-button custom-font ${vesselName?.length>3?'':'disabled'}`}
             style={buttonStyle}
             sx={{"@media (max-width: 768px)": {
               height: "270px",

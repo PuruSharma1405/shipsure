@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import Image from "next/image";
 import RequisitionBasket from '../../images/RequisitionBasket.png';
 import RequisitionSpares from "../../images/RequisitionSpares.png";
+import ToolTip from "../createRequisition/ToolTip"
 const MegaDropDown = ({
   showDropdown,
   setShowDropdown,
@@ -16,6 +17,7 @@ const MegaDropDown = ({
   const [megaMenu, setMegaMenu] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [loadMore, setLoadMore] = useState(true);
+  const[showToolTip,setShowToolTip]=useState(false)
   const ref = useRef(null);
   const dispatch = useDispatch()
   const token = JSON.parse(localStorage.getItem('token'))?.access_token;
@@ -92,7 +94,7 @@ const MegaDropDown = ({
 
   useEffect(() => {
     fetchingMegaDropDown();
-  }, [vesselName, token]);
+  }, [vesselName, token]); 
 
   return (
     megaMenu?.length > 0 && (
@@ -110,8 +112,8 @@ const MegaDropDown = ({
                       <div className="megamenu-vesselname">
                         {currData['VesselName']}
                       </div>
-                      <div>
-                        <Image src={RequisitionBasket} alt="Search" height={35} width={35} className='requisitionBasket'/>
+                      <div className='relative'>
+                          <Image src={RequisitionBasket} alt="Search" height={35} width={35} className='requisitionBasket' onMouseEnter={() => setShowToolTip(true)} onMouseLeave={() => setShowToolTip(false)}/>
                       </div>
                       <div>
                         <Image src={RequisitionSpares} alt="Search" height={20} width={20} className='requisitionTool'/>

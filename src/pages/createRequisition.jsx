@@ -27,6 +27,8 @@ import VesselImage from "../images/VesselImage.png";
 import IconButton from "@mui/material/IconButton";
 import Search from "../images/Search.png";
 import './createRequisition.css'
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Container,
   Typography,
@@ -69,7 +71,7 @@ const CreateRequisition = () => {
   }, []);
 
   const changeHandler = (e) => {
-    setVesselName(e.target.value.toLowerCase());
+    setVesselName(e.target.value);
     setShowDropdown(true);
   };
 
@@ -103,6 +105,23 @@ const CreateRequisition = () => {
   useEffect(() => {
     fetchingItems();
   }, []);
+
+  const toaster=()=>{
+    toast('You have to choose atleast one vessel', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  }
+
+  const requisitionItems=()=>{
+    console.log('clicked');
+  }
 
   return (
     <>
@@ -317,7 +336,7 @@ const CreateRequisition = () => {
                           className="custom-font"
                           sx={{ textTransform: "uppercase",marginLeft:'10px' }}
                         >
-                          <span className="cta-button-size">Create</span>
+                          <span className="cta-button-size" onClick={vesselName?.length==0?toaster:requisitionItems}>Create</span>
                         </Typography>
                       </div>
                     </CTAButton>

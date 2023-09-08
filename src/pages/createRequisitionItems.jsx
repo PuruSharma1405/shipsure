@@ -28,11 +28,14 @@ import { useSelector } from "react-redux";
 import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepper";
 import axios from "axios";
 import Link from "next/link";
-import { useDispatch } from 'react-redux';
-import { setItemsDetails, setVesselDetails } from "../redux/reducers/requisitionSlice";
-import { RightPanelSection } from '../components/common/order-basket'
-import Layout from '@/components/common/requisitionLayout';
-import { Button, Grid, FormHelperText } from '@mui/material';
+import { useDispatch } from "react-redux";
+import {
+  setItemsDetails,
+  setVesselDetails,
+} from "../redux/reducers/requisitionSlice";
+import { RightPanelSection } from "../components/common/order-basket";
+import Layout from "@/components/common/requisitionLayout";
+import { Button, Grid, FormHelperText } from "@mui/material";
 
 const CreateRequisitionSpares = () => {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -52,16 +55,18 @@ const CreateRequisitionSpares = () => {
   const [showSection, setShowSection] = useState(false);
   const [showAccordion, setShowAccordion] = useState(false);
   const [accordionDetails, setAccordionDetails] = useState();
-  const [currentStep, setCurrentStep] = useState(0)
-  const myRef = useRef("")
+  const [currentStep, setCurrentStep] = useState(0);
+  const myRef = useRef("");
   const [reqQty, setReqQty] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
   // const [expandSectionIndex, setExpandSectionIndex] = useState(null);
   const changeHandler = (e) => {
     setComponentName(e.target.value);
     setShowDropDown(true);
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   console.log("itemNameeeee", itemName);
 
@@ -81,8 +86,7 @@ const CreateRequisitionSpares = () => {
     setShowDropDown(true);
   };
 
-  const addToBasketCallback = (accordionData) => {
-  };
+  const addToBasketCallback = (accordionData) => {};
 
   // const showHideSection = (index) => {
   //   if (expandSectionIndex === index) {
@@ -103,13 +107,17 @@ const CreateRequisitionSpares = () => {
   //   return total ? total.toFixed(2) : 0;
   // }
 
-
-
   const addToBasket = () => {
     const cloneAccordionDetails = JSON.parse(JSON.stringify(accordionDetails));
-    const selectedItems = cloneAccordionDetails.filter(comp => comp.SpareParts.filter(x => x.isChecked).length > 0).map((c) => { c.SpareParts = c.SpareParts.filter(x => x.isChecked); c.showSection = false; return c; })
+    const selectedItems = cloneAccordionDetails
+      .filter((comp) => comp.SpareParts.filter((x) => x.isChecked).length > 0)
+      .map((c) => {
+        c.SpareParts = c.SpareParts.filter((x) => x.isChecked);
+        c.showSection = false;
+        return c;
+      });
     setBasketValues(selectedItems);
-    dispatch(setItemsDetails(selectedItems))
+    dispatch(setItemsDetails(selectedItems));
   };
 
   console.log("basketValues", basketValues);
@@ -125,7 +133,7 @@ const CreateRequisitionSpares = () => {
         }
       );
       setVesselBasicDetails(response?.data?.result?.recordset[0]);
-      dispatch(setVesselDetails(response?.data?.result?.recordset[0]))
+      dispatch(setVesselDetails(response?.data?.result?.recordset[0]));
     } catch (error) {
       console.error("Error:", error);
     }
@@ -138,7 +146,7 @@ const CreateRequisitionSpares = () => {
   const searchComponents = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.201.232:3012/search-component-paged?PageNumber=1&PageSize=100&VesId=${vesselId}&SearchText=${componentName}`,
+        `http://192.168.201.232:3005/search-component-paged?PageNumber=1&PageSize=100&VesId=${vesselId}&SearchText=${componentName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -147,6 +155,7 @@ const CreateRequisitionSpares = () => {
       );
       console.log("responsee", response);
       setSearchComponent(response?.data?.result?.recordset);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -158,57 +167,55 @@ const CreateRequisitionSpares = () => {
 
   const searchAccordion = () => {
     if (componentName.length > 0) {
-      setShowAccordion(true)
+      setShowAccordion(true);
     }
-    accordionValue()
-  }
+    accordionValue();
+  };
 
   function groupByProperties(data, properties) {
-    const groups = new Map()
+    const groups = new Map();
 
     for (const item of data) {
-      const key = properties.map(prop => item[prop]).join('-')
+      const key = properties.map((prop) => item[prop]).join("-");
 
       if (!groups.has(key)) {
-        groups.set(key,
-          {
-            VIV_ID: item.VIV_ID,
-            PTR_ID: item.PTR_ID,
-            VES_ID: item.VES_ID,
-            PTR_NAME: item.PTR_NAME,
-            SerialNumber: item.SerialNumber,
-            MakerId: item.MakerId,
-            Maker: item.Maker,
-            DesignType: item.DesignType,
-            IsCriticalComponent: item.IsCriticalComponent,
-            ComponentNotes: item.ComponentNotes,
-            WarrantyEndDate: item.WarrantyEndDate,
-            VIV_NAME: item.VIV_NAME,
-            Par_Id: item.Par_Id,
-            VIV_MakersRef: item.VIV_MakersRef,
-            VIV_DrawingPos: item.VIV_DrawingPos,
-            MUN_ID: item.MUN_ID,
-            VIV_Critical: item.MUN_ID,
-            VIV_ROB: item.VIV_ROB,
-            VIV_MinStock: item.VIV_MinStock,
-            ComponentType: item.ComponentType,
-            VIV_DangerousGoods: item.VIV_DangerousGoods,
-            Viv_CertificateRequired: item.Viv_CertificateRequired,
-            VIV_Comment: item.VIV_Comment,
-            PendingOrders: item.PendingOrders,
-            EstimatePrice: item.EstimatePrice,
-            IsMarketPlacePart: item.IsMarketPlacePart,
-            IsMarketPlaceComponent: item.IsMarketPlaceComponent,
-            RequestQuantity: 0,
-            SpareParts: []
-          })
+        groups.set(key, {
+          VIV_ID: item.VIV_ID,
+          PTR_ID: item.PTR_ID,
+          VES_ID: item.VES_ID,
+          PTR_NAME: item.PTR_NAME,
+          SerialNumber: item.SerialNumber,
+          MakerId: item.MakerId,
+          Maker: item.Maker,
+          DesignType: item.DesignType,
+          IsCriticalComponent: item.IsCriticalComponent,
+          ComponentNotes: item.ComponentNotes,
+          WarrantyEndDate: item.WarrantyEndDate,
+          VIV_NAME: item.VIV_NAME,
+          Par_Id: item.Par_Id,
+          VIV_MakersRef: item.VIV_MakersRef,
+          VIV_DrawingPos: item.VIV_DrawingPos,
+          MUN_ID: item.MUN_ID,
+          VIV_Critical: item.MUN_ID,
+          VIV_ROB: item.VIV_ROB,
+          VIV_MinStock: item.VIV_MinStock,
+          ComponentType: item.ComponentType,
+          VIV_DangerousGoods: item.VIV_DangerousGoods,
+          Viv_CertificateRequired: item.Viv_CertificateRequired,
+          VIV_Comment: item.VIV_Comment,
+          PendingOrders: item.PendingOrders,
+          EstimatePrice: item.EstimatePrice,
+          IsMarketPlacePart: item.IsMarketPlacePart,
+          IsMarketPlaceComponent: item.IsMarketPlaceComponent,
+          RequestQuantity: 0,
+          SpareParts: [],
+        });
       }
-      groups.get(key).SpareParts.push(item)
+      groups.get(key).SpareParts.push(item);
     }
 
-    return [...groups.values()]
+    return [...groups.values()];
   }
-
 
   const accordionValue = async () => {
     try {
@@ -220,150 +227,195 @@ const CreateRequisitionSpares = () => {
           },
         }
       );
-      console.log('responseee', response);
+      console.log("responseee", response);
 
       if (response?.data?.result?.recordset) {
-        const grouped = groupByProperties(response?.data?.result?.recordset,
-          ['PTR_ID', 'VES_ID', 'PTR_NAME', 'SerialNumber', 'MakerId', 'Maker', 'DesignType', 'IsCriticalComponent', 'ComponentNotes']);
+        const grouped = groupByProperties(response?.data?.result?.recordset, [
+          "PTR_ID",
+          "VES_ID",
+          "PTR_NAME",
+          "SerialNumber",
+          "MakerId",
+          "Maker",
+          "DesignType",
+          "IsCriticalComponent",
+          "ComponentNotes",
+        ]);
         setAccordionDetails(grouped);
       } else {
         setAccordionDetails([]);
       }
-
-
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  console.log('', currentStep);
+  console.log("", currentStep);
 
   const nextStepToOrderDetails = () => {
-    setCurrentStep(1)
-  }
+    setCurrentStep(1);
+  };
 
   useEffect(() => {
-    localStorage.setItem('currentStep', currentStep)
-  }, [currentStep])
+    localStorage.setItem("currentStep", currentStep);
+  }, [currentStep]);
 
-  useEffect(()=>{
-    console.log('myRef',myRef);
-  },[myRef])
+  useEffect(() => {
+    console.log("myRef", myRef);
+  }, [myRef]);
 
   return (
     <Layout>
-          <div className="padding-2rem">
-              <HorizontalLinearStepper ref={myRef}/>
-              <div
-                className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
-                style={{ borderRadius: "20px" }}
-              >
-                <div className="flex flex-col mt-5">
-                  <p className="ml-2">
-                    Component <sup className="text-red-500">*</sup>
-                  </p>
-                  <div className="flex flex-row items-center">
-                    <input
-                      type="text"
-                      placeholder="Search Component"
-                      className="outline-none bg-transparent ml-2 mt-2"
-                      value={componentName}
-                      onChange={changeHandler}
-                    />
-                    <BsSearch onClick={searchAccordion} className="cursor-pointer" />
-                  </div>
-                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                  {componentName.length > 0 && showDropDown && (
-                    <DropDown
-                      fetchingItem={fechingItem}
-                      showDropDown={showDropDown}
-                      setShowDropDown={setShowDropDown}
-                      componentName={componentName}
-                      searchComponent={searchComponent}
-                      setSearchComponent={setSearchComponent}
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col mt-5">
-                  <p className="ml-2">Part Name</p>
-                  <div className="flex flex-row ">
-                    <input
-                      type="text"
-                      placeholder="Enter Part Name"
-                      className="outline-none bg-transparent ml-2 mt-2"
-                      value={partName}
-                      onChange={partNameChangeHandler}
-                    />
-                  </div>
-                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                  {/* {partName.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
-                </div>
-                <div className="flex flex-col mt-5">
-                  <p className="ml-2">Maker&apos;s Ref No.</p>
-                  <div className="flex flex-row ">
-                    <input
-                      type="text"
-                      placeholder="Enter Maker's Ref No. "
-                      className="outline-none bg-transparent ml-2 mt-2"
-                      value={makersRefNo}
-                      onChange={makersRefNoChangeHandler}
-                    />
-                  </div>
-                  <div className="border border-[#052E2B] w-[310px] mt-2"></div>
-                  {/* {makersRefNo.length>0 && showDropDown && <DropDown fechingItem={fechingItem} showDropDown={showDropDown} setShowDropDown={setShowDropDown} componentName={componentName}/>} */}
-                </div>
-                <div
-                  className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
-                  style={{ border: "1px solid black" }}
-                >
-                  <p className="uppercase text-1xl ml-3 cursor-pointer" onClick={searchAccordion}>Search</p>
-                  <BsSearch className="ml-2 mr-3" />
-                </div>
-              </div>
-              {
-                accordionDetails && (
-                  <div className="flex flex-row items-center justify-end mt-7">
-                    <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
-                    <p
-                      className="ml-2 text-1xl underline font-semibold cursor-pointer"
-                      onClick={addToBasket}
-                    >
-                      Add To Order Basket
-                    </p>
-                  </div>
-                )
-              }
-
-              <div className="mt-5">
-                <p className="text-center text-[#7B8BA3] mb-7">
-                  {componentName.length === 0 && (
-                    <div>Please select a Component to view the {itemValue?.toLowerCase()}</div>
-                  )}
-                </p>
-              </div>
-              {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails} />}
-            <Grid container spacing={2} alignItems="center" justifyContent="center" className="button-div">
-                <Grid item xs={12} sm={8} md={6}>
-                  <Grid
-                    container
-                    spacing={2}
-                    alignItems="center"
-                    justifyContent="end"
-                  >
-                    <Grid item xs={10} sm={4} md={2}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                      >
-                        <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>myRef.current.handleNext()}>Next</p></Link>
-                        <span><AiOutlineArrowRight /></span>
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
+      <div className="padding-2rem">
+        <HorizontalLinearStepper ref={myRef} />
+        <div
+          className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
+          style={{ borderRadius: "20px" }}
+        >
+          <div className="flex flex-col mt-5">
+            <p className="ml-2">
+              Component <sup className="text-red-500">*</sup>
+            </p>
+            <div className="flex flex-row items-center">
+              <input
+                type="text"
+                placeholder="Search Component"
+                className="outline-none bg-transparent ml-2 mt-2"
+                value={componentName}
+                onChange={changeHandler}
+              />
+              <BsSearch onClick={searchAccordion} className="cursor-pointer" />
+            </div>
+            <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+            {componentName.length > 0 && showDropDown && (
+              <DropDown
+                fetchingItem={fechingItem}
+                showDropDown={showDropDown}
+                setShowDropDown={setShowDropDown}
+                componentName={componentName}
+                searchComponent={searchComponent}
+                setSearchComponent={setSearchComponent}
+              />
+            )}
           </div>
+          <div className="flex flex-col mt-5">
+            <p className="ml-2">Part Name</p>
+            <div className="flex flex-row ">
+              <input
+                type="text"
+                placeholder="Enter Part Name"
+                className="outline-none bg-transparent ml-2 mt-2"
+                value={partName}
+                onChange={partNameChangeHandler}
+              />
+            </div>
+            <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+          </div>
+          <div className="flex flex-col mt-5">
+            <p className="ml-2">Maker&apos;s Ref No.</p>
+            <div className="flex flex-row ">
+              <input
+                type="text"
+                placeholder="Enter Maker's Ref No. "
+                className="outline-none bg-transparent ml-2 mt-2"
+                value={makersRefNo}
+                onChange={makersRefNoChangeHandler}
+              />
+            </div>
+            <div className="border border-[#052E2B] w-[310px] mt-2"></div>
+          </div>
+          {componentName.length === 0 ? (
+            <div
+              className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full disabled"
+              style={{ border: "1px solid black" }}
+            >
+              <button
+                className="uppercase text-1xl ml-3:"
+                onClick={searchAccordion}
+                disabled
+              >
+                Search
+              </button>
+              <BsSearch className="ml-2 mr-3" />
+            </div>
+          ) : (
+            <div
+              className="flex flex-row items-center absolute bottom-2 right-6 p-1 rounded-full"
+              style={{ border: "1px solid black" }}
+            >
+              <button
+                className="uppercase text-1xl ml-3 cursor-pointer"
+                onClick={searchAccordion}
+              >
+                Search
+              </button>
+              <BsSearch className="ml-2 mr-3" />
+            </div>
+          )}
+        </div>
+        {accordionDetails && (
+          <div className="flex flex-row items-center justify-end mt-7">
+            <IoMdAddCircleOutline style={{ fontSize: "25px" }} />
+            <p
+              className="ml-2 text-1xl underline font-semibold cursor-pointer"
+              onClick={addToBasket}
+            >
+              Add To Order Basket
+            </p>
+          </div>
+        )}
+
+        <div className="mt-5">
+          <p className="text-center text-[#7B8BA3] mb-7">
+            {componentName.length === 0 && (
+              <div>
+                Please select a Component to view the {itemValue?.toLowerCase()}
+              </div>
+            )}
+          </p>
+        </div>
+        {showAccordion && (
+          <AccordionComponent
+            addToBasketCallback={addToBasketCallback}
+            accordionDetails={accordionDetails}
+            setAccordionDetails={setAccordionDetails}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
+        )}
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+          className="button-div"
+        >
+          <Grid item xs={12} sm={8} md={6}>
+            <Grid
+              container
+              spacing={2}
+              alignItems="center"
+              justifyContent="end"
+            >
+              <Grid item xs={10} sm={4} md={2}>
+                <Button variant="contained" color="primary" fullWidth>
+                  <Link href="/orderDetails">
+                    <p
+                      className="text-[14px]"
+                      onClick={() => myRef.current.handleNext()}
+                    >
+                      Next
+                    </p>
+                  </Link>
+                  <span>
+                    <AiOutlineArrowRight />
+                  </span>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
     </Layout>
   );
 };

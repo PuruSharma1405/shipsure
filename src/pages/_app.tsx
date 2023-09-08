@@ -7,7 +7,8 @@ import { lightTheme, darkTheme } from '@/app/theme';
 import AlertProvider from '@/components/common/AlertService';
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function MyApp({ Component, pageProps}: AppProps) {
     return (
         <Provider store={store}> 
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps}: AppProps) {
                         <Sidebar>
                             <Component {...pageProps} />
                         </Sidebar>
+                <ToastContainer />
                 </ThemeProvider>
             </PersistGate>
         </Provider>

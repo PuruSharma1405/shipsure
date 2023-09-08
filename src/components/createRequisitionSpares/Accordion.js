@@ -16,6 +16,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],s
   const [newStockValues, setNewStockValues] = useState(
     accordionDetails?.map(() => 0)
   )
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleChange = (panel, index) => (event, isExpanded) => {
     console.log("expanded", expanded, panel)
@@ -56,14 +57,21 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],s
 
     addToBasketCallback(selectedItems);
   }
-  
-  
-  
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
 
   return (
     <div>
-      {accordionDetails?.slice(0,10)?.map((item, index) => {
+       {isLoading ? (
+        <div></div>
+      ):
+      accordionDetails.length === 0 ? (
+        <div>No Data Found</div>
+      ) : (accordionDetails?.slice(0,10)?.map((item, index) => {
         console.log('item',item)
        return( <Accordion
           key={index}
@@ -161,7 +169,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],s
           </AccordionDetails>
         </Accordion>
        )
-})}
+}))}
     </div>
   )
 }
