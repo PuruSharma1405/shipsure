@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import StepIcon from "@mui/material/StepIcon";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleIcon from "@mui/icons-material/CheckCircle";
-
+import { forwardRef, useImperativeHandle } from 'react';
 const steps = [
   "ADD ORDER BASKET",
   "ORDER DETAILS",
@@ -16,12 +16,10 @@ const steps = [
   "SUMMARY",
 ];
 
-export default function HorizontalLinearStepper({}) {
+ export const HorizontalLinearStepper=React.forwardRef((props,ref)=> {
   const currentStep=localStorage.getItem("currentStep")
   const [activeStep, setActiveStep] = React.useState(currentStep>0?currentStep:0);
   const [skipped, setSkipped] = React.useState(new Set());
-
-  console.log('activeStep',activeStep);
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -31,6 +29,12 @@ export default function HorizontalLinearStepper({}) {
     return skipped.has(step);
   };
 
+  useImperativeHandle(ref, () => ({
+    handleNext() {
+      handleNext()
+    }
+  }))
+
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -38,7 +42,12 @@ export default function HorizontalLinearStepper({}) {
       newSkipped.delete(activeStep);
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => {
+      const newActiveStep = Number(prevActiveStep) + 1;
+      localStorage.setItem("currentStep", newActiveStep);
+  
+      return newActiveStep;
+    });
     setSkipped(newSkipped);
   };
 
@@ -63,15 +72,13 @@ export default function HorizontalLinearStepper({}) {
     setActiveStep(0);
   };
 
+  console.log('activeStepp',activeStep);
+
   return (
     <Box sx={{ width: "100%" }} className="mt-7">
       <Stepper
         activeStep={activeStep}
-        sx={{
-          "& .MuiStepConnector-line": {
-            border: activeStep >= 1 ? "1px dashed grey" : "1px dashed grey",
-          },
-        }}
+        
       >
         {Object.keys(steps).map((stepNumber) => {
           console.log("stepNumber", steps[stepNumber]);
@@ -112,6 +119,8 @@ export default function HorizontalLinearStepper({}) {
             </Step>
           );
         })}
+        <p onClick={handleBack}>Previous</p>
+        <p onClick={handleNext}>Next</p>
       </Stepper>
       {activeStep === steps.length ? (
         <React.Fragment>
@@ -127,4 +136,6 @@ export default function HorizontalLinearStepper({}) {
       )}
     </Box>
   );
-}
+})
+
+export default HorizontalLinearStepper

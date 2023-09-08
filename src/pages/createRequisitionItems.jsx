@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   AiOutlineSearch,
   AiOutlineClose,
@@ -51,6 +51,7 @@ const CreateRequisitionSpares = () => {
   const [showAccordion, setShowAccordion] = useState(false);
   const [accordionDetails, setAccordionDetails] = useState();
   const [currentStep, setCurrentStep] = useState(0)
+  const myRef = useRef("")
   const [reqQty, setReqQty] = useState(1);
   // const [expandSectionIndex, setExpandSectionIndex] = useState(null);
   const changeHandler = (e) => {
@@ -235,13 +236,17 @@ const CreateRequisitionSpares = () => {
 
   console.log('', currentStep);
 
-  const nextStep = () => {
-    setCurrentStep(2)
+  const nextStepToOrderDetails = () => {
+    setCurrentStep(1)
   }
 
   useEffect(() => {
     localStorage.setItem('currentStep', currentStep)
   }, [currentStep])
+
+  useEffect(()=>{
+    console.log('myRef',myRef);
+  },[myRef])
 
   return (
     <div className="h-[100vh]  relative w-[100vw] bg-[#FFFFFF] overflow-x-hidden overflow-y-auto">
@@ -265,7 +270,7 @@ const CreateRequisitionSpares = () => {
               </h1>
               <Link href="/createRequisition"><AiOutlineClose style={{ fontSize: "25px" }} /></Link>
             </div>
-            <HorizontalLinearStepper />
+            <HorizontalLinearStepper nextStepToOrderDetails={nextStepToOrderDetails} ref={myRef}/>
             <div
               className="flex flex-row justify-around bg-[#F2EEEB] h-[140px] w-full mt-9 relative"
               style={{ borderRadius: "20px" }}
@@ -355,7 +360,7 @@ const CreateRequisitionSpares = () => {
             </div>
             {showAccordion && <AccordionComponent addToBasketCallback={addToBasketCallback} accordionDetails={accordionDetails} setAccordionDetails={setAccordionDetails} />}
             <div className="flex flex-row uppercase justify-center items-center p-2 w-[106px] text-center rounded-full font-bold text-white bg-[#11110E] absolute -bottom-14 right-0 hover:scale-95 transition-all duration-200">
-              <Link href="/orderDetails"><p className="text-[14px]" onClick={nextStep}>Next</p></Link>
+              <Link href="/orderDetails"><p className="text-[14px]" onClick={()=>myRef.current.handleNext()}>Next</p></Link>
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
