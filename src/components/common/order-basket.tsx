@@ -20,11 +20,11 @@ export const RightPanelSection = () => {
     const getTotalCost = (values: any = []) => {
         let total = 0;
 
-        for (const value of values) {
-            for (const part of value.SpareParts) {
-                total += (part.RequestQuantity ? part.RequestQuantity : 0) * part.EstimatePrice;
-            }
-        }
+        // for (const value of values) {
+        //     for (const part of value.SpareParts) {
+        //         total += (part.RequestQuantity ? part.RequestQuantity : 0) * part.EstimatePrice;
+        //     }
+        // }
         return total ? total.toFixed(2) : 0;
     }
 
