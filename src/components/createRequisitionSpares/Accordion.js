@@ -7,7 +7,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import { selectClasses } from "@mui/material"
 import { setVivItems } from '../../redux/reducers/requisitionSlice'
 import { useDispatch } from "react-redux"
-var groupArray = require('group-array')
 
 export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],setAccordionDetails }) => {
   const [expanded, setExpanded] = useState(false)
