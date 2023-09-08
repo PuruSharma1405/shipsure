@@ -24,7 +24,7 @@ const DropDown = ({ fetchingItem, showDropDown, setShowDropdown, componentName, 
   }, [componentName, searchComponent]);
 
   const fetchingItemValue = (currData) => {
-    fetchingItem(currData?.ComponentName);
+    fetchingItem(currData);
   };
 
   console.log('searchComponent',searchComponent,items?.length);

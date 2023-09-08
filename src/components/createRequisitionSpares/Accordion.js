@@ -1,50 +1,62 @@
-import React, { useState } from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { selectClasses } from "@mui/material";
-import { setVivItems } from '../../redux/reducers/requisitionSlice';
-import { useDispatch } from "react-redux";
-export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAccordionDetails }) => {
-  const [expanded, setExpanded] = useState(false);
-  const dispatch=useDispatch();
-  const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null);
-  const [accordionIndexValue, setAccordionIndexValue] = useState();
+import React, { useEffect, useState } from "react"
+import Accordion from "@mui/material/Accordion"
+import AccordionDetails from "@mui/material/AccordionDetails"
+import AccordionSummary from "@mui/material/AccordionSummary"
+import Typography from "@mui/material/Typography"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import { selectClasses } from "@mui/material"
+import { setVivItems } from '../../redux/reducers/requisitionSlice'
+import { useDispatch } from "react-redux"
+var groupArray = require('group-array')
+
+export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],setAccordionDetails }) => {
+  const [expanded, setExpanded] = useState(false)
+  const dispatch=useDispatch()
+  const [expandedAccordionIndex, setExpandedAccordionIndex] = useState(null)
+  const [accordionIndexValue, setAccordionIndexValue] = useState()
   const [newStockValues, setNewStockValues] = useState(
     accordionDetails?.map(() => 0)
-  );
+  )
 
   const handleChange = (panel, index) => (event, isExpanded) => {
-    console.log("expanded", expanded, panel);
-    setExpanded(isExpanded ? panel : false);
-    console.log('panel',panel);
-    setAccordionIndexValue(isExpanded ? accordionDetails[panel.slice(-1)] : null);
-  };
+    console.log("expanded", expanded, panel)
+    setExpanded(isExpanded ? panel : false)
+    console.log('panel',panel)
+    setAccordionIndexValue(isExpanded ? accordionDetails[panel.slice(-1)] : null)
+  }
 
-  console.log("accordionIndexValue", accordionIndexValue);
+  console.log("accordionIndexValue", accordionIndexValue)
 
   const handleCheckboxChange = (index, item) => {
   
-    const updatedAccordionDetails = [...accordionDetails];
+    item.isChecked = !item.isChecked;
+
+    setAccordionDetails([].concat(accordionDetails))
+
+    // const updatedAccordionDetails = [...accordionDetails]
   
-    const updatedItem = { ...updatedAccordionDetails[index] };
+    // const updatedItem = { ...updatedAccordionDetails[index] }
   
-    updatedItem.isChecked = !updatedItem.isChecked;
+    // updatedItem.isChecked = !updatedItem.isChecked
   
-    updatedAccordionDetails[index] = updatedItem;
+    // updatedAccordionDetails[index] = updatedItem
   
-    const selectedData = {
-      accordionData: accordionIndexValue,
-      tableData: updatedItem,
-    };
-    console.log('selectedData', selectedData);
+    // const selectedData = {
+    //   accordionData: accordionIndexValue,
+    //   tableData: updatedItem,
+    // }
+    // console.log('selectedData', selectedData)
   
-    setAccordionDetails(updatedAccordionDetails);
-  
-    addToBasketCallback(selectedData);
-  };
+    // setAccordionDetails(updatedAccordionDetails)
+
+
+    const cloneAccordionDetails = JSON.parse(JSON.stringify(accordionDetails));
+
+    const selectedItems =   cloneAccordionDetails.filter(comp => comp.SpareParts.filter(x=>x.isChecked).length> 0)
+                                            .map((c) => {  c.SpareParts = c.SpareParts.filter(x=>x.isChecked);  return c;})
+
+    addToBasketCallback(selectedItems);
+  }
   
   
   
@@ -53,7 +65,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
   return (
     <div>
       {accordionDetails?.slice(0,10)?.map((item, index) => {
-        console.log('item',item);
+        console.log('item',item)
        return( <Accordion
           key={index}
           expanded={expanded === `panel${index}`}
@@ -65,7 +77,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
             id={`panel${index}bh-header`}
           >
             <Typography sx={{ width: "30%", flexShrink: 0 }}>
-              {item.VIV_Name}
+              {item.VIV_NAME}
             </Typography>
             <Typography sx={{ width: "20%", color: "text.secondary" }}>
               Maker
@@ -98,7 +110,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                     <input type="checkbox" />
                   </th>
                   <th style={{ textAlign: "center" }}>Part Name</th>
-                  <th style={{ textAlign: "left" }}>Maker&apos;s Ref. No</th>
+                  <th style={{ textAlign: "left" }}>Maker&apos; Ref. No</th>
                   <th style={{ textAlign: "left" }}>Drawing Pos</th>
                   <th style={{ textAlign: "left" }}>UOM</th>
                   <th style={{ textAlign: "left" }}>ROB</th>
@@ -108,11 +120,8 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                 </tr>
               </thead>
               <tbody>
-                {accordionDetails?.slice(0,8)?.map((rowData, rowIndex) => {
-                  const item = accordionDetails?.find(
-                    (accordionItem) => accordionItem.id === rowData.id
-                  );
-                  console.log('rowData',rowData);
+                {item?.SpareParts?.map((rowData, rowIndex) => {
+                  console.log(rowData);
                   return (
                     <tr
                       key={rowIndex}
@@ -122,27 +131,31 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
                         <input
                           type="checkbox"
                           checked={rowData.isChecked}
-                          onChange={() => handleCheckboxChange(rowIndex, item)}
+                          onChange={() => handleCheckboxChange(rowIndex, rowData)}
                         />
                       </td>
                       <td style={{ width: "20%", padding: "9px" }}>
-                        {rowData?.VIV_Name}
+                        {rowData?.VIV_NAME}
                       </td>
                       <td style={{ width: "15%" }}>{rowData?.VIV_MakersRef}</td>
                       <td style={{ width: "15%",textAlign:'center' }}>{rowData?.VIV_DrawingPos?rowData?.VIV_DrawingPos:'-'}</td>
-                      <td style={{ width: "10%" }}>{rowData.Unit}</td>
-                      <td style={{ width: "10%" }}>{rowData.ROB}</td>
-                      <td style={{ width: "10%" }}>0</td>
+                      <td style={{ width: "10%" }}>{rowData.MUN_ID}</td>
+                      <td style={{ width: "10%" }}>{rowData.VIV_ROB}</td>
+                      <td style={{ width: "10%" }}>{rowData.PendingOrders}</td>
                       <td style={{ width: "9%" }}>
                         <input
                           type="number"
-                          value={rowData.NewStock > 0 ? rowData.NewStock : 0}
+                          value={rowData.RequestQuantity ||0}
                           style={{ width: "50%" }}
+                          onChange={(event)=> {
+                            rowData.RequestQuantity = event.target.value;
+                            setAccordionDetails([].concat(accordionDetails))
+                          }}
                         />
                       </td>
-                      <td style={{ width: "15 %" }}>0</td>
+                      <td style={{ width: "15 %" }}>{rowData.EstimatePrice}</td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </table>
@@ -151,5 +164,5 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails,setAcc
        )
 })}
     </div>
-  );
-};
+  )
+}
