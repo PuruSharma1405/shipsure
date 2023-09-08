@@ -16,6 +16,7 @@ import Grid from '@mui/material/Grid';
 import { useSelector } from "react-redux";
 import { selectRequisitionState } from '@/redux/reducers/requisitionSlice';
 import Typography from '@mui/material/Typography';
+import { RightPanelSection } from "./order-basket";
 
 type DashboardLayoutProps = {
     children: React.ReactNode,
@@ -76,13 +77,7 @@ const Layout = ({ children }: DashboardLayoutProps) => {
                     </main>
                 </Grid>
                 <Grid item sm={9} md={3} lg={3} className="bg-grey">
-                    <aside>
-                            <div className="search-icon mt-3 gap-3 flex items-center">
-                                <AiOutlineSearch style={{ fontSize: "25px" }} />
-                                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
-                                <CgMenuGridO style={{ fontSize: "25px" }} />
-                                <ProfileDropDown />
-                            </div>
+                    {/* <aside>
                         <RequisitionDataContainer basketValues="" vesselBasicDetails="" />
                         <div
                             className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  min-w-[350px] h-[100px]"
@@ -102,7 +97,14 @@ const Layout = ({ children }: DashboardLayoutProps) => {
                                 <h3 className="relative right-4 font-bold">estimated</h3>
                             </div>
                         </div>
-                    </aside>
+                    </aside> */}
+                       <div className="search-icon mt-3 gap-3 flex items-center">
+                                <AiOutlineSearch style={{ fontSize: "25px" }} />
+                                <IoMdNotificationsOutline style={{ fontSize: "25px" }} />
+                                <CgMenuGridO style={{ fontSize: "25px" }} />
+                                <ProfileDropDown />
+                        </div>
+                    <RightPanelSection></RightPanelSection>
                 </Grid>
             </Grid>
         </>
