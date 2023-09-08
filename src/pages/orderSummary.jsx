@@ -14,6 +14,7 @@ import RequisitionDataContainer from "../components/createRequisition/Requisitio
 import { useSelector } from "react-redux";
 import HorizontalLinearStepper from "../components/createRequisitionSpares/Stepper";
 import { OrderSummaryAccordion } from "../components/summary/SummaryAccordion";
+import { RightPanelSection } from "../components/common/order-basket";
 const OrderSummary = () => {
   // const itemName = useSelector();
   const itemValue = localStorage.getItem("itemName");
@@ -192,73 +193,7 @@ const OrderSummary = () => {
               <AiOutlineArrowRight className="ml-1" />
             </div>
           </div>
-          <div className="w-4/12 bg-[#E8ECED] ml-[50px] h-[100vh]">
-            <div className="flex flex-row flex-wrap mt-[60px] ml-[50px]">
-              <RequisitionDataContainer
-                height="320px"
-                width="370px"
-                title="Seaways Athens-9597109"
-                heading="Financials"
-                desc1="Budget:Actual YTD"
-                desc1Value="1.95M-2.34M"
-                desc2="Accrual"
-                desc2Value="-39.46%"
-                desc3="Variance"
-                desc3Value="386.1K"
-                basketValues={basketValues}
-              />
-              <div
-                className="flex flex-col mt-5 bg-white shadow-lg rounded-lg  w-[350px] h-[250px]"
-                style={{ borderRadius: "15px" }}
-              >
-                <div className="flex flex-row  justify-between items-center m-5">
-                  <div className="flex flex-row ">
-                    <AiOutlineShoppingCart style={{ fontSize: "25px" }} />
-                    <h2 className="uppercase font-semibold ml-1">
-                      Order Basket
-                    </h2>
-                  </div>
-                  <p className="font-bold">$0.00</p>
-                </div>
-                <div className="flex flex-row justify-between ml-10">
-                  <p className="font-semibold">{basketValues?.length} item</p>
-                  <h3 className="relative right-4 font-bold">estimated</h3>
-                </div>
-                <div
-                  className="h-[10px]"
-                  style={{
-                    borderBottom: "1px solid #CDD6DB",
-                    width: "80%",
-                    margin: "0 auto",
-                  }}
-                ></div>
-                <div className="flex flex-row  justify-between items-center m-5">
-                  <div className="flex flex-row ">
-                    <AiOutlineRight style={{ fontSize: "25px" }} />
-                    <h2 className="uppercase font-semibold ml-1">
-                      {basketValues[0]?.accordionData?.accordionData?.name ||
-                        "M/E TURBOCHARGER#2"}
-                    </h2>
-                  </div>
-                  <p className="font-bold">{basketValues?.length} item</p>
-                </div>
-                <div className="flex flex-row justify-around ml-3">
-                  <p>Maker</p>
-                  <p>
-                    {basketValues[0]?.accordionData?.accordionData?.Maker ||
-                      "ABB TURBO SYSTEM AG"}
-                  </p>
-                </div>
-                <div className="flex flex-row justify-around mt-3 relative left-2">
-                  <p>Type</p>
-                  <p>
-                    {basketValues[0]?.accordionData?.accordionData?.Serial ||
-                      "TPL77-B11"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+         <RightPanelSection></RightPanelSection>
         </div>
       </div>
     </div>

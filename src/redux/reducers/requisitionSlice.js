@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   itemName: "",
-  coyId:"",
+  coyId: "",
   vesId: "",
-  itemsDetails:[],
-  vesselDetails:[],
+  itemsDetails: [],
+  vesselDetails: [],
   accountCode: '',
   sparePartType: '',
   fastTrackPriorityReason: '',
@@ -29,10 +29,10 @@ const initialState = {
   deliveryOtherPort: {},
   selectedPosition: {},
   note: '',
-  deliveryLocation: '',
+  deliveryLocation: ''
 };
 
-console.log('itemsDetails',initialState);
+console.log('itemsDetails', initialState);
 
 export const requisitionSlice = createSlice({
   name: "requisition",
@@ -47,11 +47,11 @@ export const requisitionSlice = createSlice({
     setCoyId(state, value) {
       state.coyId = value.payload;
     },
-    setItemsDetails(state,value){
-      state.itemsDetails=value.payload
+    setItemsDetails(state, value) {
+      state.itemsDetails = value.payload
     },
-    setVesselDetails(state,value){
-      state.vesselDetails=value.payload
+    setVesselDetails(state, value) {
+      state.vesselDetails = value.payload
     },
     setOrderDetails(state, value) {
       state.accountCode = value.payload.accountCode?.value ? value.payload.accountCode.value : null
@@ -68,8 +68,8 @@ export const requisitionSlice = createSlice({
       state.general2 = value.payload.general2?.value ? value.payload.general2.value : null
       state.projects = value.payload.projects?.value ? value.payload.projects.value : null
       state.justification = value.payload.justification,
-      state.isHazardousMaterial = value.payload.isHazardousMaterial,
-      state.isRequiredDryDock = value.payload.isRequiredDryDock
+        state.isHazardousMaterial = value.payload.isHazardousMaterial,
+        state.isRequiredDryDock = value.payload.isRequiredDryDock
       state.priority = value.payload.priority
       state.orderTitle = value.payload.orderTitle
     },
@@ -81,11 +81,12 @@ export const requisitionSlice = createSlice({
       state.note = value.payload.note || null
       state.deliveryLocation = value.payload.deliveryLocation || null
     }
+
   },
 });
 
 export const selectRequisitionState = (state) => state.requisition;
 
-export const { setItemName, setVesId, setCoyId, setItemsDetails,setVesselDetails,setOrderDetails,setDeliveryDetails } = requisitionSlice.actions;
+export const { setItemName, setVesId, setCoyId, setItemsDetails, setVesselDetails, setOrderDetails, setDeliveryDetails } = requisitionSlice.actions;
 
 export default requisitionSlice.reducer;

@@ -5,6 +5,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LuFileSpreadsheet } from "react-icons/lu";
+import { useSelector } from "react-redux";
+import { selectRequisitionState } from "@/redux/reducers/requisitionSlice";
+
 
 export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
   const [expanded, setExpanded] = useState(false);
@@ -17,46 +20,47 @@ export const OrderSummaryAccordion = ({ addToBasketCallback }) => {
     console.log("panel", panel.slice(-1), accordionData[panel.slice(-1)]);
     setAccordionIndexValue(accordionData[panel.slice(-1)]);
   };
-
+  const requisitionState = useSelector(selectRequisitionState);
   console.log("accordionIndexValue", accordionIndexValue);
 
-  const accordionData = [
-    {
-      id: 1,
-      name: "M/E TURBOCHARGER#1",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 2,
-      name: "M/E TURBOCHARGER#2",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 3,
-      name: "M/E TURBOCHARGER#3",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 4,
-      name: "M/E TURBOCHARGER#4",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-    {
-      id: 5,
-      name: "M/E TURBOCHARGER#5",
-      Maker: "ABB TURBO SYSTEM AG",
-      Serial: "HT 487167/HT 487168",
-      Type: "TPL77-B11",
-    },
-  ];
+  const accordionData = requisitionState?.itemsDetails;
+  //  [
+  //   {
+  //     id: 1,
+  //     name: "M/E TURBOCHARGER#1",
+  //     Maker: "ABB TURBO SYSTEM AG",
+  //     Serial: "HT 487167/HT 487168",
+  //     Type: "TPL77-B11",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "M/E TURBOCHARGER#2",
+  //     Maker: "ABB TURBO SYSTEM AG",
+  //     Serial: "HT 487167/HT 487168",
+  //     Type: "TPL77-B11",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "M/E TURBOCHARGER#3",
+  //     Maker: "ABB TURBO SYSTEM AG",
+  //     Serial: "HT 487167/HT 487168",
+  //     Type: "TPL77-B11",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "M/E TURBOCHARGER#4",
+  //     Maker: "ABB TURBO SYSTEM AG",
+  //     Serial: "HT 487167/HT 487168",
+  //     Type: "TPL77-B11",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "M/E TURBOCHARGER#5",
+  //     Maker: "ABB TURBO SYSTEM AG",
+  //     Serial: "HT 487167/HT 487168",
+  //     Type: "TPL77-B11",
+  //   },
+  // ];
 
   const [mockTableData, setMockTableData] = useState([
     {

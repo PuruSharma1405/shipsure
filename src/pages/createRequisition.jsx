@@ -20,7 +20,7 @@ import FormLabel from "@mui/material/FormLabel";
 import { getVesselPart } from "../services/operations/createVesselAPI";
 import { useDispatch } from "react-redux";
 import AuthService from "@/services/authService";
-import { setItemName } from "../redux/reducers/requisitionSlice";
+import { setItemName, setItemsDetails, setVesselDetails } from "../redux/reducers/requisitionSlice";
 import axios from "axios";
 import Image from "next/image";
 import VesselImage from "../images/VesselImage.png";
@@ -64,6 +64,8 @@ const CreateRequisition = () => {
     if (!authState.isAuthenticated) {
       router.push("/");
     }
+    dispatch(setVesselDetails([]))
+    dispatch(setItemsDetails([]))
   }, []);
 
   const changeHandler = (e) => {
