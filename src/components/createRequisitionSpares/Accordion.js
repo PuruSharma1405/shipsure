@@ -69,9 +69,7 @@ export const AccordionComponent = ({ addToBasketCallback,accordionDetails = [],s
        {isLoading ? (
         <div></div>
       ):
-      accordionDetails.length === 0 ? (
-        <div>No Data Found</div>
-      ) : (accordionDetails?.slice(0,10)?.map((item, index) => {
+  (accordionDetails?.slice(0,10)?.map((item, index) => {
         console.log('item',item)
        return( <Accordion
           key={index}
